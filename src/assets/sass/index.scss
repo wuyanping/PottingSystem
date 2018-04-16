@@ -1,7 +1,5 @@
-.className{
-   display: flex;
-   transform: rotate(45deg);
-   color: pink;
+html,body{
+	height: 100%;
 }
 @import './_variables';
 @import './_function';
