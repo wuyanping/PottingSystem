@@ -59,7 +59,12 @@ module.exports = {
             'vue$': 'vue/dist/vue',
             'projectRoot': resolve(),
             COMPONENTS : resolve('src', 'assets', 'js', 'components'),
+            DIRECTIVE : resolve('src', 'assets', 'js', 'directive'),
+            FILTERS : resolve('src', 'assets', 'js', 'filters'),
+            PAGE : resolve('src', 'assets', 'js', 'page'),
             ROUTER : resolve('src', 'assets', 'js', 'router'),
+            UTILS : resolve('src', 'assets', 'js', 'utils'),
+            VIEWS: resolve('src', 'assets', 'js', 'views'),
             SASS : resolve('src', 'assets', 'sass') // @import引入的好像不行
         }
     },
