@@ -1,25 +1,37 @@
 <template>
     <el-container style="height: 100%">
-        <el-header>Header</el-header>
+        <el-header height="66px"><top></top></el-header>
         <el-container>
-            <el-aside width="200px">Aside</el-aside>
+            <el-aside width="200px">
+                <pNav></pNav>
+            </el-aside>
             <el-container>
-                <el-main>Main</el-main>
-                <el-footer>Footer</el-footer>
+                <el-main>
+                    <router-view></router-view>
+                </el-main>
+                <!-- <el-footer>Footer</el-footer> -->
             </el-container>
         </el-container>
     </el-container>
 </template>
 
 <script>
+import pNav from 'COMPONENTS/layout/nav'
+import Top from 'COMPONENTS/layout/top'
+
 export default {
-    name: 'index'
+    name: 'index',
+    components: {
+        pNav,
+        Top
+    }
 }
 </script>
 
-<style>
+<style lang="sass">
+@import '../../sass/theme/_theme.scss';
 .el-header, .el-footer {
-    background-color: #B3C0D1;
+    background-color: $blue_color;
     color: #333;
     text-align: center;
     /*line-height: 60px;*/

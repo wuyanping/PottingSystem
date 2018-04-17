@@ -39,7 +39,9 @@ const devWebpackConfig = merge(baseWebpackConfig, {
         //设置全局变量
         new webpack.ProvidePlugin({
             Vue: 'vue',
-            'window.Vue': 'vue'
+            'window.Vue': 'vue',
+
+            axios: 'axios'
         }),//直接加载到全局不需要require()
 
         // 删除dist文件

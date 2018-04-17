@@ -106,19 +106,3 @@ body {
 button, input, select, textarea {
   font-family: "Microsoft YaHei", "Hiragino Sans GB", "WenQuanYi Micro Hei", arial, sans-serif;
 }
-
-.clearfix:after {
-  display: block;
-  content: "\20";
-  height: 0;
-  clear: both;
-  overflow: hidden;
-  visibility: hidden;
-}
-
-/*ie8+*/
-.clearfix {
-  *zoom: 1;
-}
-
-/*ie6.7*/

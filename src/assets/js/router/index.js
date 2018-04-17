@@ -1,16 +1,19 @@
-import Vue from 'vue'
 import Router from 'vue-router'
-import HelloWorld from 'COMPONENTS/HelloWorld'
 
-// const Index = resolve => require(['VIEWS/index.vue'], resolve)
+// =============================顶层组件====================================
+// ---------------------------最顶层组件----------------------------------
+const index = resolve => require(['VIEWS/index.vue'], resolve)
 
-const index = resolve => {
-    // require.ensure 是 Webpack 的特殊语法，用来设置 code-split point
-    // （代码分块）
-    require.ensure(['VIEWS/index.vue'], () => {
-        resolve(require('VIEWS/index.vue'))
-    })
-}
+// ---------------------------登录组件----------------------------------
+const login = resolve => require(['VIEWS/login.vue'], resolve)
+
+// ---------------------------404----------------------------------
+const notFound = resolve => require(['VIEWS/404.vue'], resolve)
+
+// ---------------------------首页----------------------------------
+const home = resolve => require(['PAGE/home/home.vue'], resolve)
+const userInfo = resolve => require(['PAGE/top/components/userInfo.vue'], resolve)
+const model = resolve => require(['PAGE/model/model.vue'], resolve)
 
 Vue.use(Router)
 
@@ -19,12 +22,42 @@ export default new Router({
         {
             path: '/',
             name: 'index',
-            component: index
+            component: index,
+            children: [
+                {
+                    path: '/index',
+                    alias: '/',
+                    name: 'index',
+                    component: home
+                },
+                {
+                    path: '/userInfo',
+                    alias: '/',
+                    name: 'userInfo',
+                    component: userInfo
+                },
+                {
+                    path: '/:module/:model',
+                    name: 'model',
+                    component: model
+                }
+                // ,
+                // {
+                //     path: '/:module/:model/:id',
+                //     name: 'detailModel',
+                //     component: model
+                // },
+            ]
         },
         {
-            path: '/index',
-            name: 'index',
-            component: index
+            path: '/login',
+            name: 'login',
+            component: login
+        },
+        {
+            path: '/*',
+            name: 'notFound',
+            component: notFound
         }
     ]
 })

@@ -8,6 +8,9 @@ import * as elementComponent from './element-ui.js'
 // require('SASS/index.scss')
 import 'SASS/index'
 
+// 引入字体
+import '../iconfont/iconfont.css'
+
 // 设置语言
 import enLocale from 'element-ui/lib/locale/lang/en'
 import zhLocale from 'element-ui/lib/locale/lang/zh-CN'
@@ -24,7 +27,7 @@ default:
 }
 
 // 在引入 Element 时，可以传入一个全局配置对象。该对象目前仅支持 size 字段，用于改变组件的默认尺寸。
-Vue.prototype.$ELEMENT = { size: 'small' }
+// Vue.prototype.$ELEMENT = { size: 'small' }
 
 // 注册组件
 Object.keys(elementComponent).forEach(function (component) {

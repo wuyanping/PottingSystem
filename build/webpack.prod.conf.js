@@ -32,7 +32,9 @@ const devWebpackConfig = merge(baseWebpackConfig, {
         //设置全局变量
         new webpack.ProvidePlugin({
             Vue: 'vue',
-            'window.Vue': 'vue'
+            'window.Vue': 'vue',
+            
+            axios: 'axios'
         }),//直接加载到全局不需要require()
 
         // 删除dist文件
@@ -63,7 +65,7 @@ const devWebpackConfig = merge(baseWebpackConfig, {
 	     	}
         }),
 
-        // 把webpack的runtime代码和module manifest代码提取到manifest文件中，防止修改了代码但是没有修改第三方库文件导致第三方库文件也打包的问题
+      // 把webpack的runtime代码和module manifest代码提取到manifest文件中，防止修改了代码但是没有修改第三方库文件导致第三方库文件也打包的问题
 	    new webpack.optimize.CommonsChunkPlugin({
 	      name: 'manifest',
 	      chunks: ['vendor']

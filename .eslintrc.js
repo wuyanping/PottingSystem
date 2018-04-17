@@ -22,6 +22,7 @@ module.exports = {
         'generator-star-spacing': 0,
         // 配置4个空格一个缩进，不符合配置时报错
         "indent": ["error", 4],
+        "no-tabs": "off",
         // allow debugger during development
         'no-debugger': process.env.NODE_ENV === 'production' ? 2 : 0,
         // allow 未使用的变量
@@ -31,9 +32,12 @@ module.exports = {
         // Disallow Assignment in return Statement
         'no-return-assign': 0,
         // 允许混用tab和空格
-        "no-mixed-spaces-and-tabs": [2, false],
+        "no-mixed-spaces-and-tabs": [0, 'off'],
         // Disallow camelcase naming convention
         'camelcase': ['error', {properties: 'never'}],
-        'no-sequences': 0
+        'no-sequences': 0,
+        "one-var": 0,
+        "eqeqeq": 0,
+        "no-unneeded-ternary": 0,
     }
 }
