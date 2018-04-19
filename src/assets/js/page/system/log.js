@@ -18,7 +18,7 @@ function customSerializeFn (item) {
     return obj
 }
 
-const userInfo = {
+const log = {
     // 是否显示设置
     hasTitleBack: false,
     hasTabs: true,
@@ -32,14 +32,16 @@ const userInfo = {
     hasTableOperationEdit: true,
     hasTableOperationDelete: true,
     hasPaginationBatchDestroy: true,
+    // 默认条件搜索的占位符
+    defaultConditionSearchPlaceholder: '',
     // 标题*
     commonTitle: '用户信息',
     // 标签页
     commonTabs: {
         lists: [
             {
-                display_name: '用户信息管理',
-                name: 'userInfo'
+                display_name: '系统日志管理',
+                name: 'log'
             }
         ]
     },
@@ -48,7 +50,7 @@ const userInfo = {
     // commonTabsBeforeComponent: '',
     // 每个标签页的数据
     panelData: {
-        userInfo: {
+        log: {
             // 条件刷选
             commonConditionComponents: [
                 // {
@@ -356,5 +358,5 @@ const userInfo = {
 }
 
 module.exports = {
-    userInfo: userInfo
+    log: log
 }

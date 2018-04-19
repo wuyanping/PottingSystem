@@ -3,6 +3,7 @@ import ElButton from 'COMPONENTS/public/commonElButton.vue'
 import TableDetailLink from 'COMPONENTS/public/commonTableDetailLink.vue'
 import ElSwitch from 'COMPONENTS/public/commonElSwitch.vue'
 import Uploader from 'COMPONENTS/public/commonUploader.vue'
+import ElInput from 'COMPONENTS/public/commonElInput.vue'
 
 import validtor from 'UTILS/validator.js'
 import { ajax } from 'UTILS/ajax.js'
@@ -20,11 +21,17 @@ function customSerializeFn (item) {
 
 const userInfo = {
     // 是否显示设置
+    // 是否显示上一级
     hasTitleBack: false,
+    // 是否显示tabs
     hasTabs: true,
-    hasConditionStatusSelect: true,
+    // 是否条件搜索的状态搜索
+    hasConditionStatusSelect: false,
+    // 默认条件搜索框
     hasConditionSearch: true,
+    // 是否显示新增按钮
     hasConditionAdd: true,
+    // 是否显示刷新按钮也叫重置按钮
     hasConditionRefresh: true,
     hasTableSelection: true,
     hasTableIndex: true,
@@ -32,6 +39,8 @@ const userInfo = {
     hasTableOperationEdit: true,
     hasTableOperationDelete: true,
     hasPaginationBatchDestroy: true,
+    // 默认条件搜索的占位符
+    defaultConditionSearchPlaceholder: '用户名',
     // 标题*
     commonTitle: '用户信息',
     // 标签页
@@ -51,12 +60,15 @@ const userInfo = {
         userInfo: {
             // 条件刷选
             commonConditionComponents: [
-                // {
-                //  component: ElRangeDatePicker,
-                //  props: {
-                //      reset: false,
-                //  },
-                // },
+                {
+                    component: ElInput,
+                    props: {
+                        field: 'nickname',
+                        value: undefined,
+                        placeholder: '用户昵称',
+                        className: 'mr-10'
+                    }
+                }
                 // {
                 //  component: ElSelect,
                 //  props: {
@@ -95,43 +107,40 @@ const userInfo = {
             // 表格列
             commonTableField: [
                 {
-                    label: '公司名',
-                    field: 'name',
-                    sortable: 'custom',
-                    // width: '80',
-                    component: TableDetailLink,
-                    props: {
-                        className: 'block lightHigh miaosu',
-                        detailUrl: 'detailModel',
-                        current: 'user'
-                    }
+                    label: '用户名',
+                    field: 'name'
                 },
                 {
-                    label: '公司编码',
-                    field: 'coding',
-                    sortable: 'custom'
-                    // width: '80',
-                    // component: TableDetailLink,
-                    // props: {
-                    //  className: 'block lightHigh miaosu',
-                    //  detailUrl: 'detail',
-                    // }
+                    label: '用户昵称',
+                    field: 'nickname'
                 },
                 {
-                    label: '负责人/法人',
-                    field: 'legal_person',
-                    sortable: 'custom'
+                    label: '手机号',
+                    field: 'phone'
                 },
                 {
-                    label: '电话',
-                    field: 'phone',
-                    sortable: 'custom'
+                    label: '头像',
+                    field: 'avatar'
                 },
                 {
-                    label: '状态',
-                    field: 'cstatus',
-                    sortable: 'custom',
-                    component: ElSwitch
+                    label: '邮箱',
+                    field: 'email'
+                },
+                {
+                    label: '真实姓名',
+                    field: 'realname'
+                },
+                {
+                    label: '性别',
+                    field: 'gender'
+                },
+                {
+                    label: '出生日期',
+                    field: 'birth_date'
+                },
+                {
+                    label: '备注',
+                    field: 'memo'
                 }
             ],
             // 表格列特殊值处理

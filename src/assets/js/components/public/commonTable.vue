@@ -24,7 +24,6 @@
             :resizable="false"
             :label="tf.label"
             :prop="tf.field"
-            :sortable="tf.sortable"
             :width="tf.width"
             :key="ky">
             <template slot-scope="scope">

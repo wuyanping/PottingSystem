@@ -27,7 +27,7 @@ default:
 }
 
 // 在引入 Element 时，可以传入一个全局配置对象。该对象目前仅支持 size 字段，用于改变组件的默认尺寸。
-// Vue.prototype.$ELEMENT = { size: 'small' }
+Vue.prototype.$ELEMENT = { size: 'medium' }
 
 // 注册组件
 Object.keys(elementComponent).forEach(function (component) {

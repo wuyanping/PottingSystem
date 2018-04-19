@@ -1,16 +1,16 @@
 <template>
-    <el-dialog class="components-dialogs" :visible="commonFormVisible" v-loading.body="commonFormLoading" :close-on-click-modal="false" :show-close="false">
-        <div slot="title" class="clearfix p-10">
-            <h1 class="dialogs-title pull-left">{{commonFormData.title}}</h1>
-            <i class="dialogs-close el-icon-close pull-right" @click="close" />
-        </div>
-        <el-form label-width="100px" :model="commonFormData" ref="formDialogData">
+    <el-dialog class="components-dialogs" :visible="commonFormVisible" v-loading.body="commonFormLoading" :close-on-click-modal="false" :title="commonFormData.title" @close="close">
+        <!-- <div slot="title" class="clearfix p-10"> -->
+            <!-- <h1 class="dialogs-title fl">{{commonFormData.title}}</h1> -->
+            <!-- <i class="dialogs-close el-icon-close fr" @click="close" /> -->
+        <!-- </div> -->
+        <el-form class="components-form" label-width="100px" :model="commonFormData" ref="formDialogData">
             <commonFormItem
                 :commonFormData="commonFormData"
                 :route="route"
             />
         </el-form>
-        <div slot="footer" class="dialog-opt">
+        <div slot="footer" class="dialog-footer">
             <commonElButton
                 :params="saveSetting"
                 v-on:save="save"
@@ -85,3 +85,20 @@
         }
     }
 </script>
+
+<style lang="sass">
+.components-dialogs{
+    .el-dialog{
+        min-width: 500px;
+    }
+
+    .components-form{
+        max-height: 500px;
+        overflow: auto;
+    }
+
+    // .el-dialog{
+    //     margin-top: 0!important;
+    // }
+}
+</style>

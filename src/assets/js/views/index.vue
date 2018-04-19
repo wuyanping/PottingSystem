@@ -3,7 +3,7 @@
         <el-header height="66px"><top></top></el-header>
         <el-container>
             <el-aside width="200px">
-                <pNav></pNav>
+                <pNav :menu="menu"></pNav>
             </el-aside>
             <el-container>
                 <el-main>
@@ -18,9 +18,15 @@
 <script>
 import pNav from 'COMPONENTS/layout/nav'
 import Top from 'COMPONENTS/layout/top'
+import menu from 'PAGE/top/menu.js'
 
 export default {
     name: 'index',
+    data () {
+        return {
+            menu: menu
+        }
+    },
     components: {
         pNav,
         Top
@@ -33,34 +39,20 @@ export default {
 .el-header, .el-footer {
     background-color: $blue_color;
     color: #333;
-    text-align: center;
-    /*line-height: 60px;*/
 }
 
 .el-aside {
-    background-color: #D3DCE6;
+    background-color: #545c64;
     color: #333;
-    text-align: center;
-    /*line-height: 200px;*/
 }
 
 .el-main {
     background-color: #E9EEF3;
     color: #333;
-    text-align: center;
-    /*line-height: 160px;*/
 }
 
 body > .el-container {
     margin-bottom: 40px;
 }
 
-.el-container:nth-child(5) .el-aside,
-.el-container:nth-child(6) .el-aside {
-    /*line-height: 260px;*/
-}
-
-.el-container:nth-child(7) .el-aside {
-    /*line-height: 320px;*/
-}
 </style>

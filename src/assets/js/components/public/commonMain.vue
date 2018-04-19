@@ -19,10 +19,10 @@
 
         <!-- 自定义标题 -->
         <div class="common-title clearfix">
-            <div class="pull-left">
-                <h1 class="mt-10 mb-10">{{commonTitle}}</h1>
+            <div class="fl">
+                <h1 class="common-title-h1">{{commonTitle}}</h1>
             </div>
-            <el-button v-if="hasTitleBack" class="pull-right" type="text" @click="handleTitleBack">返回上级</el-button>
+            <el-button class="fr" v-if="hasTitleBack" type="text" @click="handleTitleBack">返回上级</el-button>
         </div>
 
         <!-- tabs上方插口 -->
@@ -51,7 +51,7 @@
 
         <!-- 条件筛选 -->
         <div class="common-condition clearfix">
-            <div class="pull-left mr-10">
+            <div class="fl mr-10">
                 <commonElSelect
                     ref="cstatusSelect"
                     v-if="hasConditionStatusSelect"
@@ -67,15 +67,15 @@
                 />
             </div>
             <!-- 默认搜索 -->
-            <div class="pull-left" v-if="hasConditionSearch">
+            <div class="fl" v-if="hasConditionSearch">
                 <el-input
-                    placeholder="搜索"
+                    :placeholder="`搜索${defaultConditionSearchPlaceholder}`"
                     v-model.trim="conditionSearch"
                     @keyup.enter="handleConditionSearch">
                     <el-button slot="append" icon="el-icon-search" @click="handleConditionSearch"></el-button>
                 </el-input>
             </div>
-            <div class="pull-right ml-10">
+            <div class="fr ml-10">
                 <!-- 自定义操作按钮 -->
                 <component
                     class="mr-10"
@@ -206,8 +206,8 @@
         <!-- <slot name="common-pagination-before" /> -->
 
         <!-- 主体分页 -->
-        <div class="common-pagination p-10">
-            <div class="pagination-opt pull-left">
+        <div class="common-pagination mt-10 clearfix">
+            <div class="fl">
                 <!-- 分页批量删除按钮 -->
                 <commonElButton
                     v-if="hasPaginationBatchDestroy"
@@ -371,6 +371,13 @@
                     return false
                 }
             },
+            defaultConditionSearchPlaceholder () {
+                if (this.model.defaultConditionSearchPlaceholder) {
+                    return this.model.defaultConditionSearchPlaceholder
+                } else {
+                    return ''
+                }
+            },
             commonTitle () {
                 return this.model.commonTitle
             },
@@ -418,7 +425,7 @@
             commonPaginationSetting () {
                 if (this.model.commonPaginationSetting) {
                     return {
-                        className: `pull-right ${this.model.commonPaginationSetting.className}`,
+                        className: `fr ${this.model.commonPaginationSetting.className}`,
                         layout: this.model.commonPaginationSetting.layout
                     }
                 } else {
@@ -439,14 +446,14 @@
                     loading: false,
                     disabled: false,
                     className: 'icon icon-refresh refresh_rotate',
-                    display_name: '刷新',
+                    display_name: '重置',
                     clickFn: (vm, scope) => {
                         vm.$emit('refresh', { type: 'refresh', ...scope })
                     }
                 },
 
                 // 表格
-                tableLoading: true,
+                tableLoading: false,
                 tableData: [],
                 tableEditSetting: {
                     type: 'text',
@@ -497,6 +504,7 @@
                 deleteVisible: false,
                 deleteData: {},
 
+                // 新增表单对话框
                 formVisible: false,
                 formData: {},
                 formLoading: false
@@ -653,30 +661,32 @@
                     .catch(_ => {})
             },
             addSave (formData) {
+                console.log(formData)
                 let params = {
                     _type: formData.type,
                     ...serializeData(formData.formField)
                 }
-                store(this, this.route, params)
-                    .then(data => {
-                        this.$mg(this, '保存成功', 'success', 2000)
-                        this.$refs['commonFormDialog'].saveSetting.loading = false
-                        this.emitCloseDialog('form')
-                        this.ajaxIndex()
-                    })
+                // store(this, this.route, params)
+                //     .then(data => {
+                //         this.$mg(this, '保存成功', 'success', 2000)
+                //         this.$refs['commonFormDialog'].saveSetting.loading = false
+                //         this.emitCloseDialog('form')
+                //         this.ajaxIndex()
+                //     })
             },
             editSave (formData) {
-                let params = {
-                    _type: formData.type,
-                    ...serializeData(formData.formField)
-                }
-                update(this, this.route, formData.id, params)
-                    .then(data => {
-                        this.$mg(this, '保存成功', 'success', 2000)
-                        this.$refs['commonFormDialog'].saveSetting.loading = false
-                        this.emitCloseDialog('form')
-                        this.edit_option_tableData(data)
-                    })
+                console.log(formData)
+                // let params = {
+                //     _type: formData.type,
+                //     ...serializeData(formData.formField)
+                // }
+                // update(this, this.route, formData.id, params)
+                //     .then(data => {
+                //         this.$mg(this, '保存成功', 'success', 2000)
+                //         this.$refs['commonFormDialog'].saveSetting.loading = false
+                //         this.emitCloseDialog('form')
+                //         this.edit_option_tableData(data)
+                //     })
             },
             handleFilter (data) {
                 for (let i in data) {
@@ -765,3 +775,11 @@
         }
     }
 </script>
+
+<style lang="sass">
+.common-main {
+    .common-title-h1{
+        line-height: 40px;
+    }
+}
+</style>

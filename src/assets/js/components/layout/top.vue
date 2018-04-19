@@ -24,7 +24,7 @@ export default {
     name: 'Top',
     methods: {
         userInfo () {
-            this.$router.push('/top/userInfo')
+            this.$router.push('/index/userInfo')
         },
         logout () {
             // ajax.call(this, 'post', '/logout', data => {

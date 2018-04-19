@@ -3,6 +3,7 @@ import ElButton from 'COMPONENTS/public/commonElButton.vue'
 import TableDetailLink from 'COMPONENTS/public/commonTableDetailLink.vue'
 import ElSwitch from 'COMPONENTS/public/commonElSwitch.vue'
 import Uploader from 'COMPONENTS/public/commonUploader.vue'
+import ElInput from 'COMPONENTS/public/commonElInput.vue'
 
 import validtor from 'UTILS/validator.js'
 import { ajax } from 'UTILS/ajax.js'
@@ -18,7 +19,7 @@ function customSerializeFn (item) {
     return obj
 }
 
-const userInfo = {
+const potting = {
     // 是否显示设置
     hasTitleBack: false,
     hasTabs: true,
@@ -32,14 +33,16 @@ const userInfo = {
     hasTableOperationEdit: true,
     hasTableOperationDelete: true,
     hasPaginationBatchDestroy: true,
+    // 默认条件搜索的占位符
+    defaultConditionSearchPlaceholder: '',
     // 标题*
-    commonTitle: '用户信息',
+    commonTitle: '盆栽管理',
     // 标签页
     commonTabs: {
         lists: [
             {
-                display_name: '用户信息管理',
-                name: 'userInfo'
+                display_name: '盆栽管理',
+                name: 'potting'
             }
         ]
     },
@@ -48,7 +51,7 @@ const userInfo = {
     // commonTabsBeforeComponent: '',
     // 每个标签页的数据
     panelData: {
-        userInfo: {
+        potting: {
             // 条件刷选
             commonConditionComponents: [
                 // {
@@ -95,21 +98,19 @@ const userInfo = {
             // 表格列
             commonTableField: [
                 {
-                    label: '公司名',
-                    field: 'name',
-                    sortable: 'custom',
+                    label: '盆栽名称',
+                    field: 'name'
                     // width: '80',
-                    component: TableDetailLink,
-                    props: {
-                        className: 'block lightHigh miaosu',
-                        detailUrl: 'detailModel',
-                        current: 'user'
-                    }
+                    // component: TableDetailLink,
+                    // props: {
+                    //     className: 'block lightHigh miaosu',
+                    //     detailUrl: 'detailModel',
+                    //     current: 'user'
+                    // }
                 },
                 {
-                    label: '公司编码',
-                    field: 'coding',
-                    sortable: 'custom'
+                    label: '品种',
+                    field: 'variety'
                     // width: '80',
                     // component: TableDetailLink,
                     // props: {
@@ -118,20 +119,32 @@ const userInfo = {
                     // }
                 },
                 {
-                    label: '负责人/法人',
-                    field: 'legal_person',
-                    sortable: 'custom'
+                    label: '生长习性',
+                    field: 'habit'
                 },
                 {
-                    label: '电话',
-                    field: 'phone',
-                    sortable: 'custom'
+                    label: '产地',
+                    field: 'origin'
                 },
                 {
-                    label: '状态',
-                    field: 'cstatus',
-                    sortable: 'custom',
-                    component: ElSwitch
+                    label: '用途',
+                    field: 'use_for'
+                },
+                {
+                    label: '外观',
+                    field: 'imgs'
+                },
+                {
+                    label: '负责人',
+                    field: 'main'
+                },
+                {
+                    label: '其他信息',
+                    field: 'info'
+                },
+                {
+                    label: '备注',
+                    field: 'memo'
                 }
             ],
             // 表格列特殊值处理
@@ -218,7 +231,7 @@ const userInfo = {
                     {
                         component: 'ElInput',
                         field: 'name',
-                        label: '用户名',
+                        label: '盆栽名称',
                         rulesType: [
                             {
                                 max: 255,
@@ -241,8 +254,8 @@ const userInfo = {
                     },
                     {
                         component: 'ElInput',
-                        field: 'nickname',
-                        label: '用户昵称',
+                        field: 'variety',
+                        label: '品种',
                         rulesType: [
                             {
                                 max: 255,
@@ -255,63 +268,49 @@ const userInfo = {
                     },
                     {
                         component: 'ElInput',
-                        field: 'phone',
-                        label: '手机号',
-                        rules: [
+                        inputType: 'textarea',
+                        field: 'habit',
+                        label: '生长习性',
+                        value: null
+                    },
+                    {
+                        component: ElInput,
+                        field: 'origin',
+                        label: '产地',
+                        rulesType: [
                             {
-                                method: 'phoneValid',
-                                params: {}
+                                max: 255,
+                                message: '最多有255字',
+                                trigger: 'blur'
                             }
                         ],
                         value: null
                     },
                     {
-                        component: Uploader,
-                        field: 'avatar',
-                        label: '头像',
+                        component: 'ElInput',
+                        field: 'use_for',
+                        label: '用途',
                         required: false,
+                        rulesType: [
+                            {
+                                max: 255,
+                                message: '最多有255字',
+                                trigger: 'blur'
+                            }
+                        ],
+                        value: null
+                    },
+                    {
+                        component: 'Uploader',
+                        field: 'imgs',
+                        label: '外观',
                         value: null,
                         customSerializeFn: customSerializeFn
                     },
                     {
-                        component: 'ElInput',
-                        field: 'email',
-                        label: '电子邮箱',
-                        required: false,
-                        rulesType: [
-                            {
-                                type: 'email',
-                                message: '请输入正确的邮箱地址',
-                                trigger: 'change'
-                            },
-                            {
-                                max: 255,
-                                message: '最多有255字',
-                                trigger: 'blur'
-                            }
-                        ],
-                        rules: [],
-                        value: null
-                    },
-                    {
-                        component: 'ElInput',
-                        field: 'realname',
-                        label: '真实姓名',
-                        required: false,
-                        rulesType: [
-                            {
-                                max: 255,
-                                message: '最多有255字',
-                                trigger: 'blur'
-                            }
-                        ],
-                        value: null
-                    },
-                    {
                         component: 'ElRadio',
-                        field: 'gender',
-                        label: '性别',
-                        required: false,
+                        field: 'main',
+                        label: '负责人',
                         value: 0,
                         radioList: [
                             {
@@ -325,10 +324,10 @@ const userInfo = {
                         ]
                     },
                     {
-                        component: 'ElDate',
-                        field: 'birth_date',
-                        label: '出生日期',
-                        required: false,
+                        component: 'ElInput',
+                        inputType: 'textarea',
+                        field: 'info',
+                        label: '其他信息',
                         value: null
                     },
                     {
@@ -356,5 +355,5 @@ const userInfo = {
 }
 
 module.exports = {
-    userInfo: userInfo
+    potting: potting
 }

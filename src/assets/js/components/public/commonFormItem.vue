@@ -69,6 +69,9 @@
             // 用于check验证路径
             route: String
         },
+        mouthed () {
+            console.log(this.commonFormData)
+        },
         methods: {
             setRules (item) {
                 let rules = []
@@ -79,13 +82,18 @@
                         message: `${item.label}不能为空`
                     })
                 }
+                if (item.rulesType) {
+                    item.rulesType.forEach(valid => {
+                        rules.push(valid)
+                    })
+                }
                 if (item.rules) {
                     item.rules.forEach(valid => {
                         rules.push({
                             // elementUI必须
                             validator: validator[valid.method],
                             label: item.label,
-                            trigger: valid.trigger ? valid.trigger : 'change blur',
+                            trigger: valid.trigger ? valid.trigger : 'blur',
                             // check接口参数
                             vm: this,
                             route: this.route,

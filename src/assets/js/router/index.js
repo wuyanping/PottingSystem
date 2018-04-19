@@ -31,13 +31,13 @@ export default new Router({
                     component: home
                 },
                 {
-                    path: '/userInfo',
+                    path: '/index/userInfo',
                     alias: '/',
                     name: 'userInfo',
                     component: userInfo
                 },
                 {
-                    path: '/:module/:model',
+                    path: '/index/:module/:model',
                     name: 'model',
                     component: model
                 }

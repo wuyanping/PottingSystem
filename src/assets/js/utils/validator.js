@@ -2,8 +2,8 @@ import { check } from './commonApi.js'
 const validtor = {
     /**
      * 唯一性验证
-     * @Author   szh
-     * @DateTime 2018-03-02
+     * @Author   wuyanping
+     * @DateTime 2018-04-18
      * 参数：cfield(String)
      */
     checkValid: (rule, value, callback) => {
@@ -23,12 +23,13 @@ const validtor = {
     },
     /**
      * 长度验证
-     * @Author   szh
-     * @DateTime 2018-03-02
+     * @Author   wuyanping
+     * @DateTime 2018-04-18
      * 参数：lng(Number)
      */
     lngValid: (rule, value, callback) => {
-        if (value && String.trim(value).length > rule['lng']) {
+        console.log(rule)
+        if (value && value.trim().length > rule['lng']) {
             callback(new Error(rule['label'] + `最多有${rule['lng']}字`))
         } else {
             callback()
@@ -36,12 +37,12 @@ const validtor = {
     },
     /**
      * 固定长度验证
-     * @Author   szh
-     * @DateTime 2018-03-02
+     * @Author   wuyanping
+     * @DateTime 2018-04-18
      * 参数：lng(Number)
      */
     fixedLngValid: (rule, value, callback) => {
-        if (value && String.trim(value).length !== rule['lng']) {
+        if (value && value.trim().length !== rule['lng']) {
             callback(new Error(rule['label'] + `必须为${rule['lng']}字`))
         } else {
             callback()
@@ -49,12 +50,12 @@ const validtor = {
     },
     /**
      * 数字验证
-     * @Author   szh
-     * @DateTime 2018-03-02
+     * @Author   wuyanping
+     * @DateTime 2018-04-18
      * 参数：无
      */
     numberValid: (rule, value, callback) => {
-        if (value && isNaN(String.trim(value))) {
+        if (value && isNaN(value.trim())) {
             callback(new Error(rule['label'] + '只能填入数字'))
         } else {
             callback()
@@ -62,8 +63,8 @@ const validtor = {
     },
     /**
      * 正数验证
-     * @Author   szh
-     * @DateTime 2018-03-02
+     * @Author   wuyanping
+     * @DateTime 2018-04-18
      * 参数：无
      */
     plusNumValid: (rule, value, callback) => {
@@ -75,8 +76,8 @@ const validtor = {
     },
     /**
      * 邮箱验证
-     * @Author   szh
-     * @DateTime 2018-03-02
+     * @Author   wuyanping
+     * @DateTime 2018-04-18
      * 参数：无
      */
     emailValid: (rule, value, callback) => {
@@ -88,12 +89,12 @@ const validtor = {
     },
     /**
      * 密码验证
-     * @Author   szh
-     * @DateTime 2018-03-02
+     * @Author   wuyanping
+     * @DateTime 2018-04-18
      * 参数：无
      */
     passwordValid: (rule, value, callback) => {
-        if (value && (String.trim(value).length < 12 || String.trim(value).length > 30)) {
+        if (value && (value.trim().length < 12 || String.trim(value).length > 30)) {
             callback(new Error(rule['label'] + '的长度为12至30个字符'))
         } else {
             callback()
@@ -101,14 +102,34 @@ const validtor = {
     },
     /**
      * 密码对比
-     * @Author   szh
-     * @DateTime 2018-03-07
+     * @Author   wuyanping
+     * @DateTime 2018-04-18
      * 参数：无
      */
     comparePasswordValid: (rule, value, callback) => {
         let pwd = rule['vm']['commonFormData']['formField'].find(item => item.field === 'password').value
         if (pwd !== value) {
             callback(new Error('密码不一致'))
+        } else {
+            callback()
+        }
+    },
+
+    /**
+     * 手机和固话验证
+     * @Author   wuyanping
+     * @DateTime 2018-04-18
+     * 参数：无
+     */
+    phoneValid: (rule, value, callback) => {
+        console.log(value)
+        if (value !== '' && value !== null) {
+            let bol = (value.length === 11 && /^(((13[0-9]{1})|(15[0-9]{1})|(18[0-9]{1}))+\d{8})$/.test(value)) || (value.length === 12 && /^(([0+]\d{2,3}-)?(0\d{2,3})-)?(\d{7,8})(-(\d{3,}))?$/.test(value))
+            if (!bol) {
+                callback(new Error('请输入正确的联系方式'))
+            } else {
+                callback()
+            }
         } else {
             callback()
         }

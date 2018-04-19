@@ -7,7 +7,7 @@
     <div class="login">
         <div class="login-content">
             <el-card class="box-card">
-                <div slot="header" class="clearfix">
+                <div slot="header" class="clearfix txt-c">
                     <span class="fontSize22">盆栽溯源后台系统</span>
                 </div>
                 <el-form :model="userInfo" :rules="rules" ref="userInfo">
@@ -17,7 +17,7 @@
                     <el-form-item label="" prop="pwd">
                         <el-input type="password" placeholder="输入密码" name="pwd" v-model="userInfo.pwd" auto-complete="off" @keyup.native.enter="submitForm('userInfo')"></el-input>
                     </el-form-item>
-                    <el-form-item>
+                    <el-form-item class="txt-c">
                         <el-button type="primary" class="btn" @click="submitForm('userInfo')">登录</el-button>
                     </el-form-item>
                     <el-form-item

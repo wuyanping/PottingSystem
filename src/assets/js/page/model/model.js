@@ -1,8 +1,10 @@
-import top from '../top/index.js'
+import backStage from '../backStage/index.js'
+import system from '../system/index.js'
 
 const model = Object.assign(
     {},
-    top
+    backStage,
+    system
 )
 
 module.exports = model
