@@ -40,6 +40,11 @@ export default new Router({
                     path: '/index/:module/:model',
                     name: 'model',
                     component: model
+                },
+                {
+                    path: '/index/:module/:model/:id',
+                    name: 'detailModel',
+                    component: model
                 }
                 // ,
                 // {

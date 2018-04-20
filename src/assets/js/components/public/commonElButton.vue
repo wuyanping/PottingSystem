@@ -1,3 +1,4 @@
+<!-- 按钮组件 -->
 <template>
     <el-button
         :type="type"

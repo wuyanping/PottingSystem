@@ -1,14 +1,12 @@
 // import ElSelect from '../../../../public/components/commonElSelect.vue'
 import ElButton from 'COMPONENTS/public/commonElButton.vue'
-import TableDetailLink from 'COMPONENTS/public/commonTableDetailLink.vue'
-import ElSwitch from 'COMPONENTS/public/commonElSwitch.vue'
 import Uploader from 'COMPONENTS/public/commonUploader.vue'
 import ElInput from 'COMPONENTS/public/commonElInput.vue'
+import ElInputDynamic from 'COMPONENTS/public/commonElInputDynamic.vue'
+import TableDetailLink from 'COMPONENTS/public/commonTableDetailLink.vue'
 
 import validtor from 'UTILS/validator.js'
 import { ajax } from 'UTILS/ajax.js'
-
-import selfPowerDialog from '../model/components/selfPowerDialog.vue'
 
 function customSerializeFn (item) {
     let obj = {}
@@ -16,6 +14,7 @@ function customSerializeFn (item) {
         obj['_hasfile'] = true
     }
     obj[item['field']] = item['value']
+    console.log(111)
     return obj
 }
 
@@ -23,7 +22,7 @@ const potting = {
     // 是否显示设置
     hasTitleBack: false,
     hasTabs: true,
-    hasConditionStatusSelect: true,
+    hasConditionStatusSelect: false,
     hasConditionSearch: true,
     hasConditionAdd: true,
     hasConditionRefresh: true,
@@ -33,8 +32,8 @@ const potting = {
     hasTableOperationEdit: true,
     hasTableOperationDelete: true,
     hasPaginationBatchDestroy: true,
-    // 默认条件搜索的占位符
-    defaultConditionSearchPlaceholder: '',
+    // 默认条件搜索的占位符 和hasConditionSearch连用
+    defaultConditionSearchPlaceholder: '盆栽名称',
     // 标题*
     commonTitle: '盆栽管理',
     // 标签页
@@ -54,47 +53,33 @@ const potting = {
         potting: {
             // 条件刷选
             commonConditionComponents: [
-                // {
-                //  component: ElRangeDatePicker,
-                //  props: {
-                //      reset: false,
-                //  },
-                // },
-                // {
-                //  component: ElSelect,
-                //  props: {
-                //      field: 'ggg',
-                //      value: undefined,
-                //      title: '请选择类型',
-                //      lists: [
-                //          {
-                //              label: '1',
-                //              value: 1
-                //          },
-                //          {
-                //              label: '2',
-                //              value: 0
-                //          },
-                //      ]
-                //  }
-                // },
+                {
+                    component: ElInput,
+                    props: {
+                        field: 'variety',
+                        value: undefined,
+                        placeholder: '品种'
+                    }
+                },
+                {
+                    component: ElInput,
+                    props: {
+                        field: 'habit',
+                        value: undefined,
+                        placeholder: '生长习性'
+                    }
+                },
+                {
+                    component: ElInput,
+                    props: {
+                        field: 'origin',
+                        value: undefined,
+                        placeholder: '产地'
+                    }
+                }
             ],
             // 条件操作按钮
-            // commonOperationComponents: [
-            //  {
-            //      component: ElButton,
-            //      props: {
-            //          type: 'primary',
-            //          loading: false,
-            //          disabled: false,
-            //          className: '',
-            //          display_name: '自定义操作按钮',
-            //          clickFn: (vm, scope) => {
-            //              vm.$emit('customEv', { type: 'customOperation', ...scope })
-            //          }
-            //      }
-            //  },
-            // ],
+            // commonOperationComponents: [],
             // 表格列
             commonTableField: [
                 {
@@ -111,12 +96,6 @@ const potting = {
                 {
                     label: '品种',
                     field: 'variety'
-                    // width: '80',
-                    // component: TableDetailLink,
-                    // props: {
-                    //  className: 'block lightHigh miaosu',
-                    //  detailUrl: 'detail',
-                    // }
                 },
                 {
                     label: '生长习性',
@@ -149,51 +128,12 @@ const potting = {
             ],
             // 表格列特殊值处理
             // tableFieldFn: function (data) {
-            //  const g = function (gender) {
-            //      return gender === 1 ? '女' : '男'
-            //  }
-            //  if (isArray(data)) {
-            //      data.forEach(v => {
-            //          v.gender = g(v.gender)
-            //      })
-            //  }
-            //  if (isObject(data)) {
-            //      data.gender = g(data.gender)
-            //  }
             //  return data
             // },
             // 表格的操作
-            commonTableOperationComponents: [
-                {
-                    component: ElButton,
-                    props: {
-                        type: 'text',
-                        loading: false,
-                        disabled: false,
-                        className: '',
-                        display_name: '权限',
-                        clickFn: (vm, scope) => {
-                            vm.$emit('customEv', { type: 'power', ...scope })
-                        }
-                    }
-                }
-            ],
+            commonTableOperationComponents: [],
             // 分页操作组件
-            commonPaginationOperationComponents: [
-                // {
-                //  component: ElButton,
-                //  props: {
-                //      type: 'primary',
-                //      loading: false,
-                //      disabled: false,
-                //      className: '',
-                //      display_name: '删除',
-                //      clickFn: (vm, scope) => {
-                //          vm.$emit('customEv', { type: 'batchdelete', ...scope })
-                //      }
-                //  }
-                // },
-            ],
+            commonPaginationOperationComponents: [],
             // 分页设定
             commonPaginationSetting: {
                 className: '',
@@ -203,28 +143,7 @@ const potting = {
             // commonOperationComponents
             // commonTableOperationComponents
             // commonPaginationOperationComponents
-            customOperationFn: {
-                // customOperation (vm, scope) {
-                //  console.log(vm)
-                //  console.log(scope)
-                // },
-                power (vm, scope) {
-                    vm.$refs['powerDialog'].powerData = {}
-                    ajax.call(vm, 'get', `/api/common/company/${scope.row.id}/permissions`, data => {
-                        let arr = []
-                        data.forEach(v => {
-                            arr.push(v.id)
-                        })
-                        vm.$refs['powerDialog'].powerData = {
-                            title: scope.row.name,
-                            id: scope.row.id,
-                            field: 'ids',
-                            value: arr
-                        }
-                        vm.$refs['powerDialog'].visible = true
-                    })
-                }
-            },
+            // customOperationFn: {},
             // 默认表单域
             commonFormFieldsFn () {
                 return [
@@ -274,7 +193,7 @@ const potting = {
                         value: null
                     },
                     {
-                        component: ElInput,
+                        component: 'ElInput',
                         field: 'origin',
                         label: '产地',
                         rulesType: [
@@ -290,7 +209,6 @@ const potting = {
                         component: 'ElInput',
                         field: 'use_for',
                         label: '用途',
-                        required: false,
                         rulesType: [
                             {
                                 max: 255,
@@ -301,34 +219,25 @@ const potting = {
                         value: null
                     },
                     {
-                        component: 'Uploader',
+                        component: Uploader,
                         field: 'imgs',
                         label: '外观',
-                        value: null,
-                        customSerializeFn: customSerializeFn
-                    },
-                    {
-                        component: 'ElRadio',
-                        field: 'main',
-                        label: '负责人',
-                        value: 0,
-                        radioList: [
-                            {
-                                name: '男',
-                                id: 0
-                            },
-                            {
-                                name: '女',
-                                id: 1
-                            }
-                        ]
+                        value: null
+                        // customSerializeFn: customSerializeFn
                     },
                     {
                         component: 'ElInput',
-                        inputType: 'textarea',
+                        field: 'main',
+                        label: '负责人',
+                        rules: [],
+                        value: null
+                    },
+                    {
+                        component: ElInputDynamic,
                         field: 'info',
                         label: '其他信息',
-                        value: null
+                        required: false,
+                        value: []
                     },
                     {
                         component: 'ElInput',
@@ -345,12 +254,8 @@ const potting = {
             // commonTableBeforeComponent: '',
             // commonPaginationBeforeComponent: '',
             commonCustomDialog: {
-                ref: 'powerDialog',
-                component: selfPowerDialog
             }
         }
-        // tes: {},
-        // ddd: {},
     }
 }
 

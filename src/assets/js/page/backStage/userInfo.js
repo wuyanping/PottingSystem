@@ -1,14 +1,9 @@
-// import ElSelect from '../../../../public/components/commonElSelect.vue'
 import ElButton from 'COMPONENTS/public/commonElButton.vue'
-import TableDetailLink from 'COMPONENTS/public/commonTableDetailLink.vue'
-import ElSwitch from 'COMPONENTS/public/commonElSwitch.vue'
 import Uploader from 'COMPONENTS/public/commonUploader.vue'
 import ElInput from 'COMPONENTS/public/commonElInput.vue'
 
 import validtor from 'UTILS/validator.js'
 import { ajax } from 'UTILS/ajax.js'
-
-import selfPowerDialog from '../model/components/selfPowerDialog.vue'
 
 function customSerializeFn (item) {
     let obj = {}
@@ -65,44 +60,12 @@ const userInfo = {
                     props: {
                         field: 'nickname',
                         value: undefined,
-                        placeholder: '用户昵称',
-                        className: 'mr-10'
+                        placeholder: '用户昵称'
                     }
                 }
-                // {
-                //  component: ElSelect,
-                //  props: {
-                //      field: 'ggg',
-                //      value: undefined,
-                //      title: '请选择类型',
-                //      lists: [
-                //          {
-                //              label: '1',
-                //              value: 1
-                //          },
-                //          {
-                //              label: '2',
-                //              value: 0
-                //          },
-                //      ]
-                //  }
-                // },
             ],
             // 条件操作按钮
             // commonOperationComponents: [
-            //  {
-            //      component: ElButton,
-            //      props: {
-            //          type: 'primary',
-            //          loading: false,
-            //          disabled: false,
-            //          className: '',
-            //          display_name: '自定义操作按钮',
-            //          clickFn: (vm, scope) => {
-            //              vm.$emit('customEv', { type: 'customOperation', ...scope })
-            //          }
-            //      }
-            //  },
             // ],
             // 表格列
             commonTableField: [
@@ -159,37 +122,9 @@ const userInfo = {
             //  return data
             // },
             // 表格的操作
-            commonTableOperationComponents: [
-                {
-                    component: ElButton,
-                    props: {
-                        type: 'text',
-                        loading: false,
-                        disabled: false,
-                        className: '',
-                        display_name: '权限',
-                        clickFn: (vm, scope) => {
-                            vm.$emit('customEv', { type: 'power', ...scope })
-                        }
-                    }
-                }
-            ],
+            commonTableOperationComponents: [],
             // 分页操作组件
-            commonPaginationOperationComponents: [
-                // {
-                //  component: ElButton,
-                //  props: {
-                //      type: 'primary',
-                //      loading: false,
-                //      disabled: false,
-                //      className: '',
-                //      display_name: '删除',
-                //      clickFn: (vm, scope) => {
-                //          vm.$emit('customEv', { type: 'batchdelete', ...scope })
-                //      }
-                //  }
-                // },
-            ],
+            commonPaginationOperationComponents: [],
             // 分页设定
             commonPaginationSetting: {
                 className: '',
@@ -199,28 +134,7 @@ const userInfo = {
             // commonOperationComponents
             // commonTableOperationComponents
             // commonPaginationOperationComponents
-            customOperationFn: {
-                // customOperation (vm, scope) {
-                //  console.log(vm)
-                //  console.log(scope)
-                // },
-                power (vm, scope) {
-                    vm.$refs['powerDialog'].powerData = {}
-                    ajax.call(vm, 'get', `/api/common/company/${scope.row.id}/permissions`, data => {
-                        let arr = []
-                        data.forEach(v => {
-                            arr.push(v.id)
-                        })
-                        vm.$refs['powerDialog'].powerData = {
-                            title: scope.row.name,
-                            id: scope.row.id,
-                            field: 'ids',
-                            value: arr
-                        }
-                        vm.$refs['powerDialog'].visible = true
-                    })
-                }
-            },
+            // customOperationFn: {},
             // 默认表单域
             commonFormFieldsFn () {
                 return [
@@ -354,13 +268,8 @@ const userInfo = {
             // commonConditionBeforeComponent: '',
             // commonTableBeforeComponent: '',
             // commonPaginationBeforeComponent: '',
-            commonCustomDialog: {
-                ref: 'powerDialog',
-                component: selfPowerDialog
-            }
+            commonCustomDialog: {}
         }
-        // tes: {},
-        // ddd: {},
     }
 }
 

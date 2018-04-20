@@ -58,6 +58,7 @@ module.exports = {
         alias: {
             'vue$': 'vue/dist/vue',
             'projectRoot': resolve(),
+            STATIC: resolve('static'),
             COMPONENTS : resolve('src', 'assets', 'js', 'components'),
             DIRECTIVE : resolve('src', 'assets', 'js', 'directive'),
             FILTERS : resolve('src', 'assets', 'js', 'filters'),

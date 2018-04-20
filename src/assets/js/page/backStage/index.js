@@ -1,10 +1,12 @@
 import userInfo from './userInfo'
 import potting from './potting'
+import pottingDetail from './pottingDetail'
 
 const backStage = Object.assign(
     {},
     userInfo,
-    potting
+    potting,
+    pottingDetail
 )
 
 module.exports = {

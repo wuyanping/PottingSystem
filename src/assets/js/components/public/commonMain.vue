@@ -51,21 +51,6 @@
 
         <!-- 条件筛选 -->
         <div class="common-condition clearfix">
-            <div class="fl mr-10">
-                <commonElSelect
-                    ref="cstatusSelect"
-                    v-if="hasConditionStatusSelect"
-                    v-on:selectChange="handleFilter"
-                />
-                <!-- 自定义筛选条件 -->
-                <component
-                    v-for="(conditionItem, idx) in commonConditionComponents"
-                    :is="conditionItem.component"
-                    :params="conditionItem.props"
-                    :key="`conditionItem-${idx}`"
-                    v-on:selectChange="handleFilter"
-                />
-            </div>
             <!-- 默认搜索 -->
             <div class="fl" v-if="hasConditionSearch">
                 <el-input
@@ -74,7 +59,21 @@
                     @keyup.enter="handleConditionSearch">
                     <el-button slot="append" icon="el-icon-search" @click="handleConditionSearch"></el-button>
                 </el-input>
+                <!-- 自定义筛选条件 -->
+                <component
+                    v-for="(conditionItem, idx) in commonConditionComponents"
+                    :is="conditionItem.component"
+                    :params="conditionItem.props"
+                    :key="`conditionItem-${idx}`"
+                    v-on:selectChange="handleFilter"
+                />
+                <commonElSelect
+                    ref="cstatusSelect"
+                    v-if="hasConditionStatusSelect"
+                    v-on:selectChange="handleFilter"
+                />
             </div>
+            
             <div class="fr ml-10">
                 <!-- 自定义操作按钮 -->
                 <component
@@ -781,5 +780,11 @@
     .common-title-h1{
         line-height: 40px;
     }
+    .common-condition{
+        .el-input-group{
+            width: 242px;
+            margin-right: 10px;
+        }
+    } 
 }
 </style>

@@ -28,8 +28,8 @@
         // 因为当守卫执行前，组件实例还没被创建
         beforeRouteEnter (to, from, next) {
             // console.log(theModel[to.params.module][to.params.model])
-            // console.log(to)
-            // console.log(theModel)
+            console.log(to)
+            console.log(theModel)
             next(vm => {
                 // 通过 `vm` 访问组件实例
                 if (theModel[to.params.module][to.params.model] && theModel[to.params.module][to.params.model]._hasCustomComponent) {
