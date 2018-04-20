@@ -62,10 +62,9 @@
              * @param    {Object}   routeObj [当前的路由对象]
              */
             set (routeObj) {
-                console.log(routeObj)
-                // 不是详情页：
+                // 详情页：
                 // 存在current和没有current的情况
-                // 详情页
+                // 不是详情页
                 // 存在current和没有current的情况
                 if (routeObj.params.id) {
                     if (!routeObj.query.current) {
@@ -78,6 +77,7 @@
                         this.routePath = routeObj.query.current
                         this.mixCurrentModel(routeObj.params.module, routeObj.params.model, routeObj.query.current)
                     } else {
+                        // 模块大多数走这里
                         this.routePath = routeObj.params.model
                         this.mixCurrentModel(routeObj.params.module, routeObj.params.model, routeObj.params.model)
                     }

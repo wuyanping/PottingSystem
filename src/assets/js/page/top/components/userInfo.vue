@@ -1,62 +1,58 @@
 <template>
-    <el-form :model="dynamicValidateForm" ref="dynamicValidateForm" class="input-dynamic">
-        <el-form-item
-            v-for="(domain, index) in dynamicValidateForm.domains" :key="index"
-        >
-            <el-input v-model="domain.key"></el-input>
-            <el-input v-model="domain.value"></el-input>
-            <el-button @click.prevent="removeDomain(domain)">删除</el-button>
-        </el-form-item>
-        <el-form-item>
-            <el-button type="primary" @click="submitForm('dynamicValidateForm')">提交</el-button>
-            <el-button @click="addDomain">新增其他信息</el-button>
-        </el-form-item>
-    </el-form>
+    <div>
+        userinfo
+        <el-form class="components-form" label-width="100px" :model="formData" ref="formData">
+            <commonFormItem
+                :commonFormData="formData"
+            />
+        </el-form>
+        <div slot="footer" class="txt-c">
+            <commonElButton
+                :params="saveSetting"
+                v-on:save="save"
+            />
+        </div>
+    </div>
 </template>
 <script>
+import commonFormItem from 'COMPONENTS/public/commonFormItem.vue'
+import commonElButton from 'COMPONENTS/public/commonElButton.vue'
+import userInfo from '../userInfo.js'
 export default {
     name: 'userInfo',
+    components: {
+        commonFormItem,
+        commonElButton
+    },
     data () {
+        let obj = Object.assign({}, userInfo)
         return {
-            dynamicValidateForm: {
-                domains: [{
-                    key: '',
-                    value: ''
-                }]
+            formData: obj,
+            saveSetting: {
+                type: 'primary',
+                loading: false,
+                disabled: false,
+                className: 'btn white',
+                display_name: '保存',
+                clickFn: (vm) => {
+                    vm.$emit('save')
+                }
             }
         }
     },
     methods: {
-        submitForm (formName) {
-            this.$refs[formName].validate((valid) => {
+        save () {
+            this.$refs['formData'].validate((valid) => {
                 if (valid) {
-                    alert('submit!')
+                    this.saveSetting.loading = true
+                    console.log(this.formData)
                 } else {
-                    console.log('error submit!!')
                     return false
                 }
             })
-        },
-        removeDomain (item) {
-            var index = this.dynamicValidateForm.domains.indexOf(item)
-            if (index !== -1) {
-                this.dynamicValidateForm.domains.splice(index, 1)
-            }
-        },
-        addDomain () {
-            this.dynamicValidateForm.domains.push({
-                key: '',
-                value: ''
-            })
-            console.log(this.dynamicValidateForm)
         }
     }
 }
 </script>
 <style lang="sass">
-.input-dynamic{
-    .el-input{
-        width: 100px;
-    }
-}
 </style>

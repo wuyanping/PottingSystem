@@ -7,13 +7,13 @@ export default [
         children: [
             {
                 name: '用户信息管理',
-                key: 'userInfo',
-                path: '/index/backStage/userInfo'
+                key: 'user',
+                path: '/index/backStage/user'
             },
             {
                 name: '盆栽管理',
-                key: 'potting',
-                path: '/index/backStage/potting'
+                key: 'pot',
+                path: '/index/backStage/pot'
             }
         ]
     },
@@ -23,8 +23,8 @@ export default [
         children: [
             {
                 name: '系统管理用户管理',
-                key: 'systemUser',
-                path: '/index/system/systemUser'
+                key: 'sysman',
+                path: '/index/system/sysman'
             },
             {
                 name: '系统日志管理',

@@ -5,12 +5,13 @@
 // Vue.component(Select.name, Select);
 
 import * as elementComponent from './element-ui.js'
-// require('SASS/index.scss')
+// 引入Sass样式
 import 'SASS/index'
+
+import utils from '../utils/vuePrototype.js'
 
 // 引入字体
 import '../iconfont/iconfont.css'
-
 // 设置语言
 import enLocale from 'element-ui/lib/locale/lang/en'
 import zhLocale from 'element-ui/lib/locale/lang/zh-CN'
@@ -53,3 +54,6 @@ Object.keys(elementComponent).forEach(function (component) {
         break
     }
 })
+
+// 注册全局方法
+Vue.use(utils)

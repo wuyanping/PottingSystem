@@ -67,7 +67,10 @@
         props: {
             commonFormData: Object,
             // 用于check验证路径
-            route: String
+            route: {
+                type: String,
+                default: ''
+            }
         },
         mouthed () {
             console.log(this.commonFormData)

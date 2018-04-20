@@ -1,3 +1,6 @@
+/*
+系统日志管理
+ */
 // import ElSelect from '../../../../public/components/commonElSelect.vue'
 import ElButton from 'COMPONENTS/public/commonElButton.vue'
 // import TableDetailLink from 'COMPONENTS/public/commonTableDetailLink.vue'
@@ -18,7 +21,7 @@ function customSerializeFn (item) {
 const log = {
     // 是否显示设置
     hasTitleBack: false,
-    hasTabs: true,
+    hasTabs: false,
     hasConditionStatusSelect: false,
     hasConditionSearch: true,
     hasConditionAdd: false,

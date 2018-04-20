@@ -1,3 +1,6 @@
+/*
+盆栽详情
+ */
 import ElDate from 'COMPONENTS/public/commonElDatePicker.vue'
 import Uploader from 'COMPONENTS/public/commonUploader.vue'
 import validtor from 'UTILS/validator.js'
@@ -41,7 +44,7 @@ const pottingDetail = {
         lists: [
             {
                 display_name: '浇水操作管理',
-                name: 'water'
+                name: 'watering'
             },
             {
                 display_name: '施肥信息管理',
@@ -53,7 +56,7 @@ const pottingDetail = {
             },
             {
                 display_name: '生长节点信息管理',
-                name: 'growth'
+                name: 'node'
             }
         ]
     },
@@ -65,7 +68,7 @@ const pottingDetail = {
     },
     // 每个标签页的数据
     panelData: {
-        water: {
+        watering: {
             // 条件刷选
             commonConditionComponents: [
                 {
@@ -428,7 +431,7 @@ const pottingDetail = {
             // commonCustomDialog: {
             // },
         },
-        growth: {
+        node: {
             // 条件刷选
             commonConditionComponents: [
                 {

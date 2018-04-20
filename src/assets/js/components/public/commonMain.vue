@@ -510,13 +510,17 @@
             }
         },
         mounted () {
-            // if (this.hasTabs) {
-            //     this.tabsActive = this.$route.query.current ? this.$route.query.current : this.$route.params.model
-            // }
-            // // 避免了在与自定义的commonMain组件切换时出现/api/common的请求
-            // if (this.route && this.route !== '') {
-            //     this.ajaxIndex(this.route)
-            // }
+            if (this.hasTabs) {
+                this.tabsActive = this.$route.query.current ? this.$route.query.current : this.$route.params.model
+            }
+            // 避免了在与自定义的commonMain组件切换时出现/api/common的请求
+            console.log(22222)
+            console.log(this.route)
+            console.log(this.route && this.route !== '')
+            if (this.route && this.route !== '') {
+                console.log(222)
+                this.ajaxIndex(this.route)
+            }
         },
         methods: {
             handleTitleBack () {
@@ -665,13 +669,13 @@
                     _type: formData.type,
                     ...serializeData(formData.formField)
                 }
-                // store(this, this.route, params)
-                //     .then(data => {
-                //         this.$mg(this, '保存成功', 'success', 2000)
-                //         this.$refs['commonFormDialog'].saveSetting.loading = false
-                //         this.emitCloseDialog('form')
-                //         this.ajaxIndex()
-                //     })
+                store(this, this.route, params)
+                    .then(data => {
+                        this.$mg(this, '保存成功', 'success', 2000)
+                        this.$refs['commonFormDialog'].saveSetting.loading = false
+                        this.emitCloseDialog('form')
+                        this.ajaxIndex()
+                    })
             },
             editSave (formData) {
                 console.log(formData)
@@ -762,13 +766,15 @@
         },
         watch: {
             route: function (nv, v) {
+                console.log('watch route -------------')
+                console.log(nv)
                 if (nv.indexOf('undefined') > -1) return
                 if (nv !== v) {
                     this.tableData = []
                     if (this.hasTabs) {
                         this.tabsActive = this.$route.query.current ? this.$route.query.current : this.$route.params.model
                     }
-                    // this.ajaxIndex()
+                    this.ajaxIndex()
                 }
             }
         }

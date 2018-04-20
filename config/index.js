@@ -1,14 +1,26 @@
 'use strict'
 
 const path = require('path')
+const env = require('../env.js')
 module.exports = {
 	dev: {
 		assetsSubDirectory: 'static',
 		assetsPublicPath: '/',
 		// 下面是代理表，作用是用来，建一个虚拟api服务器用来代理本机的请求，只能用于开发模式
-    	proxyTable: {},
+    	proxyTable: {
+    		'/api':{
+    			// target:"http://47.93.166.112/BrainPcWeb",//设置你调用的接口域名和端口号 别忘了加http
+			    target: env.app_url,//设置你调用的接口域名和端口号 别忘了加http
+			    changeOrigin:true,
+			    pathRewrite:{
+			        '^/api':'/'
+			        //这里理解成用‘/api'代替target里面的地址，后面组件中我们掉接口时直接用api代替 
+			        //比如我要调用'http://40.00.100.133:3002/user/login'，直接写‘/api/user/login'即可
+			    }
+			}
+    	},
 
-		host: 'localhost',
+		host: "localhost",
     	port: 8081,
     	// 下面表示是否自定代开浏览器
     	autoOpenBrowser: false,

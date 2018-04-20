@@ -1,3 +1,6 @@
+/*
+系统管理用户管理
+ */
 // import ElSelect from '../../../../public/components/commonElSelect.vue'
 import ElButton from 'COMPONENTS/public/commonElButton.vue'
 import Uploader from 'COMPONENTS/public/commonUploader.vue'
@@ -15,12 +18,12 @@ function customSerializeFn (item) {
     return obj
 }
 
-const systemUser = {
+const sysman = {
     // 是否显示设置
     // 是否显示上一级
     hasTitleBack: false,
     // 是否显示tabs
-    hasTabs: true,
+    hasTabs: false,
     // 是否条件搜索的状态搜索
     hasConditionStatusSelect: false,
     // 默认条件搜索框
@@ -44,7 +47,7 @@ const systemUser = {
         lists: [
             {
                 display_name: '系统管理用户管理',
-                name: 'systemUser'
+                name: 'sysman'
             }
         ]
     },
@@ -53,7 +56,7 @@ const systemUser = {
     // commonTabsBeforeComponent: '',
     // 每个标签页的数据
     panelData: {
-        systemUser: {
+        sysman: {
             // 条件刷选
             commonConditionComponents: [],
             // 条件操作按钮
@@ -231,5 +234,5 @@ const systemUser = {
 }
 
 module.exports = {
-    systemUser: systemUser
+    sysman: sysman
 }

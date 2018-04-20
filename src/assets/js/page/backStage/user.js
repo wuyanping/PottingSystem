@@ -1,3 +1,6 @@
+/*
+用户信息管理
+ */
 import ElButton from 'COMPONENTS/public/commonElButton.vue'
 import Uploader from 'COMPONENTS/public/commonUploader.vue'
 import ElInput from 'COMPONENTS/public/commonElInput.vue'
@@ -14,12 +17,12 @@ function customSerializeFn (item) {
     return obj
 }
 
-const userInfo = {
+const user = {
     // 是否显示设置
     // 是否显示上一级
     hasTitleBack: false,
     // 是否显示tabs
-    hasTabs: true,
+    hasTabs: false,
     // 是否条件搜索的状态搜索
     hasConditionStatusSelect: false,
     // 默认条件搜索框
@@ -43,7 +46,7 @@ const userInfo = {
         lists: [
             {
                 display_name: '用户信息管理',
-                name: 'userInfo'
+                name: 'user'
             }
         ]
     },
@@ -52,7 +55,7 @@ const userInfo = {
     // commonTabsBeforeComponent: '',
     // 每个标签页的数据
     panelData: {
-        userInfo: {
+        user: {
             // 条件刷选
             commonConditionComponents: [
                 {
@@ -274,5 +277,5 @@ const userInfo = {
 }
 
 module.exports = {
-    userInfo: userInfo
+    user: user
 }

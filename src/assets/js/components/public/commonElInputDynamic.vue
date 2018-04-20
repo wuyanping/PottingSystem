@@ -50,17 +50,6 @@
     export default {
         name: 'params_value',
         props: {
-            // formItemData: {
-            //     type: Array,
-            //     default () {
-            //         return [
-            //             {
-            //                 param: '',
-            //                 val: ''
-            //             }
-            //         ]
-            //     }
-            // },
             formItemData: {
                 type: Object,
                 default () {

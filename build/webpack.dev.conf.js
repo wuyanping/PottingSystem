@@ -26,7 +26,7 @@ const devWebpackConfig = merge(baseWebpackConfig, {
         host: config.dev.host,
         port: config.dev.port,
         open: config.dev.autoOpenBrowser,     // 自动打开浏览器
-        // proxy: config.dev.proxyTable,
+        proxy: config.dev.proxyTable
         // quiet: true, // necessary for FriendlyErrorsPlugin
     },
 

@@ -10,7 +10,8 @@ const commonApi = {
      * @param  {Function} fn   成功回调
      */
     index (router, data, fn) {
-        ajax.call(this, 'get', apiUrl(router), data, fn)
+        // ajax.call(this, 'get', apiUrl(router), data, fn)
+        ajax.call(this, 'get', this.$apiUrl(router), data, fn)
     },
 
     /**
@@ -20,7 +21,7 @@ const commonApi = {
      * @param  {Function} fn   成功回调
      */
     show (arg, data, fn) {
-        ajax.call(this, 'get', apiUrl(`${arg.router}/${arg.id}`), data, fn)
+        ajax.call(this, 'get', this.$apiUrl(`${arg.router}/${arg.id}`), data, fn)
     },
 
     /**
@@ -30,7 +31,7 @@ const commonApi = {
      * @param  {Function} fn   成功回调
      */
     store (router, data, fn) {
-        ajax.call(this, 'post', apiUrl(router), data, fn)
+        ajax.call(this, 'post', this.$apiUrl(router), data, fn)
     },
 
     /**
@@ -40,7 +41,7 @@ const commonApi = {
      * @param  {Function} fn   成功回调
      */
     edit (arg, data, fn) {
-        ajax.call(this, 'get', apiUrl(`${arg.router}/${arg.id}/edit`), data, fn)
+        ajax.call(this, 'get', this.$apiUrl(`${arg.router}/${arg.id}/edit`), data, fn)
     },
 
     /**
@@ -50,7 +51,7 @@ const commonApi = {
      * @param  {Function} fn   成功回调
      */
     update (arg, data, fn) {
-        ajax.call(this, 'put', apiUrl(`${arg.router}/${arg.id}`), data, fn)
+        ajax.call(this, 'put', this.$apiUrl(`${arg.router}/${arg.id}`), data, fn)
     },
 
     /**
@@ -60,7 +61,7 @@ const commonApi = {
      * @param  {Function} fn   成功回调
      */
     destroy (arg, data, fn) {
-        ajax.call(this, 'delete', apiUrl(`${arg.router}/${arg.id}`), data, fn)
+        ajax.call(this, 'delete', this.$apiUrl(`${arg.router}/${arg.id}`), data, fn)
     },
 
     /**
@@ -70,7 +71,7 @@ const commonApi = {
      * @param  {Function} fn   成功回调
      */
     check (router, data, fn) {
-        ajax.call(this, 'post', apiUrl(`${router}/check`), data, fn)
+        ajax.call(this, 'post', this.$apiUrl(`${router}/check`), data, fn)
     },
 
     /**
@@ -80,7 +81,7 @@ const commonApi = {
      * @param  {Function} fn   成功回调
      */
     batchDelete (router, data, fn) {
-        ajax.call(this, 'post', apiUrl(`${router}/batch-delete`), data, fn)
+        ajax.call(this, 'post', this.$apiUrl(`${router}/batch-delete`), data, fn)
     },
 
     /**
@@ -90,7 +91,7 @@ const commonApi = {
      * @param  {Function} fn   成功回调
      */
     status (arg, data, fn) {
-        ajax.call(this, 'get', apiUrl(`${arg.router}/${arg.id}/status`), data, fn)
+        ajax.call(this, 'get', $apiUrl(`${arg.router}/${arg.id}/status`), data, fn)
     }
 }
 

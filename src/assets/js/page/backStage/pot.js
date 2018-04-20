@@ -1,3 +1,6 @@
+/*
+盆栽管理
+ */
 // import ElSelect from '../../../../public/components/commonElSelect.vue'
 import ElButton from 'COMPONENTS/public/commonElButton.vue'
 import Uploader from 'COMPONENTS/public/commonUploader.vue'
@@ -18,10 +21,10 @@ function customSerializeFn (item) {
     return obj
 }
 
-const potting = {
+const pot = {
     // 是否显示设置
     hasTitleBack: false,
-    hasTabs: true,
+    hasTabs: false,
     hasConditionStatusSelect: false,
     hasConditionSearch: true,
     hasConditionAdd: true,
@@ -41,7 +44,7 @@ const potting = {
         lists: [
             {
                 display_name: '盆栽管理',
-                name: 'potting'
+                name: 'pot'
             }
         ]
     },
@@ -50,7 +53,7 @@ const potting = {
     // commonTabsBeforeComponent: '',
     // 每个标签页的数据
     panelData: {
-        potting: {
+        pot: {
             // 条件刷选
             commonConditionComponents: [
                 {
@@ -260,5 +263,5 @@ const potting = {
 }
 
 module.exports = {
-    potting: potting
+    pot: pot
 }
