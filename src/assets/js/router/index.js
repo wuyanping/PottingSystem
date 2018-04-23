@@ -1,68 +1,24 @@
+/**
+ * 路由
+ * @author : wuyanping
+ * @date : 2018/4/23
+ */
 import Router from 'vue-router'
 
-// =============================顶层组件====================================
-// ---------------------------最顶层组件----------------------------------
-const index = resolve => require(['VIEWS/index.vue'], resolve)
+// 电脑端的路由
+import PcRoutes from './pc-routes'
 
-// ---------------------------登录组件----------------------------------
-const login = resolve => require(['VIEWS/login.vue'], resolve)
-
-// ---------------------------404----------------------------------
-const notFound = resolve => require(['VIEWS/404.vue'], resolve)
-
-// ---------------------------首页----------------------------------
-const home = resolve => require(['PAGE/home/home.vue'], resolve)
-const userInfo = resolve => require(['PAGE/top/components/userInfo.vue'], resolve)
-const model = resolve => require(['PAGE/model/model.vue'], resolve)
+// 移动端的路由
+import MoblieRoutes from './moblie-routes'
 
 Vue.use(Router)
+let routes
+if (window.isPC) {
+    routes = PcRoutes
+} else {
+    routes = MoblieRoutes
+}
 
 export default new Router({
-    routes: [
-        {
-            path: '/',
-            name: 'index',
-            component: index,
-            children: [
-                {
-                    path: '/index',
-                    alias: '/',
-                    name: 'index',
-                    component: home
-                },
-                {
-                    path: '/index/userInfo',
-                    alias: '/',
-                    name: 'userInfo',
-                    component: userInfo
-                },
-                {
-                    path: '/index/:module/:model',
-                    name: 'model',
-                    component: model
-                },
-                {
-                    path: '/index/:module/:model/:id',
-                    name: 'detailModel',
-                    component: model
-                }
-                // ,
-                // {
-                //     path: '/:module/:model/:id',
-                //     name: 'detailModel',
-                //     component: model
-                // },
-            ]
-        },
-        {
-            path: '/login',
-            name: 'login',
-            component: login
-        },
-        {
-            path: '/*',
-            name: 'notFound',
-            component: notFound
-        }
-    ]
+    routes: routes
 })

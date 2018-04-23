@@ -7,6 +7,9 @@ const config = require('../config')
 const vueLoaderConfig = require('./vue-loader.conf.js')
 
 const isProd = process.env.NODE_ENV === 'production'
+
+const vuxLoader = require('vux-loader')
+
 // console.log('env11: ' + process.env.NODE_ENV + '-------------------------------------' )
 
 function resolve(...dir) {
@@ -23,7 +26,7 @@ const createLintingRule = () => ({
     }
 })
 
-module.exports = {
+let webpackConfig = {
     // 基础目录，绝对路径，用于从配置中解析入口起点(entry point)和加载器(loader)
     context: path.resolve(__dirname, '../'),
 
@@ -66,6 +69,7 @@ module.exports = {
             ROUTER : resolve('src', 'assets', 'js', 'router'),
             UTILS : resolve('src', 'assets', 'js', 'utils'),
             VIEWS: resolve('src', 'assets', 'js', 'views'),
+            WAPVIEWS: resolve('src', 'assets', 'js', 'wapviews'),
             SASS : resolve('src', 'assets', 'sass') // @import引入的好像不行
         }
     },
@@ -169,3 +173,19 @@ module.exports = {
         ]
     }
 }
+
+
+module.exports = vuxLoader.merge(webpackConfig, {
+  plugins: [
+    {
+      name: 'vux-ui'
+    },
+    {
+      name: 'duplicate-style'
+    },
+    {
+      name: 'less-theme',
+      path: resolve('src', 'assets', 'sass', 'theme', '_moblie-theme.less')
+    }
+  ]
+})
