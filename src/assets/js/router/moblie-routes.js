@@ -9,7 +9,12 @@ const login = resolve => require(['WAPVIEWS/login.vue'], resolve)
 const notFound = resolve => require(['VIEWS/404.vue'], resolve)
 
 // ---------------------------首页----------------------------------
-const home = resolve => require(['WAPVIEWS/home/home.vue'], resolve)
+const potting = resolve => require(['WAPVIEWS/potting/potting.vue'], resolve)
+const myPotting = resolve => require(['WAPVIEWS/myPotting/myPotting.vue'], resolve)
+const userInfo = resolve => require(['WAPVIEWS/userInfo/userInfo.vue'], resolve)
+
+// --------------------------- 详情页 ----------------------------------
+const pottingDetail = resolve => require(['WAPVIEWS/potting/pottingDetail.vue'], resolve)
 
 let routes = [
     {
@@ -18,33 +23,26 @@ let routes = [
         component: index,
         children: [
             {
-                path: '/index',
+                path: '/index/potting',
                 alias: '/',
-                name: 'index',
-                component: home
+                name: 'potting',
+                component: potting
+            },
+            {
+                path: '/index/myPotting',
+                name: 'myPotting',
+                component: myPotting
+            },
+            {
+                path: '/index/userInfo',
+                name: 'userInfo',
+                component: userInfo
+            },
+            {
+                path: '/index/potting/:id',
+                name: 'pottingDetail',
+                component: pottingDetail
             }
-        //     {
-        //         path: '/index/userInfo',
-        //         alias: '/',
-        //         name: 'userInfo',
-        //         component: userInfo
-        //     },
-        //     {
-        //         path: '/index/:module/:model',
-        //         name: 'model',
-        //         component: model
-        //     },
-        //     {
-        //         path: '/index/:module/:model/:id',
-        //         name: 'detailModel',
-        //         component: model
-        //     }
-        //     // ,
-        //     // {
-        //     //     path: '/:module/:model/:id',
-        //     //     name: 'detailModel',
-        //     //     component: model
-        //     // },
         ]
     },
     {

@@ -57,3 +57,6 @@ Object.keys(elementComponent).forEach(function (component) {
 
 // 注册全局方法
 Vue.use(utils)
+
+// html字体大小设置
+require('./fontSize.js')
