@@ -1,6 +1,6 @@
 <template>
 	<div>
-		home
+		userInfo
 	</div>
 </template>
 <script>
