@@ -15,6 +15,9 @@ const userInfo = resolve => require(['WAPVIEWS/userInfo/userInfo.vue'], resolve)
 
 // --------------------------- 详情页 ----------------------------------
 const pottingDetail = resolve => require(['WAPVIEWS/potting/pottingDetail.vue'], resolve)
+const details = resolve => require(['WAPVIEWS/components/page/details.vue'], resolve)
+const detailsDetails = resolve => require(['WAPVIEWS/components/page/detailsDetails.vue'], resolve)
+const leader = resolve => require(['WAPVIEWS/components/page/leader.vue'], resolve)
 
 let routes = [
     {
@@ -38,10 +41,42 @@ let routes = [
                 name: 'userInfo',
                 component: userInfo
             },
+            // 详情页路由
             {
-                path: '/index/potting/:id',
-                name: 'pottingDetail',
-                component: pottingDetail
+                path: '/index/:model/:id',
+                name: 'details',
+                component: details
+            },
+            // 详情页的详情页路由
+            {
+                path: '/index/:model/:id/node',
+                name: 'node',
+                component: detailsDetails
+            },
+            {
+                path: '/index/:model/:id/water',
+                name: 'water',
+                component: detailsDetails
+            },
+            {
+                path: '/index/:model/:id/fertilizer',
+                name: 'fertilizer',
+                component: detailsDetails
+            },
+            {
+                path: '/index/:model/:id/order',
+                name: 'order',
+                component: detailsDetails
+            },
+            {
+                path: '/index/:model/:id/leader',
+                name: 'leader',
+                component: leader
+            },
+            {
+                path: '/index/:model/:id/invite',
+                name: 'invite',
+                component: detailsDetails
             }
         ]
     },

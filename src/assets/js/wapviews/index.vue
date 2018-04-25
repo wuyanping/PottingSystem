@@ -1,22 +1,30 @@
 <template>
-    <div class="w100 h100 commonwap">
-        <x-header 
-            :left-options="{showBack: headerSetting.showBack, backText: headerSetting.backText}"
-            >
-                {{headerSetting.title}}
-        </x-header>
-        <router-view :setHeader="setHeader"></router-view>
-        <tabbar v-model="index">
-            <tabbar-item
-                v-for="(tabItem,i) in tabbarData"
-                :key="i"
-                :link="tabItem.path"
-                :index="i"
-                @on-item-click="handleTabBarItem(i)">
-                    <i slot="icon" :class="`icon iconfont icon-${tabItem.icon}`"></i>
-                    <span slot="label">{{tabItem.title}}</span>
-            </tabbar-item>
-        </tabbar>
+    <div class="moblie_wrap w100 h100 commonwap">
+        <div class="moblie_header">
+            <x-header 
+                :left-options="{showBack: headerSetting.showBack, backText: headerSetting.backText}"
+                >
+                    {{headerSetting.title}}
+            </x-header>
+        </div>
+            
+        <div class="moblie_main">
+            <router-view @setHeader="setHeader"></router-view>
+        </div>
+
+        <div class="moblie_tabBar">
+            <tabbar v-model="index">
+                <tabbar-item
+                    v-for="(tabItem,i) in tabbarData"
+                    :key="i"
+                    :link="tabItem.path"
+                    :index="i"
+                    @on-item-click="handleTabBarItem(i)">
+                        <i slot="icon" :class="`icon iconfont icon-${tabItem.icon}`"></i>
+                        <span slot="label">{{tabItem.title}}</span>
+                </tabbar-item>
+            </tabbar>
+        </div>
     </div>
 </template>
 
@@ -56,6 +64,11 @@ export default{
             }
         }
     },
+    created () {
+        this.index = this.tabbarData.findIndex(item => {
+            return this.$route.path.includes(item.path)
+        })
+    },
     mounted () {
         this.headerSetting.title = this.tabbarData[this.index].title
     },
@@ -72,4 +85,23 @@ export default{
 </script>
 
 <style lang="sass" scoped>
+.moblie_wrap{
+    .moblie_header{
+        position: fixed;
+        width: 100%;
+        top: 0px;
+        left: 0px;
+    }
+    .moblie_main{
+        max-height: 100%;
+        padding-top: 46px;
+        padding-bottom: 53px;
+    }
+    .moblie_tabBar{
+        position: fixed;
+        width: 100%;
+        bottom: 0px;
+        left: 0px;
+    }
+}
 </style>

@@ -14,8 +14,13 @@ export default {
             ]
         }
     },
+    created () {
+        // this.$emit('setHeader', {showBack: true})
+    },
     mounted () {
-        this.$emit('setHeader', {showBack: true})
+        // this.$emit('setHeader', {showBack: true})
+    },
+    methods: {
     }
 }
 </script>
