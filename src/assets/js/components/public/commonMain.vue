@@ -518,7 +518,7 @@
             console.log(this.route)
             console.log(this.route && this.route !== '')
             if (this.route && this.route !== '') {
-                console.log(222)
+                console.log(222222)
                 this.ajaxIndex(this.route)
             }
         },
