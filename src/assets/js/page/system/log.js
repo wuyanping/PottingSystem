@@ -29,9 +29,9 @@ const log = {
     hasTableSelection: true,
     hasTableIndex: true,
     hasTableOperation: true,
-    hasTableOperationEdit: true,
-    hasTableOperationDelete: true,
-    hasPaginationBatchDestroy: true,
+    hasTableOperationEdit: false,
+    hasTableOperationDelete: false,
+    hasPaginationBatchDestroy: false,
     // 默认条件搜索的占位符 和hasConditionSearch连用
     defaultConditionSearchPlaceholder: '内容',
     // 标题*

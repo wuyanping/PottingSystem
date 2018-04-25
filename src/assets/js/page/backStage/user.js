@@ -28,15 +28,15 @@ const user = {
     // 默认条件搜索框
     hasConditionSearch: true,
     // 是否显示新增按钮
-    hasConditionAdd: true,
+    hasConditionAdd: false,
     // 是否显示刷新按钮也叫重置按钮
     hasConditionRefresh: true,
     hasTableSelection: true,
     hasTableIndex: true,
     hasTableOperation: true,
     hasTableOperationEdit: true,
-    hasTableOperationDelete: true,
-    hasPaginationBatchDestroy: true,
+    hasTableOperationDelete: false,
+    hasPaginationBatchDestroy: false,
     // 默认条件搜索的占位符
     defaultConditionSearchPlaceholder: '用户名',
     // 标题*
