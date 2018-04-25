@@ -1,6 +1,7 @@
 <template>
     <div class="myPotting">
     	<div class="mp_top">
+        11111
     		<div><span>全部盆栽</span><span>新增盆栽</span></div>
     	</div>
     </div>
