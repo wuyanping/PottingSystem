@@ -33,7 +33,7 @@
 </template>
 <script>
 // import { ajax } from '../../../public/utils/ajax.js'
-
+import {ajax} from '../utils/ajax.js'
 export default{
     name: 'Login',
     data () {
@@ -86,21 +86,21 @@ export default{
                         password: this.userInfo.pwd,
                         remember: this.remember_flag
                     }
-                    // ajax.call(this, 'post', '/login', data, (data) => {
-                    //     if (data !== '') { // 成功是返回用户的信息
-                    //         this.$message({
-                    //             showClose: false,
-                    //             message: '登录成功',
-                    //             type: 'success',
-                    //             duration: 1000,
-                    //             customClass: 'message success',
-                    //             iconClass: 'messageicon'
-                    //         })
-                    //         // window.location.href="/#/index";
-                    //         // window.location.href = '/'
-                    this.$router.push('/index')
-                    //     }
-                    // })
+                    ajax.call(this, 'post', '/api/dologin', data, (data) => {
+                        if (data !== '') { // 成功是返回用户的信息
+                            this.$message({
+                                showClose: false,
+                                message: '登录成功',
+                                type: 'success',
+                                duration: 1000,
+                                customClass: 'message success',
+                                iconClass: 'messageicon'
+                            })
+                            // window.location.href="/#/index"
+                            window.location.href = '/'
+                            // this.$router.push('/index')
+                        }
+                    })
                 } else {
                     console.log('error submit!!')
                     return false

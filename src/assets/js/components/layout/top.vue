@@ -20,6 +20,7 @@
 </template>
 
 <script>
+import {ajax} from '../../utils/ajax.js'
 export default {
     name: 'Top',
     methods: {
@@ -27,9 +28,9 @@ export default {
             this.$router.push('/index/userInfo')
         },
         logout () {
-            // ajax.call(this, 'post', '/logout', data => {
-            this.$router.push('/login')
-            // })
+            ajax.call(this, 'post', '/api/logout', data => {
+            // this.$router.push('/login')
+            })
         }
     }
 }

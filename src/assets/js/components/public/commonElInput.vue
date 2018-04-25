@@ -46,8 +46,12 @@
             }
         },
         methods: {
-            handleSearch ({ field, value }) {
-                this.$emit('selectChange', { [field]: value })
+            // handleSearch ({ field, value }) {
+            //     this.$emit('selectChange', { [field]: value })
+            // }
+            handleSearch () {
+                console.log(this.params.field, this.params.value)
+                this.$emit('selectChange', { [this.params.field]: this.params.value })
             }
         }
     }
