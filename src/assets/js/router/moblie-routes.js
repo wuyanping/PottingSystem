@@ -13,9 +13,12 @@ const potting = resolve => require(['WAPVIEWS/potting/potting.vue'], resolve)
 const myPotting = resolve => require(['WAPVIEWS/myPotting/myPotting.vue'], resolve)
 const userInfo = resolve => require(['WAPVIEWS/userInfo/userInfo.vue'], resolve)
 
-// --------------------------- 详情页 ----------------------------------
-const pottingDetail = resolve => require(['WAPVIEWS/potting/pottingDetail.vue'], resolve)
+// --------------------------- 一级详情页 ----------------------------------
+// const pottingDetail = resolve => require(['WAPVIEWS/potting/pottingDetail.vue'], resolve)
 const details = resolve => require(['WAPVIEWS/components/page/details.vue'], resolve)
+const userInfoDetail = resolve => require(['WAPVIEWS/userInfo/Details/userInfoDetail.vue'], resolve)
+
+// --------------------------- 二级详情页 ----------------------------------
 const detailsDetails = resolve => require(['WAPVIEWS/components/page/detailsDetails.vue'], resolve)
 const leader = resolve => require(['WAPVIEWS/components/page/leader.vue'], resolve)
 
@@ -43,9 +46,19 @@ let routes = [
             },
             // 详情页路由
             {
-                path: '/index/:model/:id',
-                name: 'details',
+                path: '/index/potting/:id',
+                name: 'pottingDetails',
                 component: details
+            },
+            {
+                path: '/index/myPotting/:id',
+                name: 'myPottingDetails',
+                component: details
+            },
+            {
+                path: '/index/userInfo/:model',
+                name: 'userInfoDetail',
+                component: userInfoDetail
             },
             // 详情页的详情页路由
             {
