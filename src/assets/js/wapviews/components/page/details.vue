@@ -1,3 +1,4 @@
+<!-- 一级详情页 -->
 <template>
 	<div class="details">
 		<div class="d_top">
@@ -8,14 +9,16 @@
 				    <cell
 				    	v-for="(item,i) in list"
 				    	:key="i"
-				    	:title="`${item.title}：`"
-				    	:value="listData[item.key]">
+				    	:title="`${item.label}：`"
+				    	:value="listData[item.field]">
 				    </cell>
 			    </group>
 			</div>
 			<div class="d_t_more">更多信息 ></div>
 		</div>
+
 		<div class="grey_line"></div>
+
 		<div class="d_bottom">
 			<flexbox :gutter="0" wrap="wrap" justify="space-between">
 		      	<flexbox-item
@@ -45,27 +48,56 @@ export default {
     },
     data () {
         return {
-            url: 'https://o3e85j0cv.qnssl.com/tulips-1083572__340.jpg',
+            url: './static/image/company_default_logo.png',
+            // 介绍
             introduce: [{
 		        title: '标题一',
 		        desc: '由各种物质组成的巨型球状天体，叫做星球。星球有一定的形状，有自己的运行轨道。'
 		    }],
+		    // 介绍列表
 		    list: [
 		    	{
-		    		title: '盆栽名称',
-		    		key: 'name',
-		    		value: ''
-		    	},
-		    	{
-		    		title: '品种',
-		    		key: 'pz',
-		    		value: ''
-		    	}
+                    label: '盆栽名称',
+                    field: 'name'
+                },
+                {
+                    label: '品种',
+                    field: 'variety'
+                },
+                {
+                    label: '生长习性',
+                    field: 'habit'
+                },
+                {
+                    label: '产地',
+                    field: 'origin'
+                },
+                {
+                    label: '用途',
+                    field: 'use_for'
+                },
+                {
+                    label: '外观',
+                    field: 'imgs'
+                },
+                {
+                    label: '负责人',
+                    field: 'main'
+                },
+                {
+                    label: '其他信息',
+                    field: 'info'
+                },
+                {
+                    label: '备注',
+                    field: 'memo'
+                }
 		    ],
 		    listData: {
 		    	name: 'name111',
-		    	key: 'pz1111'
+		    	variety: 'pz1111'
 		    },
+		    // 记录
 		    records: [
 		    	{
 		    		title: '节点记录',
