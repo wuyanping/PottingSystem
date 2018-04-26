@@ -12,7 +12,7 @@
                 </div>
                 <el-form :model="userInfo" :rules="rules" ref="userInfo">
                     <el-form-item label="" prop="userEmail">
-                        <el-input type="email" placeholder="输入用户名/邮箱" name="email" v-model="userInfo.userEmail" auto-complete="off"></el-input>
+                        <el-input type="email" placeholder="输入邮箱" name="email" v-model="userInfo.userEmail" auto-complete="off"></el-input>
                     </el-form-item>
                     <el-form-item label="" prop="pwd">
                         <el-input type="password" placeholder="输入密码" name="pwd" v-model="userInfo.pwd" auto-complete="off" @keyup.native.enter="submitForm('userInfo')"></el-input>
@@ -39,15 +39,15 @@ export default{
     data () {
         // 表单验证
         var checkEmail = (rule, value, callback) => {
-            // let reg = /^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+(.[a-zA-Z0-9_-])+/
+            let reg = /^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+(.[a-zA-Z0-9_-])+/
             if (value === '') {
-                callback(new Error('用户名/邮箱不能为空！'))
+                callback(new Error('邮箱不能为空！'))
             }
-            // if (!reg.test(value)) {
-            //     callback(new Error('请输入正确邮箱'))
-            // } else {
-            //     callback()
-            // }
+            if (!reg.test(value)) {
+                callback(new Error('请输入正确邮箱'))
+            } else {
+                callback()
+            }
         }
         return {
             userInfo: {

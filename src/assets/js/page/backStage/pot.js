@@ -225,7 +225,7 @@ const pot = {
                         component: Uploader,
                         field: 'imgs',
                         label: '外观',
-                        required: false,
+                        required: true,
                         value: null,
                         customSerializeFn: customSerializeFn
                         // component: Uploader,
