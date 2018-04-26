@@ -1,16 +1,25 @@
 <template>
 	<div class="userInfo">
-		<blur :blur-amount=40 :url="url">
-            <p class="center"><img :src="url"></p>
-            <p class="center">aaaa</p>
-	    </blur>
+		<blur :blur-amount=40 :url="url" :height="100">
+            <div class="center clearfix">
+                <img :src="url" class="fl">
+                <div class="fl p-10">
+                    <p>wuyanping</p>
+                    <p>个人信息 > </p>
+                </div>
+            </div>
+    	</blur>
+        <group>
+            <cell title="修改个人信息" is-link link="userInfo/editUserInfo"></cell>
+            <cell title="修改密码" is-link link="userInfo/editPassword"></cell>
+        </group>
 	</div>
 </template>
 <script>
-import { Blur } from 'vux'
+import { Blur, Group, Cell } from 'vux'
 export default {
     components: {
-        Blur
+        Blur, Group, Cell
     },
     data () {
         return {
@@ -22,16 +31,21 @@ export default {
 <style lang="sass">
 .userInfo{
     .center {
-      text-align: center;
-      padding-top: 20px;
-      color: #fff;
+      text-align: left;
+      padding: 20px 10px 0 10px;
       font-size: 18px;
     }
     .center img {
-      width:70px;
-      height: 70px;
+      width:60px;
+      height: 60px;
       border-radius: 50%;
       border: 4px solid #ececec;
     }
+    .weui-cells{
+        margin-top: 0;
+        .weui-cell{
+            padding: 20px 15px;
+        }
+    }  
 }
 </style>
