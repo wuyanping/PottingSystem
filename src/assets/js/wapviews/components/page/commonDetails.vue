@@ -1,9 +1,9 @@
 <!-- 一级详情页 -->
 <template>
-	<div class="details">
-		<div class="d_top">
+	<div class="commonDetails">
+		<div class="cd_top">
 			<img :src="url" />
-			<div class="d_t_conent">
+			<div class="cd_t_conent">
 				<panel :list="introduce" type="2"></panel>
   				<group>
 				    <cell
@@ -14,12 +14,12 @@
 				    </cell>
 			    </group>
 			</div>
-			<div class="d_t_more">更多信息 ></div>
+			<div class="cd_t_more">更多信息 ></div>
 		</div>
 
 		<div class="grey_line"></div>
 
-		<div class="d_bottom">
+		<div class="cd_bottom">
 			<flexbox :gutter="0" wrap="wrap" justify="space-between">
 		      	<flexbox-item
 		      		:span="2/7"
@@ -37,6 +37,7 @@
 </template>
 <script>
 import { Flexbox, FlexboxItem, Blur, Panel, Group, Cell } from 'vux'
+import theModel from '../../model.js'
 export default {
     components: {
         Blur,
@@ -145,14 +146,14 @@ export default {
 </script>
 <style lang="sass">
 $theme-color: #1eac94;
-.details{
-	.d_top{
+.commonDetails{
+	.cd_top{
 		>img {
 		  	width: 96%;
 		  	max-height: 200px;
 		  	margin:1% 2% 0px;
 		}
-		.d_t_conent{
+		.cd_t_conent{
 			.weui-media-box__title{
 				font-size: .4rem;
 			}
@@ -170,13 +171,13 @@ $theme-color: #1eac94;
 				font-size: .3rem;
 			}
 		}
-		.d_t_more{
+		.cd_t_more{
 			line-height: 1rem;
 			padding-left: 10px;
 			color: $theme-color;
 		}
 	}
-	.d_bottom{
+	.cd_bottom{
 		width: 90%;
 		margin: 0 auto;
 		padding-top: .5rem;
