@@ -6,6 +6,13 @@
                 <cell title="性别" value="girl" is-link @click.native="show1 = !show1"></cell>
             </group>
         </div>
+        <x-button
+            class= "saveBtn"
+            plain
+            type="primary"
+            @click.native="handleSave">
+            保存
+        </x-button>
         <div v-transfer-dom>
             <popup v-model="show1" height="100%">
                 <div class="popup1">
@@ -18,13 +25,13 @@
 	</div>
 </template>
 <script>
-import { Group, Cell, Popup, XSwitch, TransferDom } from 'vux'
+import { Group, Cell, Popup, XSwitch, TransferDom, XButton } from 'vux'
 export default {
     directives: {
         TransferDom
     },
     components: {
-        Group, Cell, Popup, XSwitch
+        Group, Cell, Popup, XSwitch, XButton
     },
     data () {
         return {
@@ -37,10 +44,16 @@ export default {
     },
     destroyed () {
         this.$emit('setHeader', {key: 'showBack', value: false})
+    },
+    methods: {
+        handleSave () {
+            console.log(11)
+        }
     }
 }
 </script>
 <style lang="sass">
+$theme-color: #1eac94;
 .userInfoDetail{
     .infoList{
         .weui-cells{
@@ -53,6 +66,14 @@ export default {
     .popup1 {
         width:100%;
         height:100%;
-    } 
+    }
+    .saveBtn{
+        height: 56px;
+        border-radius:20px;
+        width: 80%;
+        margin: 50px auto 0px;
+        border-color: $theme-color;
+        color: $theme-color;
+    }
 }
 </style>

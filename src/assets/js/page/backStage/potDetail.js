@@ -20,7 +20,7 @@ function customSerializeFn (item) {
     return obj
 }
 
-const pottingDetail = {
+const potDetail = {
     // 是否显示设置
     hasTitleBack: true,
     hasTabs: true,
@@ -575,5 +575,5 @@ const pottingDetail = {
     }
 }
 module.exports = {
-    pottingDetail: pottingDetail
+    potDetail: potDetail
 }

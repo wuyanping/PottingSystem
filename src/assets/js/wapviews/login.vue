@@ -179,7 +179,7 @@
                 console.log(this[`${action}Data`])
                 console.log(isCanSibmit)
                 if (isCanSibmit) {
-                    this.$router.push('/')
+                    this.$router.push('/index/potting')
                 }
             }
         }
