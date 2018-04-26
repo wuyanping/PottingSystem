@@ -70,6 +70,7 @@
                     if (!routeObj.query.current) {
                         console.error(`${routeObj.params.model}中的detailLink组件缺少了current参数`)
                     }
+                    console.log(33333)
                     this.routePath = `${routeObj.params.model}/${routeObj.params.id}/${routeObj.query.current}`
                     this.mixCurrentModel(routeObj.params.module, `${routeObj.params.model}Detail`, routeObj.query.current)
                 } else {
@@ -91,6 +92,7 @@
             '$route': {
                 deep: true, // 深度观察
                 handler: function (nv) {
+                    console.log(11111)
                     if (theModel[nv.params.module][nv.params.model] && theModel[nv.params.module][nv.params.model]._hasCustomComponent) {
                         this.hasCustomComponent = true
                         this.currentModel = theModel[nv.params.module][nv.params.model]

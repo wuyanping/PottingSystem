@@ -87,14 +87,14 @@ const pot = {
             commonTableField: [
                 {
                     label: '盆栽名称',
-                    field: 'name'
-                    // width: '80',
-                    // component: TableDetailLink,
-                    // props: {
-                    //     className: 'block lightHigh miaosu',
-                    //     detailUrl: 'detailModel',
-                    //     current: 'user'
-                    // }
+                    field: 'name',
+                    width: '80',
+                    component: TableDetailLink,
+                    props: {
+                        className: 'lightHigh',
+                        detailUrl: 'detailModel',
+                        current: 'watering'
+                    }
                 },
                 {
                     label: '品种',

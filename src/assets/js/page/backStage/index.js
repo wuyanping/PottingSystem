@@ -7,13 +7,13 @@
 */
 import user from './user'
 import pot from './pot'
-import pottingDetail from './pottingDetail'
+import potDetail from './potDetail'
 
 const backStage = Object.assign(
     {},
     user,
     pot,
-    pottingDetail
+    potDetail
 )
 
 module.exports = {
