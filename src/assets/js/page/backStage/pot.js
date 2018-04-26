@@ -225,16 +225,22 @@ const pot = {
                         component: Uploader,
                         field: 'imgs',
                         label: '外观',
-                        value: null
+                        required: false,
+                        value: null,
+                        customSerializeFn: customSerializeFn
+                        // component: Uploader,
+                        // field: 'imgs',
+                        // label: '外观',
+                        // value: null
                         // customSerializeFn: customSerializeFn
                     },
-                    {
-                        component: 'ElInput',
-                        field: 'main',
-                        label: '负责人',
-                        rules: [],
-                        value: null
-                    },
+                    // {
+                    //     component: 'ElInput',
+                    //     field: 'main',
+                    //     label: '负责人',
+                    //     rules: [],
+                    //     value: null
+                    // },
                     {
                         component: ElInputDynamic,
                         field: 'info',
