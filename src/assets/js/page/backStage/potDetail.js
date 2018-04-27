@@ -172,8 +172,8 @@ const potDetail = {
                     },
                     {
                         component: 'ElInput',
-                        field: 'user_id',
-                        label: '操作人',
+                        field: 'info',
+                        label: '操作信息',
                         value: null
                     },
                     {
@@ -297,8 +297,8 @@ const potDetail = {
                     },
                     {
                         component: 'ElInput',
-                        field: 'user_id',
-                        label: '操作人',
+                        field: 'info',
+                        label: '操作信息',
                         value: null
                     },
                     {
@@ -410,12 +410,6 @@ const potDetail = {
                     },
                     {
                         component: 'ElInput',
-                        field: 'user_id',
-                        label: '操作人',
-                        value: null
-                    },
-                    {
-                        component: 'ElInput',
                         inputType: 'textarea',
                         field: 'memo',
                         label: '备注',
@@ -502,7 +496,7 @@ const potDetail = {
                     {
                         component: 'ElDate',
                         field: 'date',
-                        label: '时间',
+                        label: '操作时间',
                         value: null
                     },
                     {

@@ -633,8 +633,10 @@
                 this.formLoading = true
                 edit(this, this.route, scope.row.id)
                     .then(data => {
+                        console.log(data)
                         this.formLoading = false
                         this.formData = this.setFormData(scope.type, data)
+                        console.log(this.formData)
                     })
             },
             tableDelete (scope) {
@@ -679,17 +681,17 @@
             },
             editSave (formData) {
                 console.log(formData)
-                // let params = {
-                //     _type: formData.type,
-                //     ...serializeData(formData.formField)
-                // }
-                // update(this, this.route, formData.id, params)
-                //     .then(data => {
-                //         this.$mg(this, '保存成功', 'success', 2000)
-                //         this.$refs['commonFormDialog'].saveSetting.loading = false
-                //         this.emitCloseDialog('form')
-                //         this.edit_option_tableData(data)
-                //     })
+                let params = {
+                    _type: formData.type,
+                    ...serializeData(formData.formField)
+                }
+                update(this, this.route, formData.id, params)
+                    .then(data => {
+                        this.$mg(this, '保存成功', 'success', 2000)
+                        this.$refs['commonFormDialog'].saveSetting.loading = false
+                        this.emitCloseDialog('form')
+                        this.edit_option_tableData(data)
+                    })
             },
             handleFilter (data) {
                 for (let i in data) {
