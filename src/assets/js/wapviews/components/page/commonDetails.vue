@@ -2,24 +2,25 @@
 <template>
 	<div class="commonDetails">
 		<div class="cd_top">
-			<img :src="url" />
-			<div class="cd_t_conent">
+			<img v-if="hasIntroduceImg" :src="url" />
+			<div v-if="hasIntroduce" class="cd_t_conent">
 				<panel :list="introduce" type="2"></panel>
   				<group>
 				    <cell
-				    	v-for="(item,i) in list"
+				    	v-for="(item,i) in introduceListField"
 				    	:key="i"
 				    	:title="`${item.label}：`"
 				    	:value="listData[item.field]">
 				    </cell>
 			    </group>
+			    <div class="cd_t_more">更多信息 ></div>
 			</div>
-			<div class="cd_t_more">更多信息 ></div>
+			
 		</div>
 
 		<div class="grey_line"></div>
 
-		<div class="cd_bottom">
+		<div class="cd_bottom" v-if='hasRecords'>
 			<flexbox :gutter="0" wrap="wrap" justify="space-between">
 		      	<flexbox-item
 		      		:span="2/7"
@@ -37,7 +38,6 @@
 </template>
 <script>
 import { Flexbox, FlexboxItem, Blur, Panel, Group, Cell } from 'vux'
-import theModel from '../../model.js'
 export default {
     components: {
         Blur,
@@ -46,6 +46,9 @@ export default {
         Panel,
         Group,
         Cell
+    },
+    props: {
+    	details: Object
     },
     data () {
         return {
@@ -56,75 +59,47 @@ export default {
 		        desc: '由各种物质组成的巨型球状天体，叫做星球。星球有一定的形状，有自己的运行轨道。'
 		    }],
 		    // 介绍列表
-		    list: [
-		    	{
-                    label: '盆栽名称',
-                    field: 'name'
-                },
-                {
-                    label: '品种',
-                    field: 'variety'
-                },
-                {
-                    label: '生长习性',
-                    field: 'habit'
-                },
-                {
-                    label: '产地',
-                    field: 'origin'
-                },
-                {
-                    label: '用途',
-                    field: 'use_for'
-                },
-                {
-                    label: '外观',
-                    field: 'imgs'
-                },
-                {
-                    label: '负责人',
-                    field: 'main'
-                },
-                {
-                    label: '其他信息',
-                    field: 'info'
-                },
-                {
-                    label: '备注',
-                    field: 'memo'
-                }
-		    ],
 		    listData: {
 		    	name: 'name111',
 		    	variety: 'pz1111'
-		    },
-		    // 记录
-		    records: [
-		    	{
-		    		title: '节点记录',
-		    		record: 'node'
-		    	},
-		    	{
-		    		title: '浇水记录',
-		    		record: 'water'
-		    	},
-		    	{
-		    		title: '施肥记录',
-		    		record: 'fertilizer'
-		    	},
-		    	{
-		    		title: '其他操作记录',
-		    		record: 'order'
-		    	},
-		    	{
-		    		title: '负责人',
-		    		record: 'leader'
-		    	},
-		    	{
-		    		title: '申请/邀请',
-		    		record: 'invite'
-		    	}
-		    ]
+		    }
+        }
+    },
+    computed: {
+ 		hasIntroduceImg () {
+            if (this.details.hasIntroduceImg) {
+                return this.details.hasIntroduceImg
+            } else {
+                return false
+            }
+        },
+        hasIntroduce () {
+        	if (this.details.hasIntroduce) {
+                return this.details.hasIntroduce
+            } else {
+                return false
+            }
+        },
+        hasRecords () {
+        	if (this.details.hasRecords) {
+                return this.details.hasRecords
+            } else {
+                return false
+            }
+        },
+        introduceListField () {
+        	if (this.details.introduceListField) {
+                return this.details.introduceListField
+            } else {
+                return []
+            }
+        },
+        records () {
+        	if (this.details.records) {
+                return this.details.records
+            } else {
+                return []
+            }
         }
     },
     mounted () {

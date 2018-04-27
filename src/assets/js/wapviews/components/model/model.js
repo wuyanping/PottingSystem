@@ -1,4 +1,4 @@
-import userInfo from './userInfo/userInfo.vue'
+import userInfo from '../../userInfo/userInfo.vue'
 
 function listItemClickFn (vm, panelItem) {
     vm.$router.push(`${vm.$route.path}/${panelItem.id}`)
@@ -6,7 +6,7 @@ function listItemClickFn (vm, panelItem) {
 
 let model = {
     potting: {
-        commonTitle: '盆栽列表',
+        title: '盆栽列表',
         // 是否显示搜索
         hasConditonSelect: false,
         // 是否列表
@@ -18,7 +18,7 @@ let model = {
         commonListField: ['id', 'src', 'fallbackSrc', 'title', 'desc']
     },
     myPotting: {
-        commonTitle: '我的盆栽',
+        title: '我的盆栽',
         hasConditonSelect: true,
         hasList: true,
         listItemClickFn: listItemClickFn,
@@ -28,7 +28,7 @@ let model = {
     userInfo: {
         _hasCustomComponent: true,
         CustomComponent: userInfo,
-        commonTitle: '个人信息'
+        title: '个人信息'
     }
 }
 export default model

@@ -68,6 +68,7 @@ const potDetail = {
     },
     // 每个标签页的数据
     panelData: {
+        // 浇水
         watering: {
             // 条件刷选
             commonConditionComponents: [
@@ -193,6 +194,7 @@ const potDetail = {
             // commonCustomDialog: {
             // },
         },
+        // 施肥
         fertilizer: {
             // 条件刷选
             commonConditionComponents: [
@@ -318,6 +320,7 @@ const potDetail = {
             // commonCustomDialog: {
             // },
         },
+        // 其他
         order: {
             // 条件刷选
             commonConditionComponents: [
@@ -425,6 +428,7 @@ const potDetail = {
             // commonCustomDialog: {
             // },
         },
+        // 生长节点
         node: {
             // 条件刷选
             commonConditionComponents: [

@@ -15,14 +15,21 @@
             </flexbox>
     	</div>
         <div class="basic_list" v-if="hasList">
-            <!-- <List :data='data' :link="link"></List> -->
             <panel :list="list" type="5" @on-click-item="handlePanelItem" @on-img-error="onImgError"></panel>
         </div>
         <div v-transfer-dom>
-            <popup v-model="isShowPopup" height="100%">
+            <popup v-model="isShowPopup" height="100%" width='100%' position="right">
                 <div class="popup1">
+                    <x-header :left-options="{showBack: false}">
+                        <a slot="left" @click="handleClose">关闭</a>
+                    </x-header>
                     <group>
-                        <x-switch title="Another XSwitcher" v-model="isShowPopup"></x-switch>
+                        <cell
+                            v-for="(item,i) in introduceListField"
+                            :key="i"
+                            :title="`${item.label}：`"
+                            :value="listData[item.field]">
+                        </cell>
                     </group>
                 </div>
             </popup>
@@ -30,10 +37,8 @@
     </div>
 </template>
 <script>
-import { XInput, Group, Icon, Flexbox, FlexboxItem, Panel, Popup, TransferDom, XSwitch } from 'vux'
-import basic from '../../model.js'
+import { XInput, Group, Icon, Flexbox, FlexboxItem, Panel, Popup, TransferDom, XSwitch, Cell, XHeader } from 'vux'
 import { isFunction } from 'UTILS/utils.js'
-// import List from '../components/list'
 export default {
     directives: {
         TransferDom
@@ -47,7 +52,9 @@ export default {
         FlexboxItem,
         Panel,
         Popup,
-        XSwitch
+        XSwitch,
+        Cell,
+        XHeader
     },
     props: {
         model: {
@@ -82,26 +89,17 @@ export default {
             } else {
                 return []
             }
+        },
+        introduceListField () {
+            if (this.model.introduceListField) {
+                return this.model.introduceListField
+            } else {
+                return []
+            }
         }
     },
     data () {
         return {
-            value: '',
-            data: [
-                {
-                    id: 1,
-                    title: 'potting1',
-                    inlineDesc: 'inlineDesc1',
-                    img: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAC4AAAAuCAMAAABgZ9sFAAAAVFBMVEXx8fHMzMzr6+vn5+fv7+/t7e3d3d2+vr7W1tbHx8eysrKdnZ3p6enk5OTR0dG7u7u3t7ejo6PY2Njh4eHf39/T09PExMSvr6+goKCqqqqnp6e4uLgcLY/OAAAAnklEQVRIx+3RSRLDIAxE0QYhAbGZPNu5/z0zrXHiqiz5W72FqhqtVuuXAl3iOV7iPV/iSsAqZa9BS7YOmMXnNNX4TWGxRMn3R6SxRNgy0bzXOW8EBO8SAClsPdB3psqlvG+Lw7ONXg/pTld52BjgSSkA3PV2OOemjIDcZQWgVvONw60q7sIpR38EnHPSMDQ4MjDjLPozhAkGrVbr/z0ANjAF4AcbXmYAAAAASUVORK5CYII='
-                },
-                {
-                    id: 2,
-                    title: 'potting2',
-                    inlineDesc: 'inlineDesc2',
-                    img: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAC4AAAAuCAMAAABgZ9sFAAAAVFBMVEXx8fHMzMzr6+vn5+fv7+/t7e3d3d2+vr7W1tbHx8eysrKdnZ3p6enk5OTR0dG7u7u3t7ejo6PY2Njh4eHf39/T09PExMSvr6+goKCqqqqnp6e4uLgcLY/OAAAAnklEQVRIx+3RSRLDIAxE0QYhAbGZPNu5/z0zrXHiqiz5W72FqhqtVuuXAl3iOV7iPV/iSsAqZa9BS7YOmMXnNNX4TWGxRMn3R6SxRNgy0bzXOW8EBO8SAClsPdB3psqlvG+Lw7ONXg/pTld52BjgSSkA3PV2OOemjIDcZQWgVvONw60q7sIpR38EnHPSMDQ4MjDjLPozhAkGrVbr/z0ANjAF4AcbXmYAAAAASUVORK5CYII='
-                }
-            ],
-            link: 'myPotting',
             list: [
                 {
                     id: 0,
@@ -111,7 +109,8 @@ export default {
                     desc: '由各种物质组成的巨型球状天体，叫做星球。星球有一定的形状，有自己的运行轨道。由各种物质组成的巨型球状天体，叫做星球。星球有一定的形状，有自己的运行轨道。'
                 }
             ],
-            isShowPopup: false
+            isShowPopup: false,
+            listData: {}
         }
     },
     methods: {
@@ -124,6 +123,9 @@ export default {
             if (isFunction(this.model.listItemClickFn)) {
                 this.model.listItemClickFn(this, panelItem)
             }
+        },
+        handleClose () {
+            this.isShowPopup = false
         }
     }
 }

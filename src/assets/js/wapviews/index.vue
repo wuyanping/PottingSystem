@@ -9,7 +9,7 @@
         </div>
             
         <div class="moblie_main">
-            <router-view @setHeader="setHeader"></router-view>
+            <router-view></router-view>
         </div>
 
         <div class="moblie_tabBar">
@@ -32,6 +32,7 @@
 import { ajax } from 'UTILS/ajax'
 import {Tabbar, TabbarItem, Group, Cell, XHeader} from 'vux'
 import menu from './menu.js'
+import { mapGetters, mapActions } from 'vuex'
 export default{
     name: 'wapIndex',
     components: {
@@ -56,13 +57,13 @@ export default{
                     path: '/index/userInfo',
                     icon: 'userInfo'
                 }
-            ],
-            headerSetting: {
-                showBack: false,
-                backText: '',
-                title: ''
-            }
+            ]
         }
+    },
+    computed: {
+        ...mapGetters([
+            'headerSetting'
+        ])
     },
     created () {
         this.index = this.tabbarData.findIndex(item => {
@@ -73,13 +74,18 @@ export default{
         this.headerSetting.title = this.tabbarData[this.index].title
     },
     methods: {
+        ...mapActions([
+            'changeHeaderSetting'
+        ]),
         handleTabBarItem (i) {
-            this.headerSetting.title = this.tabbarData[i].title
-        },
-        setHeader ({key, value}) {
-            console.log(key, value)
-            this.headerSetting[key] = value
+            console.log(111111111)
+            this.changeHeaderSetting({...this.headerSetting, title: this.tabbarData[i].title})
+            // this.headerSetting.title = this.tabbarData[i].title
         }
+        // setHeader ({key, value}) {
+        //     console.log(key, value)
+        //     this.headerSetting[key] = value
+        // }
     }
 }
 </script>
@@ -96,6 +102,7 @@ export default{
         max-height: 100%;
         padding-top: 46px;
         padding-bottom: 53px;
+        overflow: auto;
     }
     .moblie_tabBar{
         position: fixed;
