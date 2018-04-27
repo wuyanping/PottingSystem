@@ -32,8 +32,8 @@ const potDetail = {
     hasTableIndex: true,
     hasTableOperation: true,
     hasTableOperationEdit: true,
-    hasTableOperationDelete: true,
-    hasPaginationBatchDestroy: true,
+    hasTableOperationDelete: false,
+    hasPaginationBatchDestroy: false,
     // 默认条件搜索的占位符 和hasConditionSearch连用
     defaultConditionSearchPlaceholder: '',
     // 标题*

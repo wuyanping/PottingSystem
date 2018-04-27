@@ -145,6 +145,20 @@ const sysman = {
                     },
                     {
                         component: 'ElInput',
+                        field: 'nickname',
+                        label: '昵称',
+                        required: true,
+                        rulesType: [
+                            {
+                                max: 255,
+                                message: '最多有255字',
+                                trigger: 'blur'
+                            }
+                        ],
+                        value: null
+                    },
+                    {
+                        component: 'ElInput',
                         field: 'password',
                         label: '密码',
                         inputType: 'password',
