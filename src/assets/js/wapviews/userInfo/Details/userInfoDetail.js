@@ -14,7 +14,7 @@ let userInfoDetail = {
                         valid: '',
                         msg: ''
                     },
-                    value: ''
+                    value: 'dd'
                 }
             ]
         }
@@ -22,7 +22,7 @@ let userInfoDetail = {
     editPassword: {
         title: '修改密码',
         // 介绍列表
-        formField () {
+        formField: function () {
             return [
                 {
                     component: 'x-input',

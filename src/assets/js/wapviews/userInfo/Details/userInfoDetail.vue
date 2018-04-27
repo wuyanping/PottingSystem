@@ -1,5 +1,5 @@
 <template>
-	<div class="userInfoDetail">
+    <div class="userInfoDetail">
         <div class="infoList">
             <group>
                 <cell
@@ -8,7 +8,7 @@
                     :title="formItem.label"
                     :value="formItem.value"
                     is-link
-                    @click.native="handleShowPopup(formItem)">
+                    @click.native="handleShowPopup(i)">
                 </cell>
             </group>
         </div>
@@ -23,19 +23,24 @@
             <popup v-model="isShowPopup" height="100%">
                 <div class="popup1">
                     <x-header :left-options="{showBack: false}" :title="`设置${formItem.label}`">
-                        <a slot="left" @click="handleClosePopup">关闭</a>
+                        <a slot="left" @click="handleCancelPopup">取消</a>
+                        <a slot="right" @click="handleFinishPopup" v-if='isShowFinish'>完成</a>
                     </x-header>
-                    <FormItem :formItem="formItem"></FormItem>
+                    <FormItem
+                        :formItem="formItem"
+                        @changeIsShowFinish="changeIsShowFinish"
+                    ></FormItem>
               </div>
             </popup>
         </div>
-	</div>
+    </div>
 </template>
 <script>
-import { Group, Cell, Popup, XSwitch, TransferDom, XButton, XHeader } from 'vux'
+import { Group, Cell, Popup, XSwitch, TransferDom, XButton, XHeader, AlertPlugin } from 'vux'
 import { mapGetters, mapActions } from 'vuex'
 import FormItem from 'WAPVIEWS/components/formItem'
 import theUserInfoDetail from './userInfoDetail.js'
+Vue.use(AlertPlugin)
 export default {
     directives: {
         TransferDom
@@ -45,10 +50,27 @@ export default {
     },
     data () {
         return {
+            // 是否显示popup组件
             isShowPopup: false,
+            // 是否显示完成
+            isShowFinish: false,
+            // 当前模块
             currentModel: '',
             formData: [],
-            formItem: {}
+            formItem: {
+                component: '',
+                label: '',
+                field: '',
+                iconType: '',
+                rule: {required: true},
+                validatorResult: {
+                    valid: '',
+                    msg: ''
+                },
+                value: ''
+            },
+            i: 0,
+            oldFormItem: {}
         }
     },
     computed: {
@@ -65,6 +87,8 @@ export default {
         console.log(this.formData)
         this.changeHeaderSetting({...this.headerSetting, showBack: true, title: this.currentModel.title})
     },
+    mounted () {
+    },
     methods: {
         ...mapActions([
             'changeHeaderSetting'
@@ -72,12 +96,33 @@ export default {
         handleSave () {
             console.log(11)
         },
-        handleShowPopup (formItem) {
+        handleShowPopup (i) {
             this.isShowPopup = true
-            this.formItem = formItem
+            this.i = i
+            this.formItem = Object.assign({}, this.formData[i])
+            this.oldFormItem = Object.assign({}, this.formItem)
         },
-        handleClosePopup () {
+        handleFinishPopup () {
+            let { iconType, validatorResult } = this.formItem
+            console.log(iconType)
+            if (iconType === 'error') {
+                this.$vux.alert.show({
+                    title: '内容验证提示',
+                    content: validatorResult.msg,
+                    buttonText: '我知道了',
+                    onShow () {
+                        console.log('Plugin: I\'m showing')
+                    },
+                    onHide () {
+                        console.log('Plugin: I\'m hiding now')
+                    }
+                })
+            }
+        },
+        handleCancelPopup () {
             this.isShowPopup = false
+            this.formItem = Object.assign({}, this.oldFormItem)
+            this.$set(this.formData, this.i, this.oldFormItem)
         },
         // 设置表单对话框数据
         setFormData (row = {}) {
@@ -93,6 +138,16 @@ export default {
                 }
             })
             return formField
+        },
+        changeIsShowFinish (value) {
+            let bol = false
+            console.log(this.formItem.value, this.oldFormItem.value)
+            if (this.formItem.value !== this.oldFormItem.value) {
+                bol = true
+            } else {
+                bol = false
+            }
+            this.isShowFinish = bol
         }
     }
 }
