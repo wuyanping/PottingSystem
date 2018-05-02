@@ -435,7 +435,7 @@
                 }
             }
         },
-        data () {
+        data: function () {
             return {
                 tabsActive: '',
 
@@ -447,7 +447,7 @@
                     className: 'icon icon-refresh refresh_rotate',
                     display_name: '重置',
                     clickFn: (vm, scope) => {
-                        vm.$emit('refresh', { type: 'refresh', ...scope })
+                        vm.$emit('refresh', {type: 'refresh', ...scope})
                     }
                 },
 
@@ -461,7 +461,7 @@
                     className: '',
                     display_name: '编辑',
                     clickFn: (vm, scope) => {
-                        vm.$emit('edit', { type: 'edit', ...scope })
+                        vm.$emit('edit', {type: 'edit', ...scope})
                     }
                 },
                 tableDeleteSetting: {
@@ -471,7 +471,7 @@
                     className: '',
                     display_name: '删除',
                     clickFn: (vm, scope) => {
-                        vm.$emit('delete', { type: 'delete', ...scope })
+                        vm.$emit('delete', {type: 'delete', ...scope})
                     }
                 },
                 tableSelection: [],
@@ -483,7 +483,7 @@
                     className: '',
                     display_name: '删除',
                     clickFn: (vm, scope) => {
-                        vm.$emit('batchDestroy', { type: 'batchDestroy', ...scope })
+                        vm.$emit('batchDestroy', {type: 'batchDestroy', ...scope})
                     }
                 },
                 // 分页数据
