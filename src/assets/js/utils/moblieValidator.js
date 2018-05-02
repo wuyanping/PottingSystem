@@ -20,6 +20,10 @@ module.exports = {
                     case 'reNumber':
                         bol = (/^([0-9])+(\.[0-9]+)?$/.test(value))
                         break
+                    // 验证邮箱
+                    case 'reEmail':
+                        bol = /^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+(.[a-zA-Z0-9_-])+/.test(value)
+                        break
                     }
                     if (bol) {
                         return {
@@ -60,6 +64,10 @@ module.exports = {
                     // 验证数字（包含小数）
                     case 'reNumber':
                         bol = (/^([0-9])+(\.[0-9]+)?$/.test(value))
+                        break
+                    // 验证邮箱
+                    case 'reEmail':
+                        bol = /^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+(.[a-zA-Z0-9_-])+/.test(value)
                         break
                     }
                     if (bol) {

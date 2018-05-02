@@ -21,24 +21,91 @@
                 </flexbox-item>
             </flexbox>
         </div>
+
         <div class="dd_main">
             <panel :list="list" type="5" @on-click-item="handlePanelItem" @on-img-error="onImgError"></panel>
+        </div>
+        
+        <!-- 详情弹框 -->
+        <div v-transfer-dom>
+            <popup v-model="isShowPopup" height="100%" width='100%' position="right">
+                <div class="popup1">
+                    <x-header :left-options="{showBack: false}">
+                        <a slot="left" @click="handleClose">关闭</a>
+                    </x-header>
+                    <group>
+                        <cell
+                            v-for="(item,i) in introduceListField"
+                            :key="i"
+                            :title="`${item.label}：`"
+                            :value="listData[item.field]">
+                        </cell>
+                    </group>
+                </div>
+            </popup>
         </div>
 	</div>
 </template>
 <script>
-import { XInput, Icon, Flexbox, FlexboxItem, DatetimePlugin, Panel } from 'vux'
+import { XInput, Icon, Flexbox, FlexboxItem, DatetimePlugin, Panel, TransferDom, XHeader, Cell, Popup, Group } from 'vux'
+import { isFunction } from 'UTILS/utils.js'
 Vue.use(DatetimePlugin)
 export default {
+    directives: {
+        TransferDom
+    },
     props: {
+        recordDetails: Object,
+        route: ''
     },
     components: {
+        XHeader,
         // List,
         XInput,
         Icon,
         Flexbox,
         FlexboxItem,
-        Panel
+        Panel,
+        Cell,
+        Popup,
+        Group
+    },
+    computed: {
+        title () {
+            if (this.recordDetails.title) {
+                return this.recordDetails.title
+            } else {
+                return ''
+            }
+        },
+        hasConditonSelect () {
+            if (this.recordDetails.hasConditonSelect) {
+                return this.recordDetails.hasConditonSelect
+            } else {
+                return ''
+            }
+        },
+        hasList () {
+            if (this.recordDetails.hasList) {
+                return this.recordDetails.hasList
+            } else {
+                return ''
+            }
+        },
+        commonListField () {
+            if (this.recordDetails.commonListField) {
+                return this.recordDetails.commonListField
+            } else {
+                return ''
+            }
+        },
+        introduceListField () {
+            if (this.recordDetails.introduceListField) {
+                return this.recordDetails.introduceListField
+            } else {
+                return ''
+            }
+        }
     },
     data () {
         let date = new Date()
@@ -60,14 +127,10 @@ export default {
                     title: '标题二',
                     desc: '由各种物'
                 }
-            ]
+            ],
+            listData: {},
+            isShowPopup: false
         }
-    },
-    mounted () {
-        this.$emit('setHeader', {key: 'showBack', value: true})
-    },
-    destroyed () {
-    	this.$emit('setHeader', {key: 'showBack', value: false})
     },
     methods: {
         showPlugin (index) {
@@ -90,8 +153,14 @@ export default {
         },
         handlePanelItem (panelItem) {
             console.log(panelItem)
+            if (isFunction(this.recordDetails.listItemClickFn)) {
+                this.recordDetails.listItemClickFn(this)
+            }
         },
         onImgError () {
+        },
+        handleClose () {
+            this.isShowPopup = false
         }
     }
 }

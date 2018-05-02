@@ -23,7 +23,108 @@ let model = {
         hasList: true,
         listItemClickFn: listItemClickFn,
         // commonConditionComponents: []，
-        commonListField: ['id', 'src', 'fallbackSrc', 'title', 'desc']
+        commonListField: ['id', 'src', 'fallbackSrc', 'title', 'desc'],
+        // 新建表单
+        formField: function () {
+            return [
+                {
+                    component: 'x-input',
+                    name: 'name',
+                    title: '盆栽名称',
+                    iconType: '',
+                    rule: {required: true},
+                    validatorResult: {
+                        valid: '',
+                        msg: ''
+                    },
+                    value: ''
+                },
+                {
+                    component: 'x-input',
+                    name: 'variety',
+                    title: '品种',
+                    iconType: '',
+                    rule: {required: true},
+                    validatorResult: {
+                        valid: '',
+                        msg: ''
+                    },
+                    value: ''
+                },
+                {
+                    component: 'x-input',
+                    name: 'habit',
+                    title: '生长习性',
+                    iconType: '',
+                    rule: {required: true},
+                    validatorResult: {
+                        valid: '',
+                        msg: ''
+                    },
+                    value: ''
+                },
+                {
+                    component: 'x-input',
+                    name: 'origin',
+                    title: '产地',
+                    iconType: '',
+                    rule: {required: true, type: 'reEmail'},
+                    validatorResult: {
+                        valid: '',
+                        msg: ''
+                    },
+                    value: ''
+                },
+                {
+                    component: 'x-input',
+                    name: 'use_for',
+                    title: '用途',
+                    iconType: '',
+                    rule: {required: true},
+                    validatorResult: {
+                        valid: '',
+                        msg: ''
+                    },
+                    value: ''
+                },
+                {
+                    component: 'x-input',
+                    name: 'imgs',
+                    title: '外观',
+                    iconType: '',
+                    rule: {required: false},
+                    validatorResult: {
+                        valid: '',
+                        msg: ''
+                    },
+                    value: ''
+                },
+                {
+                    component: 'x-input',
+                    name: 'info',
+                    title: '其他信息',
+                    iconType: '',
+                    rule: {required: false},
+                    validatorResult: {
+                        valid: '',
+                        msg: ''
+                    },
+                    value: ''
+                },
+                {
+                    component: 'file',
+                    name: 'memo',
+                    title: '备注',
+                    iconType: '',
+                    rule: {required: true},
+                    validatorResult: {
+                        valid: '',
+                        msg: ''
+                    },
+                    value: ''
+                }
+            ]
+        }
     },
     userInfo: {
         _hasCustomComponent: true,

@@ -4,7 +4,8 @@
     		<flexbox>
                 <flexbox-item :span="5">
                     <div class="basic_top_l">
-                        <span class="active">全部盆栽</span><span>新增盆栽</span>
+                        <span class="active">全部盆栽</span>
+                        <span @click="newForm">新增盆栽</span>
                     </div>
                 </flexbox-item>
                 <flexbox-item>
@@ -17,32 +18,22 @@
         <div class="basic_list" v-if="hasList">
             <panel :list="list" type="5" @on-click-item="handlePanelItem" @on-img-error="onImgError"></panel>
         </div>
-        <div v-transfer-dom>
-            <popup v-model="isShowPopup" height="100%" width='100%' position="right">
-                <div class="popup1">
-                    <x-header :left-options="{showBack: false}">
-                        <a slot="left" @click="handleClose">关闭</a>
-                    </x-header>
-                    <group>
-                        <cell
-                            v-for="(item,i) in introduceListField"
-                            :key="i"
-                            :title="`${item.label}：`"
-                            :value="listData[item.field]">
-                        </cell>
-                    </group>
-                </div>
-            </popup>
-        </div>
+        
+        <!-- 新建弹框 -->
+        <PopupForm 
+            :formData="formData"
+            :isShowPopup="isShowPopup"
+            :isShowSibmitBtn="true"
+            @closePopup="closePopup"
+        ></PopupForm>
     </div>
 </template>
 <script>
-import { XInput, Group, Icon, Flexbox, FlexboxItem, Panel, Popup, TransferDom, XSwitch, Cell, XHeader } from 'vux'
+import { XInput, Group, Icon, Flexbox, FlexboxItem, Panel, Popup, Cell } from 'vux'
+import FormItem from '../formItem.vue'
+import PopupForm from '../popupForm.vue'
 import { isFunction } from 'UTILS/utils.js'
 export default {
-    directives: {
-        TransferDom
-    },
     components: {
         // List,
         XInput,
@@ -51,10 +42,9 @@ export default {
         Flexbox,
         FlexboxItem,
         Panel,
-        Popup,
-        XSwitch,
         Cell,
-        XHeader
+        FormItem,
+        PopupForm
     },
     props: {
         model: {
@@ -89,13 +79,6 @@ export default {
             } else {
                 return []
             }
-        },
-        introduceListField () {
-            if (this.model.introduceListField) {
-                return this.model.introduceListField
-            } else {
-                return []
-            }
         }
     },
     data () {
@@ -110,7 +93,7 @@ export default {
                 }
             ],
             isShowPopup: false,
-            listData: {}
+            formData: []
         }
     },
     methods: {
@@ -124,7 +107,22 @@ export default {
                 this.model.listItemClickFn(this, panelItem)
             }
         },
+        // 新增表单
+        newForm () {
+            this.isShowPopup = true
+            this.formData = this.model.formField()
+            console.log(this.formData)
+        },
+        // 关闭表单
         handleClose () {
+            this.isShowPopup = false
+        },
+        changeIsShowFinish () {},
+        // 提交表单
+        sibmitForm () {
+
+        },
+        closePopup () {
             this.isShowPopup = false
         }
     }

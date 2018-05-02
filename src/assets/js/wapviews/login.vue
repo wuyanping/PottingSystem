@@ -154,6 +154,7 @@
             handleTabClick (index) {
                 this.index = index
             },
+            // 验证表单
             validatorResultFn (action, name, rule, value, i) {
                 console.log('validatorResult --------------------------------------')
                 let input = this[`${action}Data`][i]
@@ -163,6 +164,7 @@
                 this[`${action}Data`].splice(i, 1, input)
                 return result
             },
+            // 登录/注册
             handleAction (action) {
                 console.log('handleAction' + `  ${action}Data --------------- `)
                 let isCanSibmit = true // 是否可以提交
