@@ -77,10 +77,10 @@ export default{
         ...mapActions([
             'changeHeaderSetting'
         ]),
+        // tabBarItem点击的时候
         handleTabBarItem (i) {
             console.log(111111111)
             this.changeHeaderSetting({...this.headerSetting, title: this.tabbarData[i].title})
-            // this.headerSetting.title = this.tabbarData[i].title
         }
         // setHeader ({key, value}) {
         //     console.log(key, value)

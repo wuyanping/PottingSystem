@@ -102,14 +102,6 @@ export default {
             }
         }
     },
-    mounted () {
-    	console.log(22)
-        this.$emit('setHeader', {key: 'showBack', value: true})
-        this.$emit('setHeader', {key: 'title', value: '盆栽详情'})
-    },
-    destroyed () {
-    	this.$emit('setHeader', {key: 'showBack', value: false})
-    },
     methods: {
     	go ({title, record}) {
     		console.log('gogo')

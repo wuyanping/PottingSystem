@@ -9,7 +9,7 @@ const login = resolve => require(['VIEWS/login.vue'], resolve)
 const notFound = resolve => require(['VIEWS/404.vue'], resolve)
 
 // ---------------------------首页----------------------------------
-const home = resolve => require(['PAGE/home/home.vue'], resolve)
+// const home = resolve => require(['PAGE/home/home.vue'], resolve)
 const userInfo = resolve => require(['PAGE/top/components/userInfo.vue'], resolve)
 const model = resolve => require(['PAGE/model/model.vue'], resolve)
 
@@ -23,7 +23,7 @@ let routes = [
                 path: '/index',
                 alias: '/',
                 name: 'index',
-                component: home
+                component: userInfo
             },
             {
                 path: '/index/userInfo',

@@ -5,8 +5,8 @@
                 <cell
                     v-for="(formItem, i) in formData"
                     :key="i"
-                    :title="formItem.label"
-                    :value="formItem.value"
+                    :title="formItem.title"
+                    :value="formItem.specialHandlingValue ? formItem.specialHandlingValue(formItem.options, formItem.value) : formItem.value"
                     is-link
                     @click.native="handleShowPopup(i)">
                 </cell>
@@ -22,14 +22,17 @@
         <div v-transfer-dom>
             <popup v-model="isShowPopup" height="100%">
                 <div class="popup1">
-                    <x-header :left-options="{showBack: false}" :title="`设置${formItem.label}`">
+                    <x-header :left-options="{showBack: false}" :title="i ? `设置${formData[i].title}` : ''">
                         <a slot="left" @click="handleCancelPopup">取消</a>
                         <a slot="right" @click="handleFinishPopup" v-if='isShowFinish'>完成</a>
                     </x-header>
-                    <FormItem
-                        :formItem="formItem"
-                        @changeIsShowFinish="changeIsShowFinish"
-                    ></FormItem>
+                    <group>
+                        <FormItem
+                            :formItem="formData[i]"
+                            :isShowMsg="true"
+                            @changeIsShowFinish="changeIsShowFinish"
+                        ></FormItem>
+                    </group>
               </div>
             </popup>
         </div>
@@ -40,6 +43,7 @@ import { Group, Cell, Popup, XSwitch, TransferDom, XButton, XHeader, AlertPlugin
 import { mapGetters, mapActions } from 'vuex'
 import FormItem from 'WAPVIEWS/components/formItem'
 import theUserInfoDetail from './userInfoDetail.js'
+import {validatorFn} from 'UTILS/moblieValidator.js'
 Vue.use(AlertPlugin)
 export default {
     directives: {
@@ -53,23 +57,11 @@ export default {
             // 是否显示popup组件
             isShowPopup: false,
             // 是否显示完成
-            isShowFinish: false,
+            isShowFinish: true,
             // 当前模块
             currentModel: '',
             formData: [],
-            formItem: {
-                component: '',
-                label: '',
-                field: '',
-                iconType: '',
-                rule: {required: true},
-                validatorResult: {
-                    valid: '',
-                    msg: ''
-                },
-                value: ''
-            },
-            i: 0,
+            i: null,
             oldFormItem: {}
         }
     },
@@ -93,18 +85,46 @@ export default {
         ...mapActions([
             'changeHeaderSetting'
         ]),
+        // 保存
         handleSave () {
-            console.log(11)
+            let isCanSibmit = true // 是否可以提交
+            this.formData.forEach((input, i) => {
+                // 遍历验证每个input
+                let {name, rule, value} = input
+                var result = validatorFn(name, rule, value)
+                input.validatorResult = result
+                input.iconType = !result.valid ? 'error' : ''
+                isCanSibmit = isCanSibmit && result.valid
+                this.$set(this.formData, i, input)
+            })
+            if (isCanSibmit) {
+                console.log('可以提交了')
+                console.log(this.formData)
+            } else {
+                console.log('验证失败')
+                this.$vux.alert.show({
+                    title: '内容验证提示',
+                    content: '验证失败',
+                    buttonText: '我知道了'
+                })
+            }
         },
+        // 弹窗编辑弹框
         handleShowPopup (i) {
             this.isShowPopup = true
             this.i = i
-            this.formItem = Object.assign({}, this.formData[i])
-            this.oldFormItem = Object.assign({}, this.formItem)
+            console.log(this.formData[i])
+            this.oldFormItem = Object.assign({}, this.formData[i])
         },
+        // 取消编辑弹框， 不改变原来的数据
+        handleCancelPopup () {
+            this.isShowPopup = false
+            this.$set(this.formData, this.i, this.oldFormItem)
+        },
+        // 完成编辑弹框
         handleFinishPopup () {
-            let { iconType, validatorResult } = this.formItem
-            console.log(iconType)
+            let { iconType, validatorResult } = this.formData[this.i]
+            console.log(this.formItem)
             if (iconType === 'error') {
                 this.$vux.alert.show({
                     title: '内容验证提示',
@@ -117,37 +137,36 @@ export default {
                         console.log('Plugin: I\'m hiding now')
                     }
                 })
+            } else {
+                this.isShowPopup = false
             }
-        },
-        handleCancelPopup () {
-            this.isShowPopup = false
-            this.formItem = Object.assign({}, this.oldFormItem)
-            this.$set(this.formData, this.i, this.oldFormItem)
         },
         // 设置表单对话框数据
         setFormData (row = {}) {
             let formField = this.currentModel.formField()
+            console.log(formField)
             formField.forEach(item => {
                 // 在打开对话框同时赋值
-                if (Object.keys(row).includes(item['field'])) {
+                if (Object.keys(row).includes(item['name'])) {
                     if (item.customEditFn) {
-                        item['value'] = item.customEditFn(row[item['field']])
+                        item['value'] = item.customEditFn(row[item['name']])
                     } else {
-                        item['value'] = row[item['field']]
+                        item['value'] = row[item['name']]
                     }
                 }
             })
             return formField
         },
+        // 是否出现完成按钮
         changeIsShowFinish (value) {
-            let bol = false
-            console.log(this.formItem.value, this.oldFormItem.value)
-            if (this.formItem.value !== this.oldFormItem.value) {
-                bol = true
-            } else {
-                bol = false
-            }
-            this.isShowFinish = bol
+        //     let bol = false
+        //     console.log(this.formData[this.i].value, this.oldFormItem.value)
+        //     if (this.formData[this.i].value !== this.oldFormItem.value) {
+        //         bol = true
+        //     } else {
+        //         bol = false
+        //     }
+        //     this.isShowFinish = bol
         }
     }
 }

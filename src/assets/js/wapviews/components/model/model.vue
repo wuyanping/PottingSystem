@@ -63,6 +63,7 @@ export default {
             'headerSetting'
         ])
     },
+    // 在渲染该组件的对应路由被 confirm 前调用
     beforeRouteEnter (to, from, next) {
         console.log('beforeRouteEnter')
         next(vm => {
@@ -79,16 +80,13 @@ export default {
         ...mapActions([
             'changeHeaderSetting'
         ]),
+        // 图片发生错误时触发
         onImgError (item, $event) {
             console.log(item, $event)
-        },
-        handlePanelItem (panelItem) {
-            console.log(panelItem)
-            console.log(this.$route)
-            this.$router.push(`${this.$route.path}/${panelItem.id}`)
         }
     },
     watch: {
+        // 监听路由变化，深度监听
         '$route': {
             deep: true,
             handler: function (nv) {

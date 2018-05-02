@@ -4,19 +4,20 @@
             v-if="hasCustomComponent"
             :is="currentRecordDetails.CustomComponent"
         />
-        <CommonMain v-else :model="currentRecordDetails" :route="routePath" />
+        <!-- <CommonMain v-else :model="currentRecordDetails" :route="routePath" /> -->
+        <CommonRecordDetails v-else :recordDetails="currentRecordDetails" :route="routePath" />
     </div>
 </template>
 <script>
 import { XInput, Group, Icon, Flexbox, FlexboxItem, Panel } from 'vux'
 import { mapGetters, mapActions } from 'vuex'
 import theRecordDetails from './recordDetails.js'
-// import CommonRecordDetails from './components/page/commonRecordDetails'
-import CommonMain from '../page/commonMain.vue'
+import CommonRecordDetails from '../page/commonRecordDetails'
+// import CommonMain from '../page/commonMain.vue'
 export default {
     components: {
-        // CommonRecordDetails,
-        CommonMain,
+        CommonRecordDetails,
+        // CommonMain,
         XInput,
         Group,
         Icon,
