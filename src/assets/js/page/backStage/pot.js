@@ -1,15 +1,18 @@
 /*
 盆栽管理
  */
-// import ElSelect from '../../../../public/components/commonElSelect.vue'
+import ElSelect from 'COMPONENTS/public/commonElSelect.vue'
+import ElSwitch from 'COMPONENTS/public/commonElSwitch.vue'
 import ElButton from 'COMPONENTS/public/commonElButton.vue'
 import Uploader from 'COMPONENTS/public/commonUploader.vue'
 import ElInput from 'COMPONENTS/public/commonElInput.vue'
 import ElInputDynamic from 'COMPONENTS/public/commonElInputDynamic.vue'
 import TableDetailLink from 'COMPONENTS/public/commonTableDetailLink.vue'
+import selfaddPassPottingDialog from './components/selfAddPassPottingDialog.vue'
 
 import validtor from 'UTILS/validator.js'
 import { ajax } from 'UTILS/ajax.js'
+import { isArray, isObject } from 'UTILS/utils.js'
 
 function customSerializeFn (item) {
     let obj = {}
@@ -25,15 +28,15 @@ const pot = {
     // 是否显示设置
     hasTitleBack: false,
     hasTabs: false,
-    hasConditionStatusSelect: false,
+    hasConditionStatusSelect: true,
     hasConditionSearch: true,
-    hasConditionAdd: true,
+    // hasConditionAdd: true,
     hasConditionRefresh: true,
     hasTableSelection: true,
     hasTableIndex: true,
     hasTableOperation: true,
-    hasTableOperationEdit: true,
-    hasTableOperationDelete: true,
+    hasTableOperationEdit: false,
+    hasTableOperationDelete: false,
     hasPaginationBatchDestroy: true,
     // 默认条件搜索的占位符 和hasConditionSearch连用
     defaultConditionSearchPlaceholder: '盆栽名称',
@@ -56,6 +59,28 @@ const pot = {
         pot: {
             // 条件刷选
             commonConditionComponents: [
+                // {
+                //     component: ElSelect,
+                //     props: {
+                //         field: 'rfid',
+                //         value: undefined,
+                //         title: '盆栽通过状态',
+                //         lists: [
+                //             {
+                //                 label: '请选择',
+                //                 value: undefined
+                //             },
+                //             {
+                //                 label: '通过',
+                //                 value: 0
+                //             },
+                //             {
+                //                 label: '不通过',
+                //                 value: 1
+                //             }
+                //         ]
+                //     }
+                // },
                 {
                     component: ElInput,
                     props: {
@@ -125,16 +150,72 @@ const pot = {
                     field: 'info'
                 },
                 {
+                    label: '状态',
+                    field: 'cstatus',
+                    sortable: 'custom',
+                    component: ElSwitch
+                },
+                {
                     label: '备注',
                     field: 'memo'
                 }
             ],
             // 表格列特殊值处理
-            // tableFieldFn: function (data) {
-            //  return data
-            // },
+            tableFieldFn: function (data) {
+                console.log('tableFieldFn ---- ')
+                console.log(data)
+                const g = function (gender) {
+                    return gender === 1 ? '女' : '男'
+                }
+                const arrStr = function (arr) {
+                    let arrString = ''
+                    if (isArray(arr)) {
+                        arrString = arr.join()
+                    }
+                    return arrString
+                }
+
+                const arrObj = function (arr) {
+                    let arrString = ''
+                    if (isArray(arr)) {
+                        arr.forEach(obj => {
+                            if (isObject(obj)) {
+                                arrString += `${obj.param}： ${obj.val} ； `
+                            }
+                        })
+                    }
+                    return arrString
+                }
+
+                if (isArray(data)) {
+                    data.forEach(v => {
+                        v.gender = g(v.gender)
+                        v.main = arrStr(v.main)
+                        v.info = arrObj(v.info)
+                    })
+                }
+                if (isObject(data)) {
+                    data.main = arrStr(data.main)
+                    data.info = arrObj(data.info)
+                }
+                return data
+            },
             // 表格的操作
-            commonTableOperationComponents: [],
+            commonTableOperationComponents: [
+                // {
+                //     component: ElButton,
+                //     props: {
+                //         type: 'text',
+                //         loading: false,
+                //         disabled: false,
+                //         className: '',
+                //         display_name: '通过',
+                //         clickFn: (vm, scope) => {
+                //             vm.$emit('customEv', { type: 'pass', ...scope })
+                //         }
+                //     }
+                // }
+            ],
             // 分页操作组件
             commonPaginationOperationComponents: [],
             // 分页设定
@@ -146,7 +227,12 @@ const pot = {
             // commonOperationComponents
             // commonTableOperationComponents
             // commonPaginationOperationComponents
-            // customOperationFn: {},
+            customOperationFn: {
+                // pass (vm, msg) {
+                //     vm.$refs['addPassPottingDialog'].visible = true
+                // }
+            },
+
             // 默认表单域
             commonFormFieldsFn () {
                 return [
@@ -263,6 +349,8 @@ const pot = {
             // commonTableBeforeComponent: '',
             // commonPaginationBeforeComponent: '',
             commonCustomDialog: {
+                // ref: 'addPassPottingDialog',
+                // component: selfaddPassPottingDialog
             }
         }
     }

@@ -7,6 +7,7 @@ import ElInput from 'COMPONENTS/public/commonElInput.vue'
 
 import validtor from 'UTILS/validator.js'
 import { ajax } from 'UTILS/ajax.js'
+import { isArray, isObject } from 'UTILS/utils.js'
 
 function customSerializeFn (item) {
     let obj = {}
@@ -110,20 +111,20 @@ const user = {
                 }
             ],
             // 表格列特殊值处理
-            // tableFieldFn: function (data) {
-            //  const g = function (gender) {
-            //      return gender === 1 ? '女' : '男'
-            //  }
-            //  if (isArray(data)) {
-            //      data.forEach(v => {
-            //          v.gender = g(v.gender)
-            //      })
-            //  }
-            //  if (isObject(data)) {
-            //      data.gender = g(data.gender)
-            //  }
-            //  return data
-            // },
+            tableFieldFn: function (data) {
+                const g = function (gender) {
+                    return gender === 1 ? '女' : '男'
+                }
+                if (isArray(data)) {
+                    data.forEach(v => {
+                        v.gender = g(v.gender)
+                    })
+                }
+                if (isObject(data)) {
+                    data.gender = g(data.gender)
+                }
+                return data
+            },
             // 表格的操作
             commonTableOperationComponents: [],
             // 分页操作组件

@@ -13,6 +13,14 @@
             <cell title="修改个人信息" is-link link="userInfo/editUserInfo"></cell>
             <cell title="修改密码" is-link link="userInfo/editPassword"></cell>
         </group>
+
+        <!-- 新建弹框 -->
+        <PopupForm 
+            :formData="formData"
+            :isShowPopup="isShowPopup"
+            :isShowSibmitBtn="true"
+            @closePopup="closePopup"
+        ></PopupForm>
 	</div>
 </template>
 <script>
@@ -20,11 +28,24 @@ import { Blur, Group, Cell } from 'vux'
 import PopupForm from 'WAPVIEWS/components/input/popupForm.vue'
 export default {
     components: {
-        Blur, Group, Cell
+        Blur, Group, Cell, PopupForm
     },
     data () {
         return {
-            url: 'https://o3e85j0cv.qnssl.com/tulips-1083572__340.jpg'
+            url: 'https://o3e85j0cv.qnssl.com/tulips-1083572__340.jpg',
+            isShowPopup: false,
+            formData: []
+        }
+    },
+    methods: {
+        // 新增表单
+        newForm () {
+            this.isShowPopup = true
+            this.formData = this.model.formField()
+            console.log(this.formData)
+        },
+        closePopup () {
+            this.isShowPopup = false
         }
     },
     methods: {

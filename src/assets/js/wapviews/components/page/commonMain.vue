@@ -33,7 +33,6 @@
 </template>
 <script>
 import { XInput, Group, Icon, Flexbox, FlexboxItem, Panel, Popup, Cell, LoadMore } from 'vux'
-import FormItem from '../input/formItem.vue'
 import PopupForm from '../input/popupForm.vue'
 import { isFunction } from 'UTILS/utils.js'
 import BScroll from 'better-scroll'
@@ -47,7 +46,6 @@ export default {
         FlexboxItem,
         Panel,
         Cell,
-        FormItem,
         PopupForm,
         LoadMore
     },
