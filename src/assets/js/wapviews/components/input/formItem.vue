@@ -13,6 +13,18 @@
             placeholder-align="left">
         </x-input>
         
+        <!-- 文本框 -->
+        <x-textarea
+            v-if="formItem.component === 'x-textarea'"
+            :title="isShowTiTle ? formItem.title : ''"
+            :max="20"
+            :placeholder="`请输入${formItem.title}`"
+            @on-change="(val) => validatorResultFn(formItem.title, formItem.rule, val)"
+            @on-blur="() => validatorResultFn(formItem.title, formItem.rule, formItem.value)"
+            v-model="formItem.value"
+            >
+        </x-textarea>
+
         <!-- 单选框 -->
         <radio
             v-if="formItem.component === 'radio'"
@@ -47,16 +59,17 @@
     </div>
 </template>
 <script>
-import { XInput, Radio, Datetime, Toast } from 'vux'
+import { XInput, Radio, Datetime, Toast, XTextarea } from 'vux'
 import {validatorFn} from 'UTILS/moblieValidator.js'
-import Camera from 'WAPVIEWS/components/camera.vue'
+import Camera from './camera.vue'
 export default {
     components: {
         XInput,
         Radio,
         Datetime,
         Toast,
-        Camera
+        Camera,
+        XTextarea
     },
     props: {
         formItem: Object,
@@ -103,13 +116,15 @@ export default {
          */
         returnShuju (obj) {
             console.log(obj)
+            console.log(this.formItem)
             if (obj === 'type') {
                 this.setToast('text', '请上传jpeg或png的图片', '15em')
             } else if (obj === 'size') {
                 this.setToast('text', '请输入小于300k图片', '15em')
             } else {
                 this.formItem.value = obj.value
-                validatorFn({name: obj.name, rule: this.formItem.rule, value: obj.value})
+                this.validatorResultFn(obj.name, this.formItem.rule, obj.value)
+                // validatorFn({name: obj.name, rule: this.formItem.rule, value: obj.value})
             }
         },
         // 提示弹窗

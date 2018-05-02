@@ -14,7 +14,7 @@
     </div>
 </template>
 <style lang="sass">
-@import '../../../sass/mixins/_absoluteCenter.scss';
+@import '../../../../sass/mixins/_absoluteCenter.scss';
 .camera {
     margin-top:5px;
     height:5rem;

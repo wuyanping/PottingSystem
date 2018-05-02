@@ -15,6 +15,8 @@
                 </flexbox-item>
             </flexbox>
     	</div>
+
+        <!-- 盆栽列表 -->
         <div class="basic_list" v-if="hasList">
             <panel :list="list" type="5" @on-click-item="handlePanelItem" @on-img-error="onImgError"></panel>
         </div>
@@ -30,8 +32,8 @@
 </template>
 <script>
 import { XInput, Group, Icon, Flexbox, FlexboxItem, Panel, Popup, Cell } from 'vux'
-import FormItem from '../formItem.vue'
-import PopupForm from '../popupForm.vue'
+import FormItem from '../input/formItem.vue'
+import PopupForm from '../input/popupForm.vue'
 import { isFunction } from 'UTILS/utils.js'
 export default {
     components: {
@@ -97,12 +99,12 @@ export default {
         }
     },
     methods: {
+        // 图片方式发生错误时触发
         onImgError (item, $event) {
             console.log(item, $event)
         },
+        // 点击盆栽列，跳到盆栽详情页
         handlePanelItem (panelItem) {
-            console.log(panelItem)
-            console.log(this.model)
             if (isFunction(this.model.listItemClickFn)) {
                 this.model.listItemClickFn(this, panelItem)
             }

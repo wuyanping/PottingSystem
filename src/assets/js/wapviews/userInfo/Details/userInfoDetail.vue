@@ -41,7 +41,7 @@
 <script>
 import { Group, Cell, Popup, XSwitch, TransferDom, XButton, XHeader, AlertPlugin } from 'vux'
 import { mapGetters, mapActions } from 'vuex'
-import FormItem from 'WAPVIEWS/components/formItem'
+import FormItem from 'WAPVIEWS/components/input/formItem'
 import theUserInfoDetail from './userInfoDetail.js'
 import {validatorFn} from 'UTILS/moblieValidator.js'
 Vue.use(AlertPlugin)
