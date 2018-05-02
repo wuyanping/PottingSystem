@@ -91,6 +91,7 @@ export default{
                         remember: this.remember_flag
                     }
                     ajax.call(this, 'post', '/api/login', data, (data) => {
+                        console.log(data)
                         if (data !== '') { // 成功是返回用户的信息
                             this.$message({
                                 showClose: false,
