@@ -1,6 +1,8 @@
 <!-- 一级详情页 -->
 <template>
 	<div class="commonDetails">
+
+		<!-- 盆栽介绍 -->
 		<div class="cd_top">
 			<img v-if="hasIntroduceImg" :src="url" />
 			<div v-if="hasIntroduce" class="cd_t_conent">
@@ -19,7 +21,8 @@
 		</div>
 
 		<div class="grey_line"></div>
-
+		
+		<!-- 记录列表 -->
 		<div class="cd_bottom" v-if='hasRecords'>
 			<flexbox :gutter="0" wrap="wrap" justify="space-between">
 		      	<flexbox-item

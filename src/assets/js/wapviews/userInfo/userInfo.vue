@@ -17,6 +17,7 @@
 </template>
 <script>
 import { Blur, Group, Cell } from 'vux'
+import PopupForm from 'WAPVIEWS/components/input/popupForm.vue'
 export default {
     components: {
         Blur, Group, Cell

@@ -11,8 +11,8 @@
                     <span class="fontSize22">盆栽溯源后台系统</span>
                 </div>
                 <el-form :model="userInfo" :rules="rules" ref="userInfo">
-                    <el-form-item label="" prop="userEmail">
-                        <el-input type="email" placeholder="输入邮箱" name="email" v-model="userInfo.userEmail" auto-complete="off"></el-input>
+                    <el-form-item label="" prop="userName">
+                        <el-input type="email" placeholder="输入用户名" name="userName" v-model="userInfo.userName" auto-complete="off"></el-input>
                     </el-form-item>
                     <el-form-item label="" prop="pwd">
                         <el-input type="password" placeholder="输入密码" name="pwd" v-model="userInfo.pwd" auto-complete="off" @keyup.native.enter="submitForm('userInfo')"></el-input>
@@ -51,14 +51,18 @@ export default{
         }
         return {
             userInfo: {
-                userEmail: '',
+                userName: '',
                 pwd: ''
             },
             rules: {
-                userEmail: [
+                userName: [
                     {
-                        validator: checkEmail,
+                        required: true,
+                        message: '用户名不能为空！',
                         trigger: 'blur'
+                        // ,
+                        // validator: checkEmail,
+                        // trigger: 'blur'
                     }
                 ],
                 pwd: [
@@ -82,7 +86,7 @@ export default{
                 if (valid) {
                     console.log(this.userInfo)
                     var data = {
-                        email: this.userInfo.userEmail,
+                        name: this.userInfo.userName,
                         password: this.userInfo.pwd,
                         remember: this.remember_flag
                     }

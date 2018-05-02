@@ -89,18 +89,6 @@ let model = {
                 },
                 {
                     component: 'x-input',
-                    name: 'imgs',
-                    title: '外观',
-                    iconType: '',
-                    rule: {required: false},
-                    validatorResult: {
-                        valid: '',
-                        msg: ''
-                    },
-                    value: ''
-                },
-                {
-                    component: 'x-input',
                     name: 'info',
                     title: '其他信息',
                     iconType: '',
@@ -112,9 +100,21 @@ let model = {
                     value: ''
                 },
                 {
-                    component: 'file',
+                    component: 'x-textarea',
                     name: 'memo',
                     title: '备注',
+                    iconType: '',
+                    rule: {required: false},
+                    validatorResult: {
+                        valid: '',
+                        msg: ''
+                    },
+                    value: ''
+                },
+                {
+                    component: 'file',
+                    name: 'imgs',
+                    title: '外观',
                     iconType: '',
                     rule: {required: true},
                     validatorResult: {
