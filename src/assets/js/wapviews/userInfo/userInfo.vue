@@ -26,6 +26,16 @@ export default {
         return {
             url: 'https://o3e85j0cv.qnssl.com/tulips-1083572__340.jpg'
         }
+    },
+    methods: {
+        getUserInfo () {
+            axios.get('/api/user').then(res => {
+                console.log(res)
+            })
+        }
+    },
+    mounted () {
+        this.getUserInfo()
     }
 }
 </script>
