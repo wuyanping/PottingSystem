@@ -17,7 +17,8 @@
     	</div>
 
         <!-- 盆栽列表 -->
-        <div class="basic_list" v-if="hasList">
+        <div class="basic_list" v-if="hasList" ref="wrapper" :style="{height: height}">
+            <load-more tip="正在加载" v-if="showPullDown"></load-more>
             <panel :list="list" type="5" @on-click-item="handlePanelItem" @on-img-error="onImgError"></panel>
         </div>
         
@@ -31,9 +32,10 @@
     </div>
 </template>
 <script>
-import { XInput, Group, Icon, Flexbox, FlexboxItem, Panel, Popup, Cell } from 'vux'
+import { XInput, Group, Icon, Flexbox, FlexboxItem, Panel, Popup, Cell, LoadMore } from 'vux'
 import PopupForm from '../input/popupForm.vue'
 import { isFunction } from 'UTILS/utils.js'
+import BScroll from 'better-scroll'
 export default {
     components: {
         // List,
@@ -44,7 +46,8 @@ export default {
         FlexboxItem,
         Panel,
         Cell,
-        PopupForm
+        PopupForm,
+        LoadMore
     },
     props: {
         model: {
@@ -82,18 +85,34 @@ export default {
         }
     },
     data () {
+        let he = window.screen.height - 140
         return {
             list: [
-                {
-                    id: 0,
-                    src: 'http://somedomain.somdomain/x.jpg',
-                    fallbackSrc: './static/image/company_default_logo.png',
-                    title: '标题一标题一标题一标题一标题一标题一标题一',
-                    desc: '由各种物质组成的巨型球状天体，叫做星球。星球有一定的形状，有自己的运行轨道。由各种物质组成的巨型球状天体，叫做星球。星球有一定的形状，有自己的运行轨道。'
-                }
+                // {
+                //     id: 0,
+                //     src: 'http://somedomain.somdomain/x.jpg',
+                //     fallbackSrc: './static/image/company_default_logo.png',
+                //     title: '标题一标题一标题一标题一标题一标题一标题一',
+                //     desc: '由各种物质组成的巨型球状天体，叫做星球。星球有一定的形状，有自己的运行轨道。由各种物质组成的巨型球状天体，叫做星球。星球有一定的形状，有自己的运行轨道。'
+                // }
             ],
             isShowPopup: false,
-            formData: []
+            formData: [],
+            options: {
+                pullDownRefresh: {
+                    threshold: 50,
+                    stop: 20
+                },
+                pullUpLoad: {
+                    threshold: -20
+                },
+                click: true,
+                probeType: 3,
+                startY: 0,
+                scrollbar: false
+            },
+            showPullDown: false,
+            height: `${he}px`
         }
     },
     methods: {
@@ -124,7 +143,68 @@ export default {
         },
         closePopup () {
             this.isShowPopup = false
+        },
+        getListMsg (page = 1) {
+            axios.get(`/api/pot?page=${page}`).then(res => {
+                let potData = res.data.data
+                let list = []
+                potData.forEach(v => {
+                    let obj = {
+                        id: v.id,
+                        title: v.name,
+                        desc: v.use_for,
+                        src: v.imgs,
+                        fallbackSrc: './static/image/company_default_logo.png'
+                    }
+                    this.list.push(obj)
+                })
+                this.list.current_page = res.data.current_page
+                this.list.total_page = Math.ceil(res.data.total / res.data.per_page)
+            })
+            axios.get('api/pot/1').then(res => {
+                console.log(res)
+            })
+        },
+        _initScroll () {
+            if (!this.$refs.wrapper) {
+                return
+            }
+            this.scroll = new BScroll(this.$refs.wrapper, this.options)
+            if (this.options.pullUpLoad) {
+                let vm = this
+                // 上拉刷新
+                this.scroll.on('pullingUp', () => {
+                    if (this.list.current_page < this.list.total_page) {
+                        this.getListMsg(this.list.current_page + 1)
+                    }
+                    this.scroll.finishPullUp()
+                    this.scroll.refresh()
+                })
+                // 下拉加载
+                this.scroll.on('pullingDown', () => {
+                    this.showPullDown = true
+                    this.list = []
+                    setTimeout(() => {
+                        this.getListMsg()
+                        this.showPullDown = false
+                    }, 1000)
+                    this.scroll.finishPullDown()
+                    this.scroll.refresh()
+                })
+            }
         }
+    },
+    mounted () {
+        this.getListMsg()
+        setTimeout(() => {
+            this._initScroll()
+        }, 20)
+        console.log(this.$route)
+    },
+    created () {
+        this.$nextTick(() => {
+            this._initScroll()
+        })
     }
 }
 </script>
