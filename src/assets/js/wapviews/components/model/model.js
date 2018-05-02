@@ -129,7 +129,24 @@ let model = {
     userInfo: {
         _hasCustomComponent: true,
         CustomComponent: userInfo,
-        title: '个人信息'
+        title: '个人信息',
+        // 新建表单
+        formField: function () {
+            return [
+                {
+                    component: 'file',
+                    name: 'imgs',
+                    title: '外观',
+                    iconType: '',
+                    rule: {required: true},
+                    validatorResult: {
+                        valid: '',
+                        msg: ''
+                    },
+                    value: ''
+                }
+            ]
+        }
     }
 }
 export default model

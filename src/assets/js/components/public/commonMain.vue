@@ -438,7 +438,7 @@
         data: function () {
             return {
                 tabsActive: '',
-
+                // 默认搜索框
                 conditionSearch: '',
                 conditionRefreshSetting: {
                     type: 'primary',
@@ -514,7 +514,7 @@
                 this.tabsActive = this.$route.query.current ? this.$route.query.current : this.$route.params.model
             }
             // 避免了在与自定义的commonMain组件切换时出现/api/common的请求
-            console.log(22222)
+            console.log('mounted ----- ')
             console.log(this.route)
             console.log(this.route && this.route !== '')
             if (this.route && this.route !== '') {
@@ -567,16 +567,18 @@
                     console.error('请在model中customOperationFn对象添加对应按钮type的回调方法')
                 }
             },
+            // 更改盆栽通过状态
             emitTableStatus (msg) {
-                status(this, this.route, msg.id)
-                    .then(data => {
-                        this.swtich_option_tableData({data: data, id: msg.id})
-                        if (data.res === 1) {
-                            this.$mg(this, '已启用', 'success', 1000)
-                        } else {
-                            this.$mg(this, '已停用', 'success', 1000)
-                        }
-                    })
+                console.log(msg)
+                // status(this, this.route, msg.id)
+                //     .then(data => {
+                //         this.swtich_option_tableData({data: data, id: msg.id})
+                //         if (data.res === 1) {
+                //             this.$mg(this, '已启用', 'success', 1000)
+                //         } else {
+                //             this.$mg(this, '已停用', 'success', 1000)
+                //         }
+                //     })
             },
             emitDialogSave (msg) {
                 this[`${msg.type}Save`](msg)
@@ -621,6 +623,9 @@
                 this.formVisible = true
             },
             refresh (scope) {
+                this.commonConditionComponents.forEach(item => {
+                    item.props.value = undefined
+                })
                 this.filter = {}
                 this.conditionSearch = ''
                 if (this.hasConditionStatusSelect) {
@@ -633,7 +638,6 @@
                 this.formLoading = true
                 edit(this, this.route, scope.row.id)
                     .then(data => {
-                        console.log(data)
                         this.formLoading = false
                         this.formData = this.setFormData(scope.type, data)
                         console.log(this.formData)
@@ -730,8 +734,13 @@
             //  }
             //  this.tableData.unshift(data)
             // },
+
+            // 表格列特殊值处理
             edit_option_tableData (data) {
+                console.log('edit_option_tableData')
+                console.log(data)
                 data = this.model.tableFieldFn ? this.model.tableFieldFn(data) : data
+                console.log(data)
                 this.tableData.forEach(v => {
                     if (v.id === data.id) {
                         for (let i in v) {
@@ -770,6 +779,7 @@
             route: function (nv, v) {
                 console.log('watch route -------------')
                 console.log(nv)
+                this.filter
                 if (nv.indexOf('undefined') > -1) return
                 if (nv !== v) {
                     this.tableData = []
@@ -777,6 +787,7 @@
                         this.tabsActive = this.$route.query.current ? this.$route.query.current : this.$route.params.model
                     }
                     this.ajaxIndex()
+                    // this.refresh()
                 }
             }
         }

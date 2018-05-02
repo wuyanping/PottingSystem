@@ -17,14 +17,14 @@
                     return {
                         field: 'cstatus',
                         value: undefined,
-                        title: '状态',
+                        title: '通过状态',
                         lists: [
                             {
-                                label: '启动',
+                                label: '通过',
                                 value: 1
                             },
                             {
-                                label: '关闭',
+                                label: '不通过',
                                 value: 0
                             }
                         ],

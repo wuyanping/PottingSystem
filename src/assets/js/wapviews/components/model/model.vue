@@ -3,6 +3,7 @@
         <component
             v-if="hasCustomComponent"
             :is="currentModel.CustomComponent"
+            :model="currentModel"
         />
         <CommonMain v-else :model="currentModel" :route="routePath" />
     </div>

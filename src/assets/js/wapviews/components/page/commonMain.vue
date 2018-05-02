@@ -32,7 +32,6 @@
 </template>
 <script>
 import { XInput, Group, Icon, Flexbox, FlexboxItem, Panel, Popup, Cell } from 'vux'
-import FormItem from '../input/formItem.vue'
 import PopupForm from '../input/popupForm.vue'
 import { isFunction } from 'UTILS/utils.js'
 export default {
@@ -45,7 +44,6 @@ export default {
         FlexboxItem,
         Panel,
         Cell,
-        FormItem,
         PopupForm
     },
     props: {

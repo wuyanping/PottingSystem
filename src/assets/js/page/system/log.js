@@ -28,7 +28,7 @@ const log = {
     hasConditionRefresh: true,
     hasTableSelection: true,
     hasTableIndex: true,
-    hasTableOperation: true,
+    hasTableOperation: false,
     hasTableOperationEdit: false,
     hasTableOperationDelete: false,
     hasPaginationBatchDestroy: false,
@@ -98,9 +98,9 @@ const log = {
                 }
             ],
             // 表格列特殊值处理
-            // tableFieldFn: function (data) {
-            //  return data
-            // },
+            tableFieldFn: function (data) {
+                return data
+            },
             // 表格的操作
             // commonTableOperationComponents: [],
             // 分页操作组件

@@ -1,6 +1,7 @@
 <!-- 二级详情页 -->
 <template>
 	<div class="detailsDetails">
+        <!-- 记录搜索 -->
 		<div class="dd_top">
             <flexbox :gutter="0">
                 <flexbox-item :span="3/12" class="txt-c">
@@ -21,12 +22,13 @@
                 </flexbox-item>
             </flexbox>
         </div>
-
+        
+        <!-- 节点列表 -->
         <div class="dd_main">
             <panel :list="list" type="5" @on-click-item="handlePanelItem" @on-img-error="onImgError"></panel>
         </div>
         
-        <!-- 详情弹框 -->
+        <!-- 盆栽节点详情弹框 -->
         <div v-transfer-dom>
             <popup v-model="isShowPopup" height="100%" width='100%' position="right">
                 <div class="popup1">
