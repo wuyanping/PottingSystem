@@ -21,8 +21,46 @@ function customSerializeFn (item) {
         obj['_hasfile'] = true
     }
     obj[item['field']] = item['value']
-    console.log(111)
     return obj
+}
+
+function customSerializeParamsValue (item) {
+    let obj = {}
+    item.value.forEach(pv => {
+        if (pv.param === '') return false
+        obj[pv.param] = pv.value
+    })
+    if (Object.keys(obj).length > 0) {
+        return {
+            [item['field']]: JSON.stringify(obj)
+        }
+    } else {
+        return {
+            [item['field']]: null
+        }
+    }
+}
+
+function customEditParamsValue (value) {
+    if (value) {
+        let params_value = JSON.parse(value), arr = []
+        Object.keys(params_value).forEach(param => {
+            arr.push({
+                param: param,
+                value: params_value[param]
+            })
+        })
+        arr.push({
+            param: '',
+            value: ''
+        })
+        return arr
+    } else {
+        return [{
+            param: '',
+            value: ''
+        }]
+    }
 }
 
 const pot = {
@@ -339,7 +377,9 @@ const pot = {
                         field: 'info',
                         label: '其他信息',
                         required: false,
-                        value: []
+                        value: [],
+                        customSerializeFn: customSerializeParamsValue,
+                        customEditFn: customEditParamsValue
                     },
                     {
                         component: 'ElInput',

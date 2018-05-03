@@ -155,6 +155,9 @@ module.exports = {
             router: route,
             id: id
         }
+        console.log('-------update ---- ')
+        console.log(arg)
+        console.log(params)
         return new Promise(resolve => {
             commonApi.update.call(vm, arg, params, data => {
                 resolve(data)

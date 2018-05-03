@@ -39,6 +39,8 @@ module.exports = {
         "one-var": 0,
         "eqeqeq": 0,
         "no-unneeded-ternary": 0,
-        "no-unused-expressions": 0
+        "no-unused-expressions": 0,
+        "no-useless-return": 0,
+        "camelcase": 0
     }
 }

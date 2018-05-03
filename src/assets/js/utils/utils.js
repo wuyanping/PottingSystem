@@ -26,29 +26,8 @@ const utils = {
             } else {
                 params[v.field] = v.value
             }
-            // if (v.field == 'params') {
-            // 	let paramsStr = v.val.join(',')
-            // 	params[v.field] = paramsStr
-            // } else if (v.field == 'location') { // 判断当前字段为location
-            // 	if (v.val) {
-            // 		let lat = v.val.split(',')[0],
-            // 			lng = v.val.split(',')[1]
-            // 		params['latitude'] = lat
-            // 		params['longitude'] = lng
-            // 		params[v.field] = v.val
-            // 	}
-            // } else if (v.pv && v['pv'].field == 'params_value') { // monitor adapter 的参数值
-            // 	let obj = {}, str
-            // 	v.pv.val.forEach(vl => {
-            // 		if (vl.param === '') return false
-            // 		obj[vl.param] = vl.val
-            // 	})
-            // 	params[v.pv.field] = JSON.stringify(obj)
-            // 	params[v.field] = v.val
-            // } else {
-            // 	params[v.field] = v.val
-            // }
         })
+
         return params
     },
     /**

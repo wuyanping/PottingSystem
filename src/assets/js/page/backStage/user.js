@@ -4,6 +4,7 @@
 import ElButton from 'COMPONENTS/public/commonElButton.vue'
 import Uploader from 'COMPONENTS/public/commonUploader.vue'
 import ElInput from 'COMPONENTS/public/commonElInput.vue'
+import commonElPopver from 'COMPONENTS/public/commonElPopver.vue'
 
 import validtor from 'UTILS/validator.js'
 import { ajax } from 'UTILS/ajax.js'
@@ -87,7 +88,12 @@ const user = {
                 },
                 {
                     label: '头像',
-                    field: 'avatar'
+                    field: 'avatar',
+                    component: commonElPopver,
+                    props: {
+                        detailUrl: 'detailModel',
+                        current: 'watering'
+                    }
                 },
                 {
                     label: '邮箱',

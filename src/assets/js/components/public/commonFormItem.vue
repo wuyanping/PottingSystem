@@ -9,15 +9,22 @@
             :prop="`formField.${ky}.value`"
             :rules="setRules(item)">
             <el-input
-                v-if="item.component === 'ElInput'"
-                :placeholder="item.placeholder ? item.placeholder : '请输入内容'"
+                v-if="item.component === 'ElInput' && item.type === 'number'"
+                :placeholder="item.label ? `请输入${item.label}` : '请输入内容'"
+                :type="item.inputType ? item.inputType : 'text'"
+                :disabled="item.disabled ? item.disabled : false"
+                v-model.number="item.value"
+            />
+            <el-input
+                v-else-if="item.component === 'ElInput'"
+                :placeholder="item.label ? `请输入${item.label}` : '请输入内容'"
                 :type="item.inputType ? item.inputType : 'text'"
                 :disabled="item.disabled ? item.disabled : false"
                 v-model="item.value"
             />
             <el-select
                 v-else-if="item.component === 'ElSelect'"
-                :placeholder="item.placeholder ? item.placeholder : '请选择' + item.label"
+                :placeholder="item.label ? `请输入${item.label}` : '请输入内容'"
                 :disabled="item.disabled ? item.disabled : false"
                 v-model="item.value">
                 <el-option

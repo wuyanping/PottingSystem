@@ -10,7 +10,7 @@
         <img style="width:400px; height:auto" v-if="row[field]" :src="row[field]" >
         <div slot="reference" class="name-wrapper imgTip">
             <!-- 小图片 -->
-            <img v-if="row[field]" :src="row[field]" width="100%" height="100%">
+            <img v-if="row[field]" :src="row[field]" width="50px">
         </div>
     </el-popover>
 </template>

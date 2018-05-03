@@ -680,6 +680,8 @@
                     _type: formData.type,
                     ...serializeData(formData.formField)
                 }
+                console.log('addSave --- ')
+                console.log(params)
                 store(this, this.route, params)
                     .then(data => {
                         this.$mg(this, '保存成功', 'success', 2000)
