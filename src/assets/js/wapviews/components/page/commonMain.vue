@@ -20,8 +20,9 @@
         <div class="basic_list" v-if="hasList" ref="wrapper" :style="{height: height}">
             <load-more tip="正在加载" v-if="showPullDown"></load-more>
             <panel :list="list" type="5" @on-click-item="handlePanelItem" @on-img-error="onImgError"></panel>
+            <loading :show="showLoading" text="加载中"></loading>
         </div>
-        
+         
         <!-- 新建弹框 -->
         <PopupForm 
             :formData="formData"
@@ -32,7 +33,7 @@
     </div>
 </template>
 <script>
-import { XInput, Group, Icon, Flexbox, FlexboxItem, Panel, Popup, Cell, LoadMore } from 'vux'
+import { XInput, Group, Icon, Flexbox, FlexboxItem, Panel, Popup, Cell, LoadMore, Loading } from 'vux'
 import PopupForm from '../input/popupForm.vue'
 import { isFunction } from 'UTILS/utils.js'
 import BScroll from 'better-scroll'
@@ -47,7 +48,8 @@ export default {
         Panel,
         Cell,
         PopupForm,
-        LoadMore
+        LoadMore,
+        Loading
     },
     props: {
         model: {
@@ -112,7 +114,8 @@ export default {
                 scrollbar: false
             },
             showPullDown: false,
-            height: `${he}px`
+            height: `${he}px`,
+            showLoading: true
         }
     },
     methods: {
@@ -146,23 +149,20 @@ export default {
         },
         getListMsg (page = 1) {
             axios.get(`/api/pot?page=${page}`).then(res => {
+                this.showLoading = false
                 let potData = res.data.data
-                let list = []
                 potData.forEach(v => {
                     let obj = {
                         id: v.id,
                         title: v.name,
                         desc: v.use_for,
-                        src: v.imgs,
+                        src: `/api/${v.imgs}`,
                         fallbackSrc: './static/image/company_default_logo.png'
                     }
                     this.list.push(obj)
                 })
                 this.list.current_page = res.data.current_page
                 this.list.total_page = Math.ceil(res.data.total / res.data.per_page)
-            })
-            axios.get('api/pot/1').then(res => {
-                console.log(res)
             })
         },
         _initScroll () {
@@ -199,7 +199,6 @@ export default {
         setTimeout(() => {
             this._initScroll()
         }, 20)
-        console.log(this.$route)
     },
     created () {
         this.$nextTick(() => {

@@ -23,6 +23,8 @@ const utils = {
             // 自定义序列化处理表单数据
             if (v.customSerializeFn) {
                 params = Object.assign(params, v.customSerializeFn(v))
+            } else if (v.name) {
+                params[v.name] = v.value
             } else {
                 params[v.field] = v.value
             }

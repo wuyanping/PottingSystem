@@ -11,6 +11,7 @@
 	                <group>
 	                    <FormItem
 	                        v-for="(formItem,i) in formData"
+                            :key="i"
 	                        :formItem="formItem"
 	                        :isShowMsg="true"
 	                        :isShowTiTle="true"
@@ -34,8 +35,9 @@
 <script>
 import { Group, Popup, TransferDom, XHeader, XButton, AlertPlugin } from 'vux'
 import FormItem from './formItem.vue'
-import { isFunction } from 'UTILS/utils.js'
+import { isFunction, serializeData } from 'UTILS/utils.js'
 import {validatorFn} from 'UTILS/moblieValidator.js'
+import { store } from 'UTILS/commonApi.js'
 Vue.use(AlertPlugin)
 export default {
     directives: {
@@ -111,9 +113,19 @@ export default {
                 isCanSibmit = isCanSibmit && result.valid
                 this.$set(this.formData, i, input)
             })
+            // console.log(this.formData)
             if (isCanSibmit) {
+                let params = {
+                    ...serializeData(this.formData)
+                }
+                store(this, 'pot', params)
+                    .then(res => {
+                        if (res) {
+                            this.$vux.toast.text('新增成功', 'middle')
+                            this.handleClose()
+                        }
+                    })
                 console.log('可以提交了')
-                console.log(this.formData)
             } else {
                 console.log('验证失败')
                 this.$vux.alert.show({

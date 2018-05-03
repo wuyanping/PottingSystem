@@ -163,7 +163,19 @@ export default {
         },
         handleClose () {
             this.isShowPopup = false
+        },
+        getMsg () {
+            let model = this.$route.params.record
+            let id = this.$route.params.id
+            axios.get(`/api/${model}/${id}`)
+                .then(res => {
+                    console.log(res)
+                })
         }
+    },
+    mounted () {
+        console.log(this.$route)
+        this.getMsg()
     }
 }
 </script>

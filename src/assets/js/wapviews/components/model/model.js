@@ -68,7 +68,7 @@ let model = {
                     name: 'origin',
                     title: '产地',
                     iconType: '',
-                    rule: {required: true, type: 'reEmail'},
+                    rule: {required: true},
                     validatorResult: {
                         valid: '',
                         msg: ''
@@ -116,7 +116,7 @@ let model = {
                     name: 'imgs',
                     title: '外观',
                     iconType: '',
-                    rule: {required: true},
+                    rule: {required: false},
                     validatorResult: {
                         valid: '',
                         msg: ''

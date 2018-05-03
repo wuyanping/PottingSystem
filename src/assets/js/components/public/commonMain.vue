@@ -675,8 +675,11 @@
                     _type: formData.type,
                     ...serializeData(formData.formField)
                 }
+                console.log(params)
+                console.log(this.route)
                 store(this, this.route, params)
                     .then(data => {
+                        console.log(this.route)
                         this.$mg(this, '保存成功', 'success', 2000)
                         this.$refs['commonFormDialog'].saveSetting.loading = false
                         this.emitCloseDialog('form')
@@ -689,8 +692,12 @@
                     _type: formData.type,
                     ...serializeData(formData.formField)
                 }
+                console.log('--------')
+                console.log(params)
+                console.log('--------')
                 update(this, this.route, formData.id, params)
                     .then(data => {
+                        console.log(data)
                         this.$mg(this, '保存成功', 'success', 2000)
                         this.$refs['commonFormDialog'].saveSetting.loading = false
                         this.emitCloseDialog('form')
@@ -740,7 +747,6 @@
                 console.log('edit_option_tableData')
                 console.log(data)
                 data = this.model.tableFieldFn ? this.model.tableFieldFn(data) : data
-                console.log(data)
                 this.tableData.forEach(v => {
                     if (v.id === data.id) {
                         for (let i in v) {
@@ -770,6 +776,7 @@
                 this.tableLoading = true
                 index(this, path, this.filter)
                     .then(data => {
+                        console.log(data)
                         this.set_tableData(data)
                         this.tableLoading = false
                     })
