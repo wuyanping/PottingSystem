@@ -48,13 +48,6 @@ export default {
             this.isShowPopup = false
         }
     },
-    methods: {
-        getUserInfo () {
-            axios.get('/api/user').then(res => {
-                console.log(res)
-            })
-        }
-    },
     mounted () {
         this.getUserInfo()
     }
