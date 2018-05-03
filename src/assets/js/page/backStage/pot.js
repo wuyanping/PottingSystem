@@ -9,6 +9,7 @@ import ElInput from 'COMPONENTS/public/commonElInput.vue'
 import ElInputDynamic from 'COMPONENTS/public/commonElInputDynamic.vue'
 import TableDetailLink from 'COMPONENTS/public/commonTableDetailLink.vue'
 import selfaddPassPottingDialog from './components/selfAddPassPottingDialog.vue'
+import commonElPopver from 'COMPONENTS/public/commonElPopver.vue'
 
 import validtor from 'UTILS/validator.js'
 import { ajax } from 'UTILS/ajax.js'
@@ -30,13 +31,13 @@ const pot = {
     hasTabs: false,
     hasConditionStatusSelect: true,
     hasConditionSearch: true,
-    // hasConditionAdd: true,
+    hasConditionAdd: true,
     hasConditionRefresh: true,
     hasTableSelection: true,
     hasTableIndex: true,
     hasTableOperation: true,
-    hasTableOperationEdit: false,
-    hasTableOperationDelete: false,
+    hasTableOperationEdit: true,
+    hasTableOperationDelete: true,
     hasPaginationBatchDestroy: true,
     // 默认条件搜索的占位符 和hasConditionSearch连用
     defaultConditionSearchPlaceholder: '盆栽名称',
@@ -139,7 +140,13 @@ const pot = {
                 },
                 {
                     label: '外观',
-                    field: 'imgs'
+                    field: 'imgs',
+                    component: commonElPopver,
+                    props: {
+                        detailUrl: 'detailModel',
+                        current: 'watering'
+                    }
+
                 },
                 {
                     label: '负责人',

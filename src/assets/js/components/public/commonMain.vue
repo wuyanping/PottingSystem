@@ -622,6 +622,7 @@
                 this.formData = this.setFormData(scope.type)
                 this.formVisible = true
             },
+            // 刷新
             refresh (scope) {
                 this.commonConditionComponents.forEach(item => {
                     item.props.value = undefined
@@ -633,6 +634,7 @@
                 }
                 this.ajaxIndex()
             },
+            // 编辑
             tableEdit (scope) {
                 this.formVisible = true
                 this.formLoading = true
@@ -643,10 +645,12 @@
                         console.log(this.formData)
                     })
             },
+            // 删除
             tableDelete (scope) {
                 this.deleteData = scope.row
                 this.deleteVisible = true
             },
+            // 批量删除
             batchDestroy (scope) {
                 if (this.tableSelection.length === 0) {
                     this.$mg(this, '未选择删除项', 'warning', 2000)
@@ -659,7 +663,7 @@
                         }
                         batchDestroy(this, this.route, params)
                             .then(data => {
-                                if (data.res === 'true') {
+                                if (data.length !== 0) {
                                     this.$mg(this, '删除成功', 'success', 1000)
                                 } else {
                                     this.$mg(this, '删除失败', 'error', 1000)
@@ -669,6 +673,7 @@
                     })
                     .catch(_ => {})
             },
+            // 新建保存
             addSave (formData) {
                 console.log(formData)
                 let params = {
@@ -683,6 +688,7 @@
                         this.ajaxIndex()
                     })
             },
+            // 编辑保存
             editSave (formData) {
                 console.log(formData)
                 let params = {
@@ -697,6 +703,7 @@
                         this.edit_option_tableData(data)
                     })
             },
+            // 查询过滤
             handleFilter (data) {
                 for (let i in data) {
                     this.filter[i] = data[i]

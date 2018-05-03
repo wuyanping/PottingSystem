@@ -8,8 +8,7 @@ import { ajax } from 'UTILS/ajax.js'
 import { isArray, isObject } from 'UTILS/utils.js'
 
 import selfCompanyInfo from '../model/components/selfCompanyInfo.vue'
-// import selfUserPermission from '../model/components/selfUserPermission.vue'
-// import selfRolePermission from '../model/components/selfRolePermission.vue'
+import commonElPopver from 'COMPONENTS/public/commonElPopver.vue'
 
 function customSerializeFn (item) {
     let obj = {}
@@ -462,7 +461,12 @@ const potDetail = {
                 },
                 {
                     label: '外观',
-                    field: 'imgs'
+                    field: 'imgs',
+                    component: commonElPopver,
+                    props: {
+                        detailUrl: 'detailModel',
+                        current: 'watering'
+                    }
                 },
                 {
                     label: '记录',

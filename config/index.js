@@ -17,6 +17,11 @@ module.exports = {
 			        //这里理解成用‘/api'代替target里面的地址，后面组件中我们掉接口时直接用api代替 
 			        //比如我要‘/api/user/login'即可 会映射到 'http://40.00.100.133:3002/user/login'
 			    }
+			},
+			'/storage':{
+    			// target:"http://47.93.166.112/BrainPcWeb",//设置你调用的接口域名和端口号 别忘了加http
+			    target: env.app_url,//设置你调用的接口域名和端口号 别忘了加http
+			    changeOrigin:true
 			}
 			// /Home/Index就会映射到http://localhhost:9494/Home/Index,
 			// '/Home' : {

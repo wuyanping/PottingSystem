@@ -1,5 +1,5 @@
 /*
-用户信息管理
+品种管理
  */
 import ElButton from 'COMPONENTS/public/commonElButton.vue'
 import Uploader from 'COMPONENTS/public/commonUploader.vue'
@@ -18,7 +18,7 @@ function customSerializeFn (item) {
     return obj
 }
 
-const user = {
+const variety = {
     // 是否显示设置
     // 是否显示上一级
     hasTitleBack: false,
@@ -29,7 +29,7 @@ const user = {
     // 默认条件搜索框
     hasConditionSearch: true,
     // 是否显示新增按钮
-    hasConditionAdd: false,
+    hasConditionAdd: true,
     // 是否显示刷新按钮也叫重置按钮
     hasConditionRefresh: true,
     hasTableSelection: true,
@@ -41,13 +41,13 @@ const user = {
     // 默认条件搜索的占位符
     defaultConditionSearchPlaceholder: '用户名',
     // 标题*
-    commonTitle: '用户信息',
+    commonTitle: '品种管理',
     // 标签页
     commonTabs: {
         lists: [
             {
-                display_name: '用户信息管理',
-                name: 'user'
+                display_name: '品种管理',
+                name: 'variety'
             }
         ]
     },
@@ -56,7 +56,7 @@ const user = {
     // commonTabsBeforeComponent: '',
     // 每个标签页的数据
     panelData: {
-        user: {
+        variety: {
             // 条件刷选
             commonConditionComponents: [
                 {
@@ -278,5 +278,5 @@ const user = {
 }
 
 module.exports = {
-    user: user
+    variety: variety
 }
