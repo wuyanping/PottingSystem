@@ -1,5 +1,17 @@
 export default [
     {
+        name: '盆栽信息提供管理',
+        key: 'potInfo',
+        opened: false,
+        children: [
+            {
+                name: '品种管理',
+                key: 'variety',
+                path: '/index/potInfo/variety'
+            }
+        ]
+    },
+    {
         name: '后台管理',
         key: 'backStage',
         opened: false,

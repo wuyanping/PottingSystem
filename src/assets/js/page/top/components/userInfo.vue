@@ -1,6 +1,5 @@
 <template>
     <div>
-        userinfo
         <el-form class="components-form" label-width="100px" :model="formData" ref="formData">
             <commonFormItem
                 :commonFormData="formData"
@@ -25,9 +24,9 @@ export default {
         commonElButton
     },
     data () {
-        let obj = Object.assign({}, userInfo)
+        // let obj = Object.assign({}, userInfo)
         return {
-            formData: obj,
+            formData: {},
             saveSetting: {
                 type: 'primary',
                 loading: false,
@@ -40,6 +39,11 @@ export default {
             }
         }
     },
+    mounted () {
+        console.log('userInfo.vue mounted ------ ')
+        this.formData = this.setFormData(window.bdUser)
+        console.log(this.formData)
+    },
     methods: {
         save () {
             this.$refs['formData'].validate((valid) => {
@@ -50,6 +54,38 @@ export default {
                     return false
                 }
             })
+        },
+        // 设置表单对话框数据
+        setFormData (row = {}) {
+            let data = {
+                formField: userInfo.commonFormFieldsFn()
+            }
+            data['formField'].forEach(item => {
+                // 在打开对话框同时赋值
+                if (Object.keys(row).includes(item['field'])) {
+                    if (item.customEditFn) {
+                        item['value'] = item.customEditFn(row[item['field']])
+                    } else {
+                        item['value'] = row[item['field']]
+                    }
+                }
+            })
+            return data
+        },
+        // 表格列特殊值处理
+        tableFieldFn: function (data) {
+            const g = function (gender) {
+                return gender === 1 ? '女' : '男'
+            }
+            if (isArray(data)) {
+                data.forEach(v => {
+                    v.gender = g(v.gender)
+                })
+            }
+            if (isObject(data)) {
+                data.gender = g(data.gender)
+            }
+            return data
         }
     }
 }

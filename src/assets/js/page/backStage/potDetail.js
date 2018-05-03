@@ -8,8 +8,7 @@ import { ajax } from 'UTILS/ajax.js'
 import { isArray, isObject } from 'UTILS/utils.js'
 
 import selfCompanyInfo from '../model/components/selfCompanyInfo.vue'
-// import selfUserPermission from '../model/components/selfUserPermission.vue'
-// import selfRolePermission from '../model/components/selfRolePermission.vue'
+import commonElPopver from 'COMPONENTS/public/commonElPopver.vue'
 
 function customSerializeFn (item) {
     let obj = {}
@@ -148,6 +147,7 @@ const potDetail = {
                     },
                     {
                         component: 'ElInput',
+                        // type: 'number'
                         field: 'value',
                         label: '浇水量',
                         required: false,
@@ -156,12 +156,13 @@ const potDetail = {
                                 max: 255,
                                 message: '最多有255字',
                                 trigger: 'blur'
-                            },
-                            {
-                                type: 'number',
-                                message: '必须为数字值',
-                                trigger: 'change'
                             }
+                            // ,
+                            // {
+                            //     type: 'number',
+                            //     message: '必须为数字值',
+                            //     trigger: 'change'
+                            // }
                         ],
                         value: null
                     },
@@ -282,11 +283,6 @@ const potDetail = {
                                 max: 255,
                                 message: '最多有255字',
                                 trigger: 'blur'
-                            },
-                            {
-                                type: 'number',
-                                message: '必须为数字值',
-                                trigger: 'change'
                             }
                         ],
                         value: null
@@ -354,7 +350,7 @@ const potDetail = {
                 },
                 {
                     label: '操作人',
-                    field: 'user_id'
+                    field: 'username'
                 },
                 {
                     label: '备注',
@@ -462,7 +458,12 @@ const potDetail = {
                 },
                 {
                     label: '外观',
-                    field: 'imgs'
+                    field: 'imgs',
+                    component: commonElPopver,
+                    props: {
+                        detailUrl: 'detailModel',
+                        current: 'watering'
+                    }
                 },
                 {
                     label: '记录',
@@ -474,9 +475,35 @@ const potDetail = {
                 }
             ],
             // 表格列特殊值处理
-            // tableFieldFn: function (data) {
-            //     return data
-            // },
+            tableFieldFn: function (data) {
+                const statusFn = function (status) {
+                    let st = ''
+                    switch (status) {
+                    case 0:
+                        st = '良好'
+                        break
+                    case 1:
+                        st = '一般'
+                        break
+                    case 2:
+                        st = '较差'
+                        break
+                    case 3:
+                        st = '非常差'
+                        break
+                    }
+                    return st
+                }
+                if (isArray(data)) {
+                    data.forEach(v => {
+                        v.status = statusFn(v.status)
+                    })
+                }
+                if (isObject(data)) {
+                    data.status = statusFn(data.status)
+                }
+                return data
+            },
             // 表格的操作
             // commonTableOperationComponents: [
             // ],

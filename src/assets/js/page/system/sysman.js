@@ -98,19 +98,19 @@ const sysman = {
             // },
             // 表格的操作
             commonTableOperationComponents: [
-                {
-                    component: ElButton,
-                    props: {
-                        type: 'text',
-                        loading: false,
-                        disabled: false,
-                        className: '',
-                        display_name: '权限',
-                        clickFn: (vm, scope) => {
-                            vm.$emit('customEv', { type: 'power', ...scope })
-                        }
-                    }
-                }
+                // {
+                //     component: ElButton,
+                //     props: {
+                //         type: 'text',
+                //         loading: false,
+                //         disabled: false,
+                //         className: '',
+                //         display_name: '权限',
+                //         clickFn: (vm, scope) => {
+                //             vm.$emit('customEv', { type: 'power', ...scope })
+                //         }
+                //     }
+                // }
             ],
             // 分页操作组件
             // commonPaginationOperationComponents: [],

@@ -9,6 +9,7 @@ import ElInput from 'COMPONENTS/public/commonElInput.vue'
 import ElInputDynamic from 'COMPONENTS/public/commonElInputDynamic.vue'
 import TableDetailLink from 'COMPONENTS/public/commonTableDetailLink.vue'
 import selfaddPassPottingDialog from './components/selfAddPassPottingDialog.vue'
+import commonElPopver from 'COMPONENTS/public/commonElPopver.vue'
 
 import validtor from 'UTILS/validator.js'
 import { ajax } from 'UTILS/ajax.js'
@@ -20,8 +21,46 @@ function customSerializeFn (item) {
         obj['_hasfile'] = true
     }
     obj[item['field']] = item['value']
-    console.log(111)
     return obj
+}
+
+function customSerializeParamsValue (item) {
+    let obj = {}
+    item.value.forEach(pv => {
+        if (pv.param === '') return false
+        obj[pv.param] = pv.value
+    })
+    if (Object.keys(obj).length > 0) {
+        return {
+            [item['field']]: JSON.stringify(obj)
+        }
+    } else {
+        return {
+            [item['field']]: null
+        }
+    }
+}
+
+function customEditParamsValue (value) {
+    if (value) {
+        let params_value = JSON.parse(value), arr = []
+        Object.keys(params_value).forEach(param => {
+            arr.push({
+                param: param,
+                value: params_value[param]
+            })
+        })
+        arr.push({
+            param: '',
+            value: ''
+        })
+        return arr
+    } else {
+        return [{
+            param: '',
+            value: ''
+        }]
+    }
 }
 
 const pot = {
@@ -30,13 +69,13 @@ const pot = {
     hasTabs: false,
     hasConditionStatusSelect: true,
     hasConditionSearch: true,
-    // hasConditionAdd: true,
+    hasConditionAdd: true,
     hasConditionRefresh: true,
     hasTableSelection: true,
     hasTableIndex: true,
     hasTableOperation: true,
-    hasTableOperationEdit: false,
-    hasTableOperationDelete: false,
+    hasTableOperationEdit: true,
+    hasTableOperationDelete: true,
     hasPaginationBatchDestroy: true,
     // 默认条件搜索的占位符 和hasConditionSearch连用
     defaultConditionSearchPlaceholder: '盆栽名称',
@@ -139,7 +178,13 @@ const pot = {
                 },
                 {
                     label: '外观',
-                    field: 'imgs'
+                    field: 'imgs',
+                    component: commonElPopver,
+                    props: {
+                        detailUrl: 'detailModel',
+                        current: 'watering'
+                    }
+
                 },
                 {
                     label: '负责人',
@@ -332,7 +377,9 @@ const pot = {
                         field: 'info',
                         label: '其他信息',
                         required: false,
-                        value: []
+                        value: [],
+                        customSerializeFn: customSerializeParamsValue,
+                        customEditFn: customEditParamsValue
                     },
                     {
                         component: 'ElInput',
