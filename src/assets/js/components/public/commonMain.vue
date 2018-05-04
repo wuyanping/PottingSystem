@@ -682,9 +682,11 @@
                     _type: formData.type,
                     ...serializeData(formData.formField)
                 }
+                console.log('~~~~~~~~~')
+                console.log(params)
+                console.log('~~~~~~~~~')
                 store(this, this.route, params)
                     .then(data => {
-                        console.log(this.route)
                         this.$mg(this, '保存成功', 'success', 2000)
                         this.$refs['commonFormDialog'].saveSetting.loading = false
                         this.emitCloseDialog('form')
@@ -786,7 +788,9 @@
                 console.log(this.filter)
                 index(this, path, this.filter)
                     .then(data => {
+                        console.log('==========')
                         console.log(data)
+                        console.log('=========')
                         this.set_tableData(data)
                         this.tableLoading = false
                     })

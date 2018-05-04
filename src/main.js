@@ -12,6 +12,7 @@ router.beforeEach((to, from, next) => {
         // 用户已登录，如果不是进入到login页，则跳转到当前页
         // 否则就直接进入到首页
         if (to.name !== 'login') {
+            console.log('ssssssssssssss')
             window.bdUser = res.data
             next()
         } else {
