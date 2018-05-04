@@ -5,9 +5,11 @@
 import ElButton from 'COMPONENTS/public/commonElButton.vue'
 import Uploader from 'COMPONENTS/public/commonUploader.vue'
 import ElInput from 'COMPONENTS/public/commonElInput.vue'
+import commonElPopver from 'COMPONENTS/public/commonElPopver.vue'
 
 import validtor from 'UTILS/validator.js'
 import { ajax } from 'UTILS/ajax.js'
+import { isArray, isObject } from 'UTILS/utils.js'
 
 function customSerializeFn (item) {
     let obj = {}
@@ -89,13 +91,29 @@ const sysman = {
                 },
                 {
                     label: '头像',
-                    field: 'avatar'
+                    field: 'avatar',
+                    component: commonElPopver,
+                    props: {
+                        detailUrl: 'detailModel',
+                        current: 'watering'
+                    }
                 }
             ],
             // 表格列特殊值处理
-            // tableFieldFn: function (data) {
-            //  return data
-            // },
+            tableFieldFn: function (data) {
+                const g = function (gender) {
+                    return gender === 1 ? '女' : '男'
+                }
+                if (isArray(data)) {
+                    data.forEach(v => {
+                        v.gender = g(v.gender)
+                    })
+                }
+                if (isObject(data)) {
+                    data.gender = g(data.gender)
+                }
+                return data
+            },
             // 表格的操作
             commonTableOperationComponents: [
                 // {
@@ -140,6 +158,13 @@ const sysman = {
                         ],
                         // 根据rules传入的方法数据动态设置验证方法
                         rules: [
+                            {
+                                method: 'checkValid',
+                                trigger: 'blur',
+                                params: {
+                                    cfield: 'name'
+                                }
+                            }
                         ],
                         value: null
                     },
