@@ -20,11 +20,11 @@
             <el-table-column
                 align="center"
                 :resizable="false"
-                prop="val"
+                prop="value"
                 label="值">
                 <template slot-scope="scope">
                     <div>
-                        <el-input v-model="scope.row.val"></el-input>
+                        <el-input v-model="scope.row.value"></el-input>
                     </div>
                 </template>
             </el-table-column>
@@ -59,7 +59,7 @@
                         value: [
                             {
                                 param: '',
-                                val: ''
+                                value: ''
                             }
                         ]
                     }
@@ -74,7 +74,7 @@
                 console.log(this.formItemData.value)
                 this.formItemData.value.push({
                     param: '',
-                    val: ''
+                    value: ''
                 })
             }
         },
@@ -82,8 +82,6 @@
             formItemData: {
                 handler (newV, oldV) {
                     if (newV.length === 0) return
-                    console.log(newV)
-                    console.log(oldV)
                 },
                 deep: true
             }

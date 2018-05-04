@@ -39,12 +39,17 @@
     </div>
 </template>
 <script>
-import { Group, Cell, Popup, XSwitch, TransferDom, XButton, XHeader, AlertPlugin } from 'vux'
+import { Group, Cell, Popup, XSwitch, TransferDom, XButton, XHeader, AlertPlugin, ToastPlugin } from 'vux'
 import { mapGetters, mapActions } from 'vuex'
 import FormItem from 'WAPVIEWS/components/input/formItem'
 import theUserInfoDetail from './userInfoDetail.js'
 import {validatorFn} from 'UTILS/moblieValidator.js'
+import { serializeData } from 'UTILS/utils.js'
+import { update } from 'UTILS/commonApi.js'
+
 Vue.use(AlertPlugin)
+Vue.use(ToastPlugin)
+
 export default {
     directives: {
         TransferDom
@@ -80,6 +85,7 @@ export default {
         this.changeHeaderSetting({...this.headerSetting, showBack: true, title: this.currentModel.title})
     },
     mounted () {
+        this.getUserInfo()
     },
     methods: {
         ...mapActions([
@@ -98,8 +104,14 @@ export default {
                 this.$set(this.formData, i, input)
             })
             if (isCanSibmit) {
-                console.log('可以提交了')
                 console.log(this.formData)
+                let params = {...serializeData(this.formData)}
+                update(this, 'user', this.formData['id'], params)
+                    .then(res => {
+                        if (res) {
+                            this.$vux.toast.text('修改成功', 'middle')
+                        }
+                    })
             } else {
                 console.log('验证失败')
                 this.$vux.alert.show({
@@ -111,9 +123,10 @@ export default {
         },
         // 弹窗编辑弹框
         handleShowPopup (i) {
+            console.log(i)
             this.isShowPopup = true
             this.i = i
-            console.log(this.formData[i])
+            console.log(this.formData[i].title)
             this.oldFormItem = Object.assign({}, this.formData[i])
         },
         // 取消编辑弹框， 不改变原来的数据
@@ -124,7 +137,6 @@ export default {
         // 完成编辑弹框
         handleFinishPopup () {
             let { iconType, validatorResult } = this.formData[this.i]
-            console.log(this.formItem)
             if (iconType === 'error') {
                 this.$vux.alert.show({
                     title: '内容验证提示',
@@ -144,7 +156,6 @@ export default {
         // 设置表单对话框数据
         setFormData (row = {}) {
             let formField = this.currentModel.formField()
-            console.log(formField)
             formField.forEach(item => {
                 // 在打开对话框同时赋值
                 if (Object.keys(row).includes(item['name'])) {
@@ -167,6 +178,19 @@ export default {
         //         bol = false
         //     }
         //     this.isShowFinish = bol
+        },
+        getUserInfo () {
+            axios.post('/api/islogin')
+                .then(res => {
+                    this.formData.forEach(v => {
+                        Object.keys(res.data).forEach(i => {
+                            if (v.name === i) {
+                                v.value = res.data[i]
+                            }
+                        })
+                    })
+                    this.formData['id'] = res.data['id']
+                })
         }
     }
 }

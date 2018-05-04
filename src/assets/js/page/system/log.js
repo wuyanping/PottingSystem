@@ -1,7 +1,7 @@
 /*
 系统日志管理
  */
-// import ElSelect from '../../../../public/components/commonElSelect.vue'
+import ElSelect from 'COMPONENTS/public/commonElSelect.vue'
 import ElButton from 'COMPONENTS/public/commonElButton.vue'
 // import TableDetailLink from 'COMPONENTS/public/commonTableDetailLink.vue'
 import ElDate from 'COMPONENTS/public/commonElDatePicker.vue'
@@ -53,6 +53,32 @@ const log = {
         log: {
             // 条件刷选
             commonConditionComponents: [
+                {
+                    component: ElSelect,
+                    props: {
+                        field: 'type',
+                        value: undefined,
+                        title: '操作',
+                        lists: [
+                            {
+                                label: '添加',
+                                value: 1
+                            },
+                            {
+                                label: '更新',
+                                value: 2
+                            },
+                            {
+                                label: '删除',
+                                value: 3
+                            },
+                            {
+                                label: '查询',
+                                value: 4
+                            }
+                        ]
+                    }
+                },
                 {
                     component: ElDate,
                     props: {

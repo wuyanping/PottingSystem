@@ -4,8 +4,9 @@
 
 		<!-- 盆栽介绍 -->
 		<div class="cd_top">
-			<img v-if="hasIntroduceImg" :src="url" />
+			<img v-if="hasIntroduceImg" :src="listData.imgs ? `/api/${listData.imgs}` : url" />
 			<div v-if="hasIntroduce" class="cd_t_conent">
+                <loading :show="showLoading" text="加载中"></loading>
 				<panel :list="introduce" type="2"></panel>
   				<group>
 				    <cell
@@ -40,7 +41,8 @@
 	</div>
 </template>
 <script>
-import { Flexbox, FlexboxItem, Blur, Panel, Group, Cell } from 'vux'
+import { Flexbox, FlexboxItem, Blur, Panel, Group, Cell, Loading } from 'vux'
+import { isArray, isObject } from 'UTILS/utils.js'
 export default {
     components: {
         Blur,
@@ -48,7 +50,8 @@ export default {
         FlexboxItem,
         Panel,
         Group,
-        Cell
+        Cell,
+        Loading
     },
     props: {
     	details: Object
@@ -57,15 +60,11 @@ export default {
         return {
             url: './static/image/company_default_logo.png',
             // 介绍
-            introduce: [{
-		        title: '标题一',
-		        desc: '由各种物质组成的巨型球状天体，叫做星球。星球有一定的形状，有自己的运行轨道。'
-		    }],
+            introduce: [],
 		    // 介绍列表
-		    listData: {
-		    	name: 'name111',
-		    	variety: 'pz1111'
-		    }
+		    listData: {},
+            // 加载
+            showLoading: true
         }
     },
     computed: {
@@ -110,7 +109,43 @@ export default {
     		console.log('gogo')
     		this.$emit('setHeader', {key: 'title', value: title})
     		this.$router.push(`${this.$route.path}/${record}`)
+    	},
+    	getDetailMsg () {
+    		let id = this.$route.params.id
+    		axios.get(this.$apiUrl(`pot/${id}`))
+    			.then(res => {
+                    this.showLoading = false
+	                res.data['main'] = this.arrStr(res.data['main'])
+	                res.data['info'] = this.arrObj(res.data['info'])
+                    this.listData = res.data
+	                let obj = {
+                        title: res.data.name,
+                        desc: res.data.use_for
+                    }
+    				this.introduce.push(obj)
+    		    })
+    	},
+    	arrStr (arr) {
+    		let arrString = ''
+            if (isArray(arr)) {
+                arrString = arr.join()
+            }
+            return arrString
+    	},
+    	arrObj (arr) {
+    		let arrString = ''
+            if (isArray(arr)) {
+                arr.forEach(obj => {
+                    if (isObject(obj)) {
+                        arrString += `${obj.param}：${obj.val}，`
+                    }
+                })
+            }
+            return arrString
     	}
+    },
+    mounted () {
+    	this.getDetailMsg()
     }
 }
 </script>

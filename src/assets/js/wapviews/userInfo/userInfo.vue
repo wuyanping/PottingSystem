@@ -2,9 +2,9 @@
 	<div class="userInfo">
 		<blur :blur-amount=40 :url="url" :height="100">
             <div class="center clearfix">
-                <img :src="url" class="fl">
-                <div class="fl p-10">
-                    <p>wuyanping</p>
+                <img :src="userData.avatar ? `/api/${userData.avatar}` : url" class="fl">
+                <div class="fl p-10"> 
+                    <p>{{userData.name}}</p>
                     <p>个人信息 > </p>
                 </div>
             </div>
@@ -26,6 +26,7 @@
 <script>
 import { Blur, Group, Cell } from 'vux'
 import PopupForm from 'WAPVIEWS/components/input/popupForm.vue'
+import { index } from 'UTILS/commonApi'
 export default {
     components: {
         Blur, Group, Cell, PopupForm
@@ -34,7 +35,8 @@ export default {
         return {
             url: 'https://o3e85j0cv.qnssl.com/tulips-1083572__340.jpg',
             isShowPopup: false,
-            formData: []
+            formData: [],
+            userData: {}
         }
     },
     methods: {
@@ -46,16 +48,17 @@ export default {
         },
         closePopup () {
             this.isShowPopup = false
-        }
-    },
-    methods: {
+        },
         getUserInfo () {
-            axios.get('/api/user').then(res => {
-                console.log(res)
-            })
+            axios.post('/api/islogin')
+                .then(res => {
+                    console.log(res)
+                    this.userData = res.data
+                })
         }
     },
     mounted () {
+        console.log(this.$route)
         this.getUserInfo()
     }
 }

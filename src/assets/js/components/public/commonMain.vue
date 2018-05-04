@@ -622,6 +622,7 @@
                 this.formData = this.setFormData(scope.type)
                 this.formVisible = true
             },
+            // 刷新
             refresh (scope) {
                 this.commonConditionComponents.forEach(item => {
                     item.props.value = undefined
@@ -633,6 +634,7 @@
                 }
                 this.ajaxIndex()
             },
+            // 编辑
             tableEdit (scope) {
                 this.formVisible = true
                 this.formLoading = true
@@ -643,10 +645,12 @@
                         console.log(this.formData)
                     })
             },
+            // 删除
             tableDelete (scope) {
                 this.deleteData = scope.row
                 this.deleteVisible = true
             },
+            // 批量删除
             batchDestroy (scope) {
                 if (this.tableSelection.length === 0) {
                     this.$mg(this, '未选择删除项', 'warning', 2000)
@@ -659,7 +663,7 @@
                         }
                         batchDestroy(this, this.route, params)
                             .then(data => {
-                                if (data.res === 'true') {
+                                if (data.length !== 0) {
                                     this.$mg(this, '删除成功', 'success', 1000)
                                 } else {
                                     this.$mg(this, '删除失败', 'error', 1000)
@@ -669,6 +673,7 @@
                     })
                     .catch(_ => {})
             },
+            // 新建保存
             addSave (formData) {
                 console.log(formData)
                 let params = {
@@ -677,26 +682,33 @@
                 }
                 store(this, this.route, params)
                     .then(data => {
+                        console.log(this.route)
                         this.$mg(this, '保存成功', 'success', 2000)
                         this.$refs['commonFormDialog'].saveSetting.loading = false
                         this.emitCloseDialog('form')
                         this.ajaxIndex()
                     })
             },
+            // 编辑保存
             editSave (formData) {
                 console.log(formData)
                 let params = {
                     _type: formData.type,
                     ...serializeData(formData.formField)
                 }
+                console.log('--------')
+                console.log(params)
+                console.log('--------')
                 update(this, this.route, formData.id, params)
                     .then(data => {
+                        console.log(data)
                         this.$mg(this, '保存成功', 'success', 2000)
                         this.$refs['commonFormDialog'].saveSetting.loading = false
                         this.emitCloseDialog('form')
                         this.edit_option_tableData(data)
                     })
             },
+            // 查询过滤
             handleFilter (data) {
                 for (let i in data) {
                     this.filter[i] = data[i]
@@ -740,7 +752,6 @@
                 console.log('edit_option_tableData')
                 console.log(data)
                 data = this.model.tableFieldFn ? this.model.tableFieldFn(data) : data
-                console.log(data)
                 this.tableData.forEach(v => {
                     if (v.id === data.id) {
                         for (let i in v) {
@@ -770,6 +781,7 @@
                 this.tableLoading = true
                 index(this, path, this.filter)
                     .then(data => {
+                        console.log(data)
                         this.set_tableData(data)
                         this.tableLoading = false
                     })
