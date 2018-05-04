@@ -25,7 +25,7 @@ export default {
     methods: {
         pick ($event) {
             let file = $event.target.files[0]
-            const isLt2M = file.size / 1024 / 1024 > 2
+            const isLt2M = file.size / 1024 > 200
             const type = file.type !== 'image/png' && file.type !== 'image/jpg' && file.type !== 'image/jpeg'
             if (isLt2M) {
                 this.toast = true
@@ -39,13 +39,13 @@ export default {
             }
             let reader = new FileReader()
             reader.readAsDataURL(file)
-            reader.onload = e => {
-                console.log(e)
+            reader.onload = (e) => {
+                // console.log(e)
                 this.url = e.target.result
             }
-            this.$emit('handleUpload', {avatar: file})
-            console.log(reader)
-            console.log(file)
+            this.$emit('handleUpload', { avatar: file, _hasfile: true })
+            // console.log(reader)
+            // console.log(file)
         },
         select () {
             this.$refs.input.click()

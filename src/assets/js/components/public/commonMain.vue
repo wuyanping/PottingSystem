@@ -700,9 +700,9 @@
                     _type: formData.type,
                     ...serializeData(formData.formField)
                 }
-                console.log('--------')
+                console.log('sssssss')
                 console.log(params)
-                console.log('--------')
+                console.log('sssssss')
                 update(this, this.route, formData.id, params)
                     .then(data => {
                         console.log(data)

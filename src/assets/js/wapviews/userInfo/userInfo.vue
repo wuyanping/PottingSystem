@@ -29,7 +29,7 @@
 import { Blur, Group, Cell } from 'vux'
 import PopupForm from 'WAPVIEWS/components/input/popupForm.vue'
 import uploadImg from './Details/uploadImg.vue'
-import { index, update } from 'UTILS/commonApi'
+import { index, update, edit } from 'UTILS/commonApi'
 
 export default {
     components: {
@@ -56,16 +56,21 @@ export default {
         getUserInfo () {
             this.userData = window.bdUser
         },
+        // 上传头像
         handleUpload (obj) {
             let userId = window.bdUser['id']
+            Object.assign(obj, {
+                _type: 'edit',
+                _method: 'PUT'
+            })
+            console.log(obj)
             update(this, 'user', userId, obj)
                 .then(res => {
-                    console.log(res)
+                    this.userData = res
                 })
         }
     },
     mounted () {
-        console.log(this.$route)
         this.getUserInfo()
     }
 }
