@@ -69,7 +69,7 @@ export default {
             console.log('--------')
             console.log(params)
             console.log('--------')
-            update(this, 'user', window.bdUser.id, params)
+            update(this, 'sysman', window.bdUser.id, params)
                 .then(data => {
                     console.log(data)
                     this.$mg(this, '保存成功', 'success', 2000)
