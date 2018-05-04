@@ -515,8 +515,6 @@
             }
             // 避免了在与自定义的commonMain组件切换时出现/api/common的请求
             console.log('mounted ----- ')
-            console.log(this.route)
-            console.log(this.route && this.route !== '')
             if (this.route && this.route !== '') {
                 console.log(222222)
                 this.ajaxIndex(this.route)
@@ -569,16 +567,18 @@
             },
             // 更改盆栽通过状态
             emitTableStatus (msg) {
-                console.log(msg)
-                // status(this, this.route, msg.id)
-                //     .then(data => {
-                //         this.swtich_option_tableData({data: data, id: msg.id})
-                //         if (data.res === 1) {
-                //             this.$mg(this, '已启用', 'success', 1000)
-                //         } else {
-                //             this.$mg(this, '已停用', 'success', 1000)
-                //         }
-                //     })
+                let params = {
+                    status: msg.status
+                }
+                status(this, this.route, msg.id, params)
+                    .then(data => {
+                        this.swtich_option_tableData({data: data, id: msg.id})
+                        if (data.rfid) {
+                            this.$mg(this, '已通过', 'success', 1000)
+                        } else {
+                            this.$mg(this, '不通过', 'success', 1000)
+                        }
+                    })
             },
             emitDialogSave (msg) {
                 this[`${msg.type}Save`](msg)
@@ -630,7 +630,9 @@
                 this.filter = {}
                 this.conditionSearch = ''
                 if (this.hasConditionStatusSelect) {
-                    this.$refs['cstatusSelect'].params.value = undefined
+                    if (this.$refs['cstatusSelect']) {
+                        this.$refs['cstatusSelect'].params.value = undefined
+                    }
                 }
                 this.ajaxIndex()
             },
@@ -680,9 +682,11 @@
                     _type: formData.type,
                     ...serializeData(formData.formField)
                 }
+                console.log('~~~~~~~~~')
+                console.log(params)
+                console.log('~~~~~~~~~')
                 store(this, this.route, params)
                     .then(data => {
-                        console.log(this.route)
                         this.$mg(this, '保存成功', 'success', 2000)
                         this.$refs['commonFormDialog'].saveSetting.loading = false
                         this.emitCloseDialog('form')
@@ -696,9 +700,9 @@
                     _type: formData.type,
                     ...serializeData(formData.formField)
                 }
-                console.log('--------')
+                console.log('sssssss')
                 console.log(params)
-                console.log('--------')
+                console.log('sssssss')
                 update(this, this.route, formData.id, params)
                     .then(data => {
                         console.log(data)
@@ -770,18 +774,23 @@
             //  this.tableData = arr
             // },
             swtich_option_tableData ({data, id}) {
+                data = this.model.tableFieldFn ? this.model.tableFieldFn(data) : data
                 this.tableData.forEach(v => {
                     if (v.id === id) {
-                        v.status = data.res
+                        v.status = data.status
                     }
                 })
             },
             ajaxIndex (route) {
                 let path = route ? route : this.route
                 this.tableLoading = true
+                console.log('this.filter------')
+                console.log(this.filter)
                 index(this, path, this.filter)
                     .then(data => {
+                        console.log('==========')
                         console.log(data)
+                        console.log('=========')
                         this.set_tableData(data)
                         this.tableLoading = false
                     })
@@ -791,15 +800,14 @@
             route: function (nv, v) {
                 console.log('watch route -------------')
                 console.log(nv)
-                this.filter
                 if (nv.indexOf('undefined') > -1) return
                 if (nv !== v) {
                     this.tableData = []
                     if (this.hasTabs) {
                         this.tabsActive = this.$route.query.current ? this.$route.query.current : this.$route.params.model
                     }
-                    this.ajaxIndex()
-                    // this.refresh()
+                    // this.ajaxIndex()
+                    this.refresh()
                 }
             }
         }

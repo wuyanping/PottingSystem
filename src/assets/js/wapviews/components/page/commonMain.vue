@@ -9,8 +9,12 @@
                     </div>
                 </flexbox-item>
                 <flexbox-item>
-                    <x-input class="weui-vcode basic_top_r">
-                        <icon slot="right" type="search"></icon>
+                    <x-input class="weui-vcode basic_top_r"
+                        v-model="searchValue"
+                        placeholder="搜索">
+                        <icon slot="right" 
+                            type="search" 
+                            @click.native="handleSearch(searchValue)" />
                     </x-input>
                 </flexbox-item>
             </flexbox>
@@ -18,9 +22,10 @@
 
         <!-- 盆栽列表 -->
         <div class="basic_list" v-if="hasList" ref="wrapper" :style="{height: height}">
-            <load-more tip="正在加载" v-if="showPullDown"></load-more>
-            <panel :list="list" type="5" @on-click-item="handlePanelItem" @on-img-error="onImgError"></panel>
-            <loading :show="showLoading" text="加载中"></loading>
+            <load-more :show-loading="false" tip="暂无数据" v-if="!list.length" />
+            <load-more tip="正在刷新" v-if="showPullDown" />
+            <panel :list="list" type="5" @on-click-item="handlePanelItem" @on-img-error="onImgError" />
+            <loading :show="showLoading" text="加载中" />
         </div>
          
         <!-- 新建弹框 -->
@@ -37,6 +42,8 @@ import { XInput, Group, Icon, Flexbox, FlexboxItem, Panel, Popup, Cell, LoadMore
 import PopupForm from '../input/popupForm.vue'
 import { isFunction } from 'UTILS/utils.js'
 import BScroll from 'better-scroll'
+import { index } from 'UTILS/commonApi.js'
+
 export default {
     components: {
         // List,
@@ -115,13 +122,14 @@ export default {
             },
             showPullDown: false,
             height: `${he}px`,
-            showLoading: true
+            showLoading: true,
+            searchValue: ''
         }
     },
     methods: {
         // 图片方式发生错误时触发
         onImgError (item, $event) {
-            console.log(item, $event)
+            // console.log(item, $event)
         },
         // 点击盆栽列，跳到盆栽详情页
         handlePanelItem (panelItem) {
@@ -133,7 +141,7 @@ export default {
         newForm () {
             this.isShowPopup = true
             this.formData = this.model.formField()
-            console.log(this.formData)
+            // console.log(this.formData)
         },
         // 关闭表单
         handleClose () {
@@ -147,10 +155,11 @@ export default {
         closePopup () {
             this.isShowPopup = false
         },
-        getListMsg (page = 1) {
-            axios.get(`/api/pot?page=${page}`).then(res => {
+        // 获取数据
+        getListMsg (query = {page: 1}) {
+            index(this, 'pot', query).then(res => {
                 this.showLoading = false
-                let potData = res.data.data
+                let potData = res.data
                 potData.forEach(v => {
                     let obj = {
                         id: v.id,
@@ -161,10 +170,11 @@ export default {
                     }
                     this.list.push(obj)
                 })
-                this.list.current_page = res.data.current_page
-                this.list.total_page = Math.ceil(res.data.total / res.data.per_page)
+                this.list.current_page = res.current_page
+                this.list.total_page = Math.ceil(res.total / res.per_page)
             })
         },
+        // 初始下拉上拉
         _initScroll () {
             if (!this.$refs.wrapper) {
                 return
@@ -175,7 +185,7 @@ export default {
                 // 上拉刷新
                 this.scroll.on('pullingUp', () => {
                     if (this.list.current_page < this.list.total_page) {
-                        this.getListMsg(this.list.current_page + 1)
+                        this.getListMsg({page: this.list.current_page + 1})
                     }
                     this.scroll.finishPullUp()
                     this.scroll.refresh()
@@ -183,8 +193,8 @@ export default {
                 // 下拉加载
                 this.scroll.on('pullingDown', () => {
                     this.showPullDown = true
-                    this.list = []
                     setTimeout(() => {
+                        this.list = []
                         this.getListMsg()
                         this.showPullDown = false
                     }, 1000)
@@ -192,6 +202,11 @@ export default {
                     this.scroll.refresh()
                 })
             }
+        },
+        // 搜索
+        handleSearch (val) {
+            this.list = []
+            this.getListMsg({query_text: val})
         }
     },
     mounted () {

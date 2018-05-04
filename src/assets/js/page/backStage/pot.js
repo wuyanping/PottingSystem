@@ -207,8 +207,6 @@ const pot = {
             ],
             // 表格列特殊值处理
             tableFieldFn: function (data) {
-                console.log('tableFieldFn ---- ')
-                console.log(data)
                 const g = function (gender) {
                     return gender === 1 ? '女' : '男'
                 }
@@ -232,16 +230,26 @@ const pot = {
                     return arrString
                 }
 
+                const statusFn = function (rfid) {
+                    if (rfid) {
+                        return 1
+                    } else {
+                        return 0
+                    }
+                }
+
                 if (isArray(data)) {
                     data.forEach(v => {
                         v.gender = g(v.gender)
                         v.main = arrStr(v.main)
                         v.info = arrObj(v.info)
+                        v.status = statusFn(v.rfid)
                     })
                 }
                 if (isObject(data)) {
                     data.main = arrStr(data.main)
                     data.info = arrObj(data.info)
+                    data.status = statusFn(data.rfid)
                 }
                 return data
             },

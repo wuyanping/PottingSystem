@@ -4,6 +4,15 @@
 // import ElSelect from '../../../../public/components/commonElSelect.vue'
 import Uploader from 'COMPONENTS/public/commonUploader.vue'
 
+function customSerializeFn (item) {
+    let obj = {}
+    if (item.value instanceof Blob) {
+        obj['_hasfile'] = true
+    }
+    obj[item['field']] = item['value']
+    return obj
+}
+
 const userInfo = {
     commonFormFieldsFn () {
         return [
@@ -62,7 +71,8 @@ const userInfo = {
                 field: 'avatar',
                 label: '头像',
                 required: false,
-                value: null
+                value: null,
+                customSerializeFn: customSerializeFn
             },
             {
                 component: 'ElInput',

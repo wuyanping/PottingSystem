@@ -110,6 +110,7 @@ export default {
                     .then(res => {
                         if (res) {
                             this.$vux.toast.text('修改成功', 'middle')
+                            this.$router.go(-1)
                         }
                     })
             } else {
@@ -180,17 +181,15 @@ export default {
         //     this.isShowFinish = bol
         },
         getUserInfo () {
-            axios.post('/api/islogin')
-                .then(res => {
-                    this.formData.forEach(v => {
-                        Object.keys(res.data).forEach(i => {
-                            if (v.name === i) {
-                                v.value = res.data[i]
-                            }
-                        })
-                    })
-                    this.formData['id'] = res.data['id']
+            let user = window.bdUser
+            this.formData.forEach(v => {
+                Object.keys(user).forEach(i => {
+                    if (v.name === i) {
+                        v.value = user[i]
+                    }
                 })
+            })
+            this.formData['id'] = user['id']
         }
     }
 }

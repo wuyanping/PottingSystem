@@ -8,7 +8,7 @@
         <div slot="footer" class="txt-c">
             <commonElButton
                 :params="saveSetting"
-                v-on:save="save"
+                v-on:save="validateFn"
             />
         </div>
     </div>
@@ -17,6 +17,8 @@
 import commonFormItem from 'COMPONENTS/public/commonFormItem.vue'
 import commonElButton from 'COMPONENTS/public/commonElButton.vue'
 import userInfo from '../userInfo.js'
+import { isFunction, serializeData } from 'UTILS/utils.js'
+import { index, update } from 'UTILS/commonApi.js'
 export default {
     name: 'userInfo',
     components: {
@@ -45,15 +47,34 @@ export default {
         console.log(this.formData)
     },
     methods: {
-        save () {
+        // 验证表单
+        validateFn () {
             this.$refs['formData'].validate((valid) => {
                 if (valid) {
                     this.saveSetting.loading = true
                     console.log(this.formData)
+                    this.editSave(this.formData)
                 } else {
                     return false
                 }
             })
+        },
+        // 编辑保存
+        editSave (formData) {
+            console.log(formData)
+            let params = {
+                _type: 'edit',
+                ...serializeData(formData.formField)
+            }
+            console.log('--------')
+            console.log(params)
+            console.log('--------')
+            update(this, 'sysman', window.bdUser.id, params)
+                .then(data => {
+                    console.log(data)
+                    this.$mg(this, '保存成功', 'success', 2000)
+                    this.saveSetting.loading = false
+                })
         },
         // 设置表单对话框数据
         setFormData (row = {}) {

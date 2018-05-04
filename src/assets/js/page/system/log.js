@@ -8,6 +8,7 @@ import ElDate from 'COMPONENTS/public/commonElDatePicker.vue'
 
 import validtor from 'UTILS/validator.js'
 import { ajax } from 'UTILS/ajax.js'
+import { isArray, isObject } from 'UTILS/utils.js'
 
 function customSerializeFn (item) {
     let obj = {}
@@ -125,6 +126,36 @@ const log = {
             ],
             // 表格列特殊值处理
             tableFieldFn: function (data) {
+                const typeFn = function (n) {
+                    console.log(n)
+                    let arr = [{
+                        label: '添加',
+                        value: 1
+                    },
+                    {
+                        label: '更新',
+                        value: 2
+                    },
+                    {
+                        label: '删除',
+                        value: 3
+                    },
+                    {
+                        label: '查询',
+                        value: 4
+                    }]
+                    return arr.find(item => {
+                        return item.value === n
+                    }).label
+                }
+                if (isArray(data)) {
+                    data.forEach(v => {
+                        v.type = typeFn(v.type)
+                    })
+                }
+                if (isObject(data)) {
+                    data.type = typeFn(data.type)
+                }
                 return data
             },
             // 表格的操作
