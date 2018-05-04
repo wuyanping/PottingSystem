@@ -25,7 +25,7 @@
         },
         methods: {
             statusChange () {
-                this.$emit('status', this.row)
+                this.$emit('status', {...this.row, status: this.status})
             }
         },
         watch: {

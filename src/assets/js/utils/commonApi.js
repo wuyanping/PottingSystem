@@ -91,7 +91,7 @@ const commonApi = {
      * @param  {Function} fn   成功回调
      */
     status (arg, data, fn) {
-        ajax.call(this, 'get', $apiUrl(`${arg.router}/${arg.id}/status`), data, fn)
+        ajax.call(this, 'post', this.$apiUrl(`${arg.router}/${arg.id}/review`), data, fn)
     }
 }
 
@@ -211,13 +211,13 @@ module.exports = {
     /**
      * 改变switch开关状态
      */
-    status (vm, route, id) {
+    status (vm, route, id, params) {
         let arg = {
             router: route,
             id: id
         }
         return new Promise(resolve => {
-            commonApi[`status`].call(vm, arg, data => {
+            commonApi[`status`].call(vm, arg, params, data => {
                 resolve(data)
             })
         })
