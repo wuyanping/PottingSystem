@@ -9,7 +9,9 @@
                     </div>
                 </flexbox-item>
                 <flexbox-item>
-                    <x-input class="weui-vcode basic_top_r">
+                    <x-input class="weui-vcode basic_top_r"
+                        v-model="searchValue"
+                        placeholder="搜索">
                         <icon slot="right" type="search"></icon>
                     </x-input>
                 </flexbox-item>
@@ -18,7 +20,7 @@
 
         <!-- 盆栽列表 -->
         <div class="basic_list" v-if="hasList" ref="wrapper" :style="{height: height}">
-            <load-more tip="正在加载" v-if="showPullDown"></load-more>
+            <load-more tip="正在刷新" v-if="showPullDown"></load-more>
             <panel :list="list" type="5" @on-click-item="handlePanelItem" @on-img-error="onImgError"></panel>
             <loading :show="showLoading" text="加载中"></loading>
         </div>
@@ -115,7 +117,8 @@ export default {
             },
             showPullDown: false,
             height: `${he}px`,
-            showLoading: true
+            showLoading: true,
+            searchValue: ''
         }
     },
     methods: {
@@ -183,8 +186,8 @@ export default {
                 // 下拉加载
                 this.scroll.on('pullingDown', () => {
                     this.showPullDown = true
-                    this.list = []
                     setTimeout(() => {
+                        this.list = []
                         this.getListMsg()
                         this.showPullDown = false
                     }, 1000)

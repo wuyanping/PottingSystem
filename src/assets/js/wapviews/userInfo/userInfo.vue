@@ -2,7 +2,9 @@
 	<div class="userInfo">
 		<blur :blur-amount=40 :url="url" :height="100">
             <div class="center clearfix">
-                <img :src="userData.avatar ? `/api/${userData.avatar}` : url" class="fl">
+                <uploadImg class="uploadImg fl"
+                    :avatar="userData.avatar"
+                    @handleUpload="handleUpload"/>
                 <div class="fl p-10"> 
                     <p>{{userData.name}}</p>
                     <p>个人信息 > </p>
@@ -26,10 +28,12 @@
 <script>
 import { Blur, Group, Cell } from 'vux'
 import PopupForm from 'WAPVIEWS/components/input/popupForm.vue'
-import { index } from 'UTILS/commonApi'
+import uploadImg from './Details/uploadImg.vue'
+import { index, update } from 'UTILS/commonApi'
+
 export default {
     components: {
-        Blur, Group, Cell, PopupForm
+        Blur, Group, Cell, PopupForm, uploadImg
     },
     data () {
         return {
@@ -50,10 +54,13 @@ export default {
             this.isShowPopup = false
         },
         getUserInfo () {
-            axios.post('/api/islogin')
+            this.userData = window.bdUser
+        },
+        handleUpload (obj) {
+            let userId = window.bdUser['id']
+            update(this, 'user', userId, obj)
                 .then(res => {
                     console.log(res)
-                    this.userData = res.data
                 })
         }
     },
@@ -70,11 +77,14 @@ export default {
       padding: 20px 10px 0 10px;
       font-size: 18px;
     }
-    .center img {
-      width:60px;
-      height: 60px;
-      border-radius: 50%;
-      border: 4px solid #ececec;
+    .uploadImg{
+        border-radius: 50%;
+        img{
+            width:60px;
+            height: 60px;
+            border-radius: 50%;
+            border: 4px solid #ececec;
+        }
     }
     .weui-cells{
         margin-top: 0;
