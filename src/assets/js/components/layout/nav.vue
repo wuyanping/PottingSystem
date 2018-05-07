@@ -3,6 +3,7 @@
         <el-menu
 	        default-active="2"
 	        class="el-menu-vertical-demo"
+            :default-openeds="defaultOpeneds"
 	        @select="handelSelect"
 	        background-color="#545c64"
 	        text-color="#fff"
@@ -26,7 +27,13 @@ export default {
     	menu: {
     		type: Array,
     		default: []
-    	}
+    	},
+        defaultOpeneds: {
+            type: Array,
+            default () {
+                return []
+            }
+        }
     },
     data () {
     	return {

@@ -16,7 +16,11 @@ router.beforeEach((to, from, next) => {
             window.bdUser = res.data
             next()
         } else {
-            next('/index')
+            if (window.isPC) {
+                next('/index')
+            } else {
+                next('/index/myPotting')
+            }
         }
     }).catch(err => {
         console.log(err)

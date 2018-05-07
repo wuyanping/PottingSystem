@@ -36,10 +36,10 @@ const variety = {
     hasTableIndex: true,
     hasTableOperation: true,
     hasTableOperationEdit: true,
-    hasTableOperationDelete: false,
-    hasPaginationBatchDestroy: false,
+    hasTableOperationDelete: true,
+    hasPaginationBatchDestroy: true,
     // 默认条件搜索的占位符
-    defaultConditionSearchPlaceholder: '用户名',
+    defaultConditionSearchPlaceholder: '品种名称',
     // 标题*
     commonTitle: '品种管理',
     // 标签页
@@ -62,9 +62,25 @@ const variety = {
                 {
                     component: ElInput,
                     props: {
-                        field: 'nickname',
+                        field: 'habit',
                         value: undefined,
-                        placeholder: '用户昵称'
+                        placeholder: '生长习性'
+                    }
+                },
+                {
+                    component: ElInput,
+                    props: {
+                        field: 'origin',
+                        value: undefined,
+                        placeholder: '产地'
+                    }
+                },
+                {
+                    component: ElInput,
+                    props: {
+                        field: 'use_for',
+                        value: undefined,
+                        placeholder: '用途'
                     }
                 }
             ],
@@ -74,36 +90,20 @@ const variety = {
             // 表格列
             commonTableField: [
                 {
-                    label: '用户名',
+                    label: '品种名称',
                     field: 'name'
                 },
                 {
-                    label: '用户昵称',
-                    field: 'nickname'
+                    label: '生长习性',
+                    field: 'habit'
                 },
                 {
-                    label: '手机号',
-                    field: 'phone'
+                    label: '产地',
+                    field: 'origin'
                 },
                 {
-                    label: '头像',
-                    field: 'avatar'
-                },
-                {
-                    label: '邮箱',
-                    field: 'email'
-                },
-                {
-                    label: '真实姓名',
-                    field: 'realname'
-                },
-                {
-                    label: '性别',
-                    field: 'gender'
-                },
-                {
-                    label: '出生日期',
-                    field: 'birth_date'
+                    label: '用途',
+                    field: 'use_for'
                 },
                 {
                     label: '备注',
@@ -111,20 +111,20 @@ const variety = {
                 }
             ],
             // 表格列特殊值处理
-            tableFieldFn: function (data) {
-                const g = function (gender) {
-                    return gender === 1 ? '女' : '男'
-                }
-                if (isArray(data)) {
-                    data.forEach(v => {
-                        v.gender = g(v.gender)
-                    })
-                }
-                if (isObject(data)) {
-                    data.gender = g(data.gender)
-                }
-                return data
-            },
+            // tableFieldFn: function (data) {
+            //     const g = function (gender) {
+            //         return gender === 1 ? '女' : '男'
+            //     }
+            //     if (isArray(data)) {
+            //         data.forEach(v => {
+            //             v.gender = g(v.gender)
+            //         })
+            //     }
+            //     if (isObject(data)) {
+            //         data.gender = g(data.gender)
+            //     }
+            //     return data
+            // },
             // 表格的操作
             commonTableOperationComponents: [],
             // 分页操作组件
@@ -142,122 +142,75 @@ const variety = {
             // 默认表单域
             commonFormFieldsFn () {
                 return [
-                    // {
-                    //     component: 'ElInput',
-                    //     field: 'name',
-                    //     label: '用户名',
-                    //     rulesType: [
-                    //         {
-                    //             max: 255,
-                    //             message: '最多有255字',
-                    //             trigger: 'blur'
-                    //         }
-                    //     ],
-                    //     // 默认 required: true,
-                    //     // 根据rules传入的方法数据动态设置验证方法
-                    //     rules: [
-                    //         // {
-                    //         //     method: 'checkValid',
-                    //         //     trigger: 'blur',
-                    //         //     params: {
-                    //         //         cfield: 'name'
-                    //         //     }
-                    //         // }
-                    //     ],
-                    //     value: null
-                    // },
-                    // {
-                    //     component: 'ElInput',
-                    //     field: 'nickname',
-                    //     label: '用户昵称',
-                    //     rulesType: [
-                    //         {
-                    //             max: 255,
-                    //             message: '最多有255字',
-                    //             trigger: 'blur'
-                    //         }
-                    //     ],
-                    //     rules: [],
-                    //     value: null
-                    // },
-                    // {
-                    //     component: 'ElInput',
-                    //     field: 'phone',
-                    //     label: '手机号',
-                    //     rules: [
-                    //         {
-                    //             method: 'phoneValid',
-                    //             params: {}
-                    //         }
-                    //     ],
-                    //     value: null
-                    // },
-                    // {
-                    //     component: Uploader,
-                    //     field: 'avatar',
-                    //     label: '头像',
-                    //     required: false,
-                    //     value: null,
-                    //     customSerializeFn: customSerializeFn
-                    // },
-                    // {
-                    //     component: 'ElInput',
-                    //     field: 'email',
-                    //     label: '电子邮箱',
-                    //     required: false,
-                    //     rulesType: [
-                    //         {
-                    //             type: 'email',
-                    //             message: '请输入正确的邮箱地址',
-                    //             trigger: 'change'
-                    //         },
-                    //         {
-                    //             max: 255,
-                    //             message: '最多有255字',
-                    //             trigger: 'blur'
-                    //         }
-                    //     ],
-                    //     rules: [],
-                    //     value: null
-                    // },
-                    // {
-                    //     component: 'ElInput',
-                    //     field: 'realname',
-                    //     label: '真实姓名',
-                    //     required: false,
-                    //     rulesType: [
-                    //         {
-                    //             max: 255,
-                    //             message: '最多有255字',
-                    //             trigger: 'blur'
-                    //         }
-                    //     ],
-                    //     value: null
-                    // },
-                    // {
-                    //     component: 'ElRadio',
-                    //     field: 'gender',
-                    //     label: '性别',
-                    //     required: false,
-                    //     value: 0,
-                    //     radioList: [
-                    //         {
-                    //             name: '男',
-                    //             id: 0
-                    //         },
-                    //         {
-                    //             name: '女',
-                    //             id: 1
-                    //         }
-                    //     ]
-                    // },
-                    // {
-                    //     component: 'ElDate',
-                    //     field: 'birth_date',
-                    //     label: '出生日期',
-                    //     required: false,
-                    //     value: null
-                    // },
+                    {
+                        component: 'ElInput',
+                        field: 'name',
+                        label: '品种名称',
+                        rulesType: [
+                            {
+                                max: 255,
+                                message: '最多有255字',
+                                trigger: 'blur'
+                            }
+                        ],
+                        // 默认 required: true,
+                        // 根据rules传入的方法数据动态设置验证方法
+                        rules: [
+                            // {
+                            //     method: 'checkValid',
+                            //     trigger: 'blur',
+                            //     params: {
+                            //         cfield: 'name'
+                            //     }
+                            // }
+                        ],
+                        value: null
+                    },
+                    {
+                        component: 'ElInput',
+                        field: 'habit',
+                        label: '生长习性',
+                        rulesType: [
+                            {
+                                max: 255,
+                                message: '最多有255字',
+                                trigger: 'blur'
+                            }
+                        ],
+                        rules: [
+                        ],
+                        value: null
+                    },
+                    {
+                        component: 'ElInput',
+                        field: 'origin',
+                        label: '产地',
+                        rulesType: [
+                            {
+                                max: 255,
+                                message: '最多有255字',
+                                trigger: 'blur'
+                            }
+                        ],
+                        rules: [
+                        ],
+                        value: null
+                    },
+                    {
+                        component: 'ElInput',
+                        field: 'use_for',
+                        label: '用途',
+                        rulesType: [
+                            {
+                                max: 255,
+                                message: '最多有255字',
+                                trigger: 'blur'
+                            }
+                        ],
+                        rules: [
+                        ],
+                        value: null
+                    },
                     {
                         component: 'ElInput',
                         inputType: 'textarea',

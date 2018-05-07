@@ -34,7 +34,7 @@ const potDetail = {
     hasTableOperationDelete: false,
     hasPaginationBatchDestroy: false,
     // 默认条件搜索的占位符 和hasConditionSearch连用
-    defaultConditionSearchPlaceholder: '',
+    defaultConditionSearchPlaceholder: '操作人/盆栽状态',
     // 标题*
     commonTitle: '盆栽详情',
     // 标签页

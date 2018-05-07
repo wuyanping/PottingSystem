@@ -7,14 +7,16 @@ const validtor = {
      * 参数：cfield(String)
      */
     checkValid: (rule, value, callback) => {
+        console.log(rule)
         let params = {
             id: rule['id'],
             field: rule['cfield'],
             value: value
         }
+        console.log(params)
         check(rule['vm'], rule['route'], params)
             .then(data => {
-                if (data.res === 'true') {
+                if (data.res === true) {
                     callback()
                 } else {
                     callback(new Error(rule['label'] + '已存在'))
