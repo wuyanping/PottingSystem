@@ -1,5 +1,5 @@
 <template>
-    <el-date-picker
+    <el-date-picker 
         v-model="params.value"
         :class="className"
         :type="type"
@@ -57,6 +57,7 @@
         methods: {
             dateChange (value) {
                 this.$emit('selectChange', { date: value })
+                console.log(value)
             }
         }
     }

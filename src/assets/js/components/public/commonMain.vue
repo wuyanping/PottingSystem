@@ -717,6 +717,7 @@
                 for (let i in data) {
                     this.filter[i] = data[i]
                 }
+                console.log(this.filter)
                 this.ajaxIndex()
             },
             // // condition范围选择处理方法

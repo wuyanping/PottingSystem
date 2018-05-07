@@ -22,7 +22,7 @@
 
         <!-- 盆栽列表 -->
         <div class="basic_list" v-if="hasList" ref="wrapper" :style="{height: height}">
-            <load-more :show-loading="false" tip="暂无数据" v-if="!list.length" />
+            <!-- <load-more :show-loading="false" tip="暂无数据" v-if="!list.length" /> -->
             <load-more tip="正在刷新" v-if="showPullDown" />
             <panel :list="list" type="5" @on-click-item="handlePanelItem" @on-img-error="onImgError" />
             <loading :show="showLoading" text="加载中" />
@@ -214,11 +214,6 @@ export default {
         setTimeout(() => {
             this._initScroll()
         }, 20)
-    },
-    created () {
-        this.$nextTick(() => {
-            this._initScroll()
-        })
     }
 }
 </script>
