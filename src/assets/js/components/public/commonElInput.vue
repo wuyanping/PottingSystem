@@ -3,7 +3,7 @@
         :class="className"
         :placeholder="`搜索${placeholder}`"
         v-model.trim="params.value"
-        @keyup.enter="handleSearch">
+        @keyup.enter.native="handleSearch">
         <el-button slot="append" icon="el-icon-search" @click="handleSearch"></el-button>
     </el-input>
 </template>
