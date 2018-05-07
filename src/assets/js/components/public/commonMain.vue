@@ -56,7 +56,7 @@
                 <el-input
                     :placeholder="`搜索${defaultConditionSearchPlaceholder}`"
                     v-model.trim="conditionSearch"
-                    @keyup.enter="handleConditionSearch">
+                    @keyup.enter.native="handleConditionSearch">
                     <el-button slot="append" icon="el-icon-search" @click="handleConditionSearch"></el-button>
                 </el-input>
                 <!-- 自定义筛选条件 -->

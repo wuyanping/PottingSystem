@@ -158,13 +158,13 @@ const sysman = {
                         ],
                         // 根据rules传入的方法数据动态设置验证方法
                         rules: [
-                            // {
-                            //     method: 'checkValid',
-                            //     trigger: 'blur',
-                            //     params: {
-                            //         cfield: 'name'
-                            //     }
-                            // }
+                            {
+                                method: 'checkValid',
+                                trigger: 'blur',
+                                params: {
+                                    cfield: 'name'
+                                }
+                            }
                         ],
                         value: null
                     },

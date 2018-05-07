@@ -3,7 +3,7 @@
         <el-header height="66px"><top></top></el-header>
         <el-container>
             <el-aside width="200px">
-                <pNav :menu="menu"></pNav>
+                <pNav :menu="menu" :defaultOpeneds="defaultOpeneds"></pNav>
             </el-aside>
             <el-container>
                 <el-main>
@@ -24,7 +24,8 @@ export default {
     name: 'index',
     data () {
         return {
-            menu: menu
+            menu: menu,
+            defaultOpeneds: []
         }
     },
     components: {
