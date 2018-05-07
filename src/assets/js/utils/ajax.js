@@ -77,6 +77,8 @@ const ajax = function (type, url, data, fn) {
             params: data
         }
     } else {
+        console.log('ajax data ------- ')
+        console.log(data)
         if (data['_hasfile']) { // 当有文件的情况
             // 当前提交是update时，后台方法为put 但是put方法是不能获取到formdata的数据
             // add by suzhihao (2017.8.31)
@@ -97,7 +99,9 @@ const ajax = function (type, url, data, fn) {
             datas = fd
         } else {
             datas = data
+            console.log(111)
         }
+        console.log(datas)
     }
     return new Promise((resolve, reject) => {
         axios[type](url, datas, config)

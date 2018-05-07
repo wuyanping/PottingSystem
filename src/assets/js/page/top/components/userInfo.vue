@@ -3,6 +3,7 @@
         <el-form class="components-form" label-width="100px" :model="formData" ref="formData">
             <commonFormItem
                 :commonFormData="formData"
+                :route="route"
             />
         </el-form>
         <div slot="footer" class="txt-c">
@@ -38,7 +39,8 @@ export default {
                 clickFn: (vm) => {
                     vm.$emit('save')
                 }
-            }
+            },
+            route: 'sysman'
         }
     },
     mounted () {
@@ -69,7 +71,7 @@ export default {
             console.log('--------')
             console.log(params)
             console.log('--------')
-            update(this, 'sysman', window.bdUser.id, params)
+            update(this, this.route, window.bdUser.id, params)
                 .then(data => {
                     console.log(data)
                     this.$mg(this, '保存成功', 'success', 2000)
@@ -79,6 +81,8 @@ export default {
         // 设置表单对话框数据
         setFormData (row = {}) {
             let data = {
+                id: window.bdUser.id,
+                _type: 'edit',
                 formField: userInfo.commonFormFieldsFn()
             }
             data['formField'].forEach(item => {
