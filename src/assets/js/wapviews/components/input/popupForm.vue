@@ -26,7 +26,6 @@
 	                        提交
 	                    </x-button>
 	                </group>
-	                div
 	            </div>
 	        </popup>
 	    </div>
@@ -113,19 +112,9 @@ export default {
                 isCanSibmit = isCanSibmit && result.valid
                 this.$set(this.formData, i, input)
             })
-            console.log(this.formData)
+            // console.log(this.formData)
             if (isCanSibmit) {
-                let params = {
-                    ...serializeData(this.formData),
-                    type: 'add'
-                }
-                store(this, 'pot', params)
-                    .then(res => {
-                        if (res) {
-                            this.$vux.toast.text('新增成功', 'middle')
-                            this.handleClose()
-                        }
-                    })
+                this.$emit('handleSubmit')
                 console.log('可以提交了')
             } else {
                 console.log('验证失败')

@@ -10,7 +10,7 @@
                 <div v-for="(inputItem,i) in loginData" :key="i">
                     <x-input
                         class="commonInput"
-                        type="text"
+                        :type="inputItem.type ? inputItem.type : 'text'"
                         novalidate
                         :iconType="inputItem.iconType"
                         :placeholder="`请输入${inputItem.title}`"
@@ -36,7 +36,7 @@
                 <div v-for="(inputItem,i) in signInData" :key="i">
                     <x-input
                         class="commonInput"
-                        type="text"
+                        :type="inputItem.type ? inputItem.type : 'text'"
                         novalidate
                         :iconType="inputItem.iconType"
                         :placeholder="`请输入${inputItem.title}`"
@@ -102,7 +102,8 @@
                             valid: '',
                             msg: ''
                         },
-                        value: ''
+                        value: '',
+                        type: 'password'
                     }
                 ],
                 signInData: [
@@ -148,7 +149,8 @@
                             valid: '',
                             msg: ''
                         },
-                        value: ''
+                        value: '',
+                        type: 'password'
                     },
                     {
                         name: 'password_confirmation',
@@ -159,7 +161,8 @@
                             valid: '',
                             msg: ''
                         },
-                        value: ''
+                        value: '',
+                        type: 'password'
                     }
                 ]
             }

@@ -22,10 +22,11 @@
 
         <!-- 盆栽列表 -->
         <div class="basic_list" v-if="hasList" ref="wrapper" :style="{height: height}">
-            <!-- <load-more :show-loading="false" tip="暂无数据" v-if="!list.length" /> -->
-            <load-more tip="正在刷新" v-if="showPullDown" />
-            <panel :list="list" type="5" @on-click-item="handlePanelItem" @on-img-error="onImgError" />
-            <loading :show="showLoading" text="加载中" />
+            <list 
+                :data="list" 
+                @onButtonClick="onButtonClick"
+                :link="link" />
+            <!-- <panel :list="list" type="5" @on-click-item="handlePanelItem" @on-img-error="onImgError" class="test"/> -->
         </div>
          
         <!-- 新建弹框 -->
@@ -34,15 +35,19 @@
             :isShowPopup="isShowPopup"
             :isShowSibmitBtn="true"
             @closePopup="closePopup"
+            @handleSubmit="handleSubmit"
         ></PopupForm>
     </div>
 </template>
 <script>
-import { XInput, Group, Icon, Flexbox, FlexboxItem, Panel, Popup, Cell, LoadMore, Loading } from 'vux'
+import { XInput, Group, Icon, Flexbox, FlexboxItem, Panel, Popup, Cell, LoadMore, Loading, ToastPlugin } from 'vux'
 import PopupForm from '../input/popupForm.vue'
-import { isFunction } from 'UTILS/utils.js'
+import { isFunction, serializeData } from 'UTILS/utils.js'
 import BScroll from 'better-scroll'
-import { index } from 'UTILS/commonApi.js'
+import { index, destroy, store, update } from 'UTILS/commonApi.js'
+import list from '../list.vue'
+
+Vue.use(ToastPlugin)
 
 export default {
     components: {
@@ -56,7 +61,8 @@ export default {
         Cell,
         PopupForm,
         LoadMore,
-        Loading
+        Loading,
+        list
     },
     props: {
         model: {
@@ -96,15 +102,7 @@ export default {
     data () {
         let he = window.screen.height - 140
         return {
-            list: [
-                // {
-                //     id: 0,
-                //     src: 'http://somedomain.somdomain/x.jpg',
-                //     fallbackSrc: './static/image/company_default_logo.png',
-                //     title: '标题一标题一标题一标题一标题一标题一标题一',
-                //     desc: '由各种物质组成的巨型球状天体，叫做星球。星球有一定的形状，有自己的运行轨道。由各种物质组成的巨型球状天体，叫做星球。星球有一定的形状，有自己的运行轨道。'
-                // }
-            ],
+            list: [],
             isShowPopup: false,
             formData: [],
             options: {
@@ -123,7 +121,9 @@ export default {
             showPullDown: false,
             height: `${he}px`,
             showLoading: true,
-            searchValue: ''
+            searchValue: '',
+            link: this.$route.params.model,
+            flag: ''
         }
     },
     methods: {
@@ -139,9 +139,13 @@ export default {
         },
         // 新增表单
         newForm () {
+            this.flag = 'add'
             this.isShowPopup = true
+            console.log(this.formData)
             this.formData = this.model.formField()
-            // console.log(this.formData)
+            console.log(this.formData)
+            console.log(this.model)
+            console.log(this.model.formField())
         },
         // 关闭表单
         handleClose () {
@@ -150,26 +154,15 @@ export default {
         changeIsShowFinish () {},
         // 提交表单
         sibmitForm () {
-
         },
         closePopup () {
             this.isShowPopup = false
         },
         // 获取数据
-        getListMsg (query = {page: 1, cstatus: 1}) {
-            index(this, 'pot', query).then(res => {
+        getListMsg (query = {page: 1}) {
+            index(this, 'pot/self').then(res => {
                 this.showLoading = false
-                let potData = res.data
-                potData.forEach(v => {
-                    let obj = {
-                        id: v.id,
-                        title: v.name,
-                        desc: v.use_for,
-                        src: `/api/${v.imgs}`,
-                        fallbackSrc: './static/image/company_default_logo.png'
-                    }
-                    this.list.push(obj)
-                })
+                this.list = res.data
                 this.list.current_page = res.current_page
                 this.list.total_page = Math.ceil(res.total / res.per_page)
             })
@@ -207,9 +200,66 @@ export default {
         handleSearch (val) {
             this.list = []
             this.getListMsg({query_text: val})
+        },
+        // 右拉事件
+        onButtonClick (val, id) {
+            console.log(id)
+            if (val === 'delete') {
+                destroy(this, 'pot', id)
+                    .then(res => {
+                        this.$vux.toast.text('删除成功', 'middle')
+                        this.getListMsg()
+                    })
+            } else {
+                this.flag = 'edit'
+                this.isShowPopup = true
+                this.formData = this.model.formField()
+                this.list.forEach(i => {
+                    if (i.id === id) {
+                        this.formData.forEach(v => {
+                            Object.keys(i).forEach(y => {
+                                if (v.name === y) {
+                                    v.value = i[y]
+                                }
+                            })
+                        })
+                        this.formData['id'] = id
+                    }
+                })
+            }
+        },
+        // 表单提交
+        handleSubmit () {
+            console.log(this.flag)
+            let params = {
+                ...serializeData(this.formData)
+            }
+            if (this.flag === 'add') {
+                console.log(this.formData)
+                store(this, 'pot', params)
+                    .then(res => {
+                        if (res) {
+                            this.$vux.toast.text('新增成功', 'middle')
+                            this.handleClose()
+                        }
+                    })
+            } else {
+                console.log('编辑的')
+                // console.log(params)
+                params._method = 'PUT'
+                update(this, 'pot', this.formData['id'], params)
+                    .then(res => {
+                        if (res) {
+                            this.$vux.toast.text('编辑成功', 'middle')
+                            this.handleClose()
+                            this.getListMsg()
+                        }
+                    })
+            }
         }
     },
     mounted () {
+        // console.log(this.list)
         this.getListMsg()
         setTimeout(() => {
             this._initScroll()

@@ -33,6 +33,15 @@
             @on-change="(val) => validatorResultFn(formItem.title, formItem.rule, val, formItem.component)">
         </radio>
 
+        <!-- 下拉框 -->
+        <popup-picker
+            v-if="formItem.component === 'select'"
+            :title="formItem.title"
+            :data="formItem.options"
+            v-model="formItem.value"
+            :columns="1"
+            @on-change="(val) => validatorResultFn(formItem.title, formItem.rule, val, formItem.component)" />
+
         <!-- 日期 -->
         <datetime
             v-if="formItem.component === 'datetime'"
@@ -59,7 +68,7 @@
     </div>
 </template>
 <script>
-import { XInput, Radio, Datetime, Toast, XTextarea } from 'vux'
+import { XInput, Radio, Datetime, Toast, XTextarea, PopupPicker } from 'vux'
 import {validatorFn} from 'UTILS/moblieValidator.js'
 import Camera from './camera.vue'
 export default {
@@ -69,7 +78,8 @@ export default {
         Datetime,
         Toast,
         Camera,
-        XTextarea
+        XTextarea,
+        PopupPicker
     },
     props: {
         formItem: Object,
@@ -93,10 +103,10 @@ export default {
         // 表单验证
         validatorResultFn (name, rule, value, component) {
             console.log('validatorResult --------------------------------------')
-            console.log(value)
+            // console.log(value)
             // this.$emit('changeIsShowFinish')
             let result = validatorFn(name, rule, value)
-            console.log(result)
+            // console.log(result)
             this.formItem.validatorResult = result
             this.formItem.iconType = !result.valid ? 'error' : ''
             // return result

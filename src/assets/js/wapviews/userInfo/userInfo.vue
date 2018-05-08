@@ -115,9 +115,11 @@ export default {
     }
     .logoutBtn{
         width: 80%;
+        height: 56px;
         position: fixed;
         bottom: 80px;
         margin-left: 10%;
+        border-radius: 20px;
     } 
 }
 </style>

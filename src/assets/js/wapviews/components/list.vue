@@ -1,23 +1,36 @@
 <template>
 	<div class='list'>
-		<group>
-            <cell
-                v-for="(pItem,i) in data"
-                :key="i"
-                is-link
-                :link="`/index/${link}/${pItem.id}`">
-                <img slot="icon" width="90" style="display:block;margin-right:5px;" :src="pItem.img">
-                <span align-items="flex-start" slot="title">{{pItem.title}}</span>
-                <span slot="inline-desc" class="list-inlinedesc">{{pItem.inlineDesc}}</span>
-            </cell>
-    	</group>
+        <swipeout>
+            <swipeout-item v-for="(pItem,i) in data" :key="i">
+                <div slot="right-menu">
+                    <swipeout-button @click.native="onButtonClick('edit', pItem.id)" background-color="#336DD6">编辑</swipeout-button>
+                    <swipeout-button @click.native="onButtonClick('delete', pItem.id)" background-color="#D23934">删除</swipeout-button>
+                </div>
+                    <div slot="content">
+                        <!-- <group> -->
+                            <cell
+                                is-link
+                                :link="`/index/${link}/${pItem.id}`">
+                                <img slot="icon" width="90" style="display:block;margin-right:5px;" :src="pItem.imgs ? `/api/${pItem.imgs}` : fallbackSrc">
+                                <span align-items="flex-start" slot="title">{{pItem.name}}</span>
+                                <span slot="inline-desc" class="list-inlinedesc">{{pItem.use_for}}</span>
+                            </cell>
+                        <!-- </group> -->
+                    </div>
+            </swipeout-item>
+        </swipeout>
 	</div>
 </template>
 <script>
-import { Cell, CellBox, Group, Badge } from 'vux'
+import { Cell, CellBox, Group, Badge, Swipeout, SwipeoutItem, SwipeoutButton } from 'vux'
 export default {
     components: {
-        Cell, CellBox, Group, Badge
+        Cell, CellBox, Group, Badge, Swipeout, SwipeoutItem, SwipeoutButton
+    },
+    data () {
+        return {
+            fallbackSrc: './static/image/company_default_logo.png'
+        }
     },
     props: {
         data: {
@@ -25,6 +38,11 @@ export default {
             default: []
         },
         link: ''
+    },
+    methods: {
+        onButtonClick (val, i) {
+            this.$emit('onButtonClick', val, i)
+        }
     }
 }
 </script>

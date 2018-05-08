@@ -3,8 +3,12 @@
 	<div class="detailsDetails">
         <!-- 记录搜索 -->
 		<div class="dd_top">
+
             <flexbox :gutter="0">
-                <flexbox-item :span="3/12" class="txt-c">
+                <flexbox-item :span="1/12" class="txt-c">
+                    <div @click="handleAdd">新增</div>
+                </flexbox-item>
+                <flexbox-item :span="2/12" class="txt-c">
                     时间搜索
                 </flexbox-item>
                 <flexbox-item :span="4/12">
@@ -49,13 +53,23 @@
                 </div>
             </popup>
         </div>
+
+        <!-- 新建弹框 -->
+        <PopupForm 
+            :formData="formData"
+            :isShowPopup="isShowAdd"
+            :isShowSibmitBtn="true"
+            @closePopup="closePopup"
+            @handleSubmit="handleSubmit"
+        ></PopupForm>
 	</div>
 </template>
 <script>
 import { XInput, Icon, Flexbox, FlexboxItem, DatetimePlugin, Panel, TransferDom, XHeader, Cell, Popup, Group, LoadMore, XSwitch, Loading } from 'vux'
-import { isFunction } from 'UTILS/utils.js'
-import { index } from 'UTILS/commonApi.js'
+import { isFunction, serializeData } from 'UTILS/utils.js'
+import { index, store } from 'UTILS/commonApi.js'
 import BScroll from 'better-scroll'
+import PopupForm from '../input/popupForm.vue'
 
 Vue.use(DatetimePlugin)
 export default {
@@ -79,7 +93,8 @@ export default {
         Group,
         LoadMore,
         XSwitch,
-        Loading
+        Loading,
+        PopupForm
     },
     computed: {
         title () {
@@ -123,6 +138,7 @@ export default {
         let date = new Date()
         let dDate = `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`
         return {
+            formData: [],
             defaultDate: dDate,
             searchDate: [null, null],
             list: [],
@@ -144,7 +160,8 @@ export default {
             },
             height: `${he}px`,
             showPullDown: false,
-            showLoading: true
+            showLoading: true,
+            isShowAdd: false
         }
     },
     methods: {
@@ -181,6 +198,9 @@ export default {
         },
         handleClose () {
             this.isShowPopup = false
+        },
+        closePopup () {
+            this.isShowAdd = false
         },
         // 获取数据
         getMsg (query = {page: 1}) {
@@ -262,6 +282,25 @@ export default {
                     this.scroll.refresh()
                 })
             }
+        },
+        handleAdd () {
+            console.log('obj')
+            this.isShowAdd = true
+            console.log(this.recordDetails.formField())
+            this.formData = this.recordDetails.formField()
+        },
+        handleSubmit () {
+            let model = this.$route.params.record
+            let id = this.$route.params.id
+            console.log(this.formData)
+            let params = {
+                ...serializeData(this.formData)
+            }
+            console.log(params)
+            store(this, `pot/${id}/${model}`, params)
+                .then(res => {
+                    console.log(res)
+                })
         }
     },
     mounted () {
