@@ -4,6 +4,15 @@ function listItemClickFn (vm, panelItem) {
     vm.$router.push(`${vm.$route.path}/${panelItem.id}`)
 }
 
+function customSerializeFn (item) {
+    let obj = {}
+    if (item.value instanceof Blob) {
+        obj['_hasfile'] = true
+    }
+    obj[item['name']] = item['value']
+    return obj
+}
+
 let model = {
     potting: {
         title: '盆栽列表',
@@ -121,7 +130,8 @@ let model = {
                         valid: '',
                         msg: ''
                     },
-                    value: ''
+                    value: '',
+                    customSerializeFn: customSerializeFn
                 }
             ]
         }

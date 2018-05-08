@@ -18,7 +18,7 @@
                         @on-change="(val) => validatorResultFn('login', inputItem.name, inputItem.rule, val, i)"
                         @on-blur="(val) => validatorResultFn('login', inputItem.name, inputItem.rule, val, i)"
                         v-model="inputItem.value">
-                            <i slot="label" :class="`icon iconfont icon-${inputItem.name}`"></i>
+                            <i slot="label" :class="`icon iconfon   t icon-${inputItem.name}`"></i>
                     </x-input>
                     <span v-if="!inputItem.validatorResult.valid">{{inputItem.validatorResult.msg}}</span>
                 </div>
@@ -166,6 +166,9 @@
             },
             // 登录/注册
             handleAction (action) {
+                console.log('=========')
+                console.log(this[`${action}Data`])
+                console.log('=========')
                 console.log('handleAction' + `  ${action}Data --------------- `)
                 let isCanSibmit = true // 是否可以提交
                 this[`${action}Data`].forEach((input, i) => {
@@ -178,7 +181,6 @@
                     isCanSibmit = isCanSibmit && result.valid
                     this.$set(this[`${action}Data`], i, input)
                 })
-                console.log(this[`${action}Data`])
                 console.log(isCanSibmit)
                 if (isCanSibmit) {
                     this.$router.push('/index/potting')

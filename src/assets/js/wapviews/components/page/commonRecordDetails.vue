@@ -8,7 +8,7 @@
                     时间搜索
                 </flexbox-item>
                 <flexbox-item :span="4/12">
-                    <x-input class="dd_inputDate" @click.native="showPlugin(0)" disabled :value="searchDate[0]">
+                    <x-input class="dd_inputDate" @click.native="showPlugin(0)" disabled :value="searchDate[0]" placeholder="开始时间">
                         <i slot="right" class="icon iconfont icon-date dd_inputIcon" ></i>
                     </x-input>
                 </flexbox-item>
@@ -16,7 +16,7 @@
                     至
                 </flexbox-item>
                 <flexbox-item :span="4/12">
-                    <x-input class="dd_inputDate" @click.native="showPlugin(1)" disabled :value="searchDate[1]">
+                    <x-input class="dd_inputDate" @click.native="showPlugin(1)" disabled :value="searchDate[1]" placeholder="结束时间">
                         <i slot="right" class="icon iconfont icon-date dd_inputIcon" ></i>
                     </x-input>
                 </flexbox-item>
@@ -24,8 +24,10 @@
         </div>
         
         <!-- 节点列表 -->
-        <div class="dd_main">
+        <div class="dd_main" ref="wrapper" :style="{height: height}">
+            <load-more tip="正在刷新" v-if="showPullDown" />
             <panel :list="list" type="5" @on-click-item="handlePanelItem" @on-img-error="onImgError"></panel>
+            <loading :show="showLoading" text="加载中" />
         </div>
         
         <!-- 盆栽节点详情弹框 -->
@@ -41,6 +43,7 @@
                             :key="i"
                             :title="`${item.label}：`"
                             :value="listData[item.field]">
+                            <img v-if="item.label === '外观' && listData[item.field]!==null" :src="`/api/${listData[item.field]}`" style="width: 50px;height:50px;">
                         </cell>
                     </group>
                 </div>
@@ -49,8 +52,11 @@
 	</div>
 </template>
 <script>
-import { XInput, Icon, Flexbox, FlexboxItem, DatetimePlugin, Panel, TransferDom, XHeader, Cell, Popup, Group } from 'vux'
+import { XInput, Icon, Flexbox, FlexboxItem, DatetimePlugin, Panel, TransferDom, XHeader, Cell, Popup, Group, LoadMore, XSwitch, Loading } from 'vux'
 import { isFunction } from 'UTILS/utils.js'
+import { index } from 'UTILS/commonApi.js'
+import BScroll from 'better-scroll'
+
 Vue.use(DatetimePlugin)
 export default {
     directives: {
@@ -70,7 +76,10 @@ export default {
         Panel,
         Cell,
         Popup,
-        Group
+        Group,
+        LoadMore,
+        XSwitch,
+        Loading
     },
     computed: {
         title () {
@@ -110,28 +119,32 @@ export default {
         }
     },
     data () {
+        let he = window.screen.height - 140
         let date = new Date()
         let dDate = `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`
         return {
             defaultDate: dDate,
             searchDate: [null, null],
-            list: [
-                {
-                    id: 0,
-                    src: 'http://somedomain.somdomain/x.jpg',
-                    fallbackSrc: 'http://placeholder.qiniudn.com/60x60/3cc51f/ffffff',
-                    title: '标题一标题一标题一标题一标题一标题一标题一',
-                    desc: '由各种物质组'
-                },
-                {
-                    id: 2,
-                    src: 'http://placeholder.qiniudn.com/60x60/3cc51f/ffffff',
-                    title: '标题二',
-                    desc: '由各种物'
-                }
-            ],
+            list: [],
             listData: {},
-            isShowPopup: false
+            resData: [],
+            isShowPopup: false,
+            options: {
+                pullDownRefresh: {
+                    threshold: 50,
+                    stop: 20
+                },
+                pullUpLoad: {
+                    threshold: -20
+                },
+                click: true,
+                probeType: 3,
+                startY: 0,
+                scrollbar: false
+            },
+            height: `${he}px`,
+            showPullDown: false,
+            showLoading: true
         }
     },
     methods: {
@@ -142,19 +155,23 @@ export default {
                 format: 'YYYY-MM-DD',
                 value: this.defaultDate,
                 onConfirm: (val) => {
-                    console.log('plugin confirm', val)
                     this.$set(this.searchDate, index, val)
-                },
-                onShow () {
-                    console.log('plugin show')
-                },
-                onHide () {
-                    console.log('plugin hide')
+                    if (!this.searchDate.includes(null)) {
+                        let select = {
+                            date: this.searchDate
+                        }
+                        this.list = []
+                        this.getMsg(select)
+                    }
                 }
             })
         },
         handlePanelItem (panelItem) {
-            console.log(panelItem)
+            this.resData.forEach(v => {
+                if (v.id === panelItem.id) {
+                    this.listData = v
+                }
+            })
             if (isFunction(this.recordDetails.listItemClickFn)) {
                 this.recordDetails.listItemClickFn(this)
             }
@@ -164,18 +181,93 @@ export default {
         handleClose () {
             this.isShowPopup = false
         },
-        getMsg () {
+        getMsg (query = {page: 1}) {
             let model = this.$route.params.record
             let id = this.$route.params.id
-            axios.get(`/api/${model}/${id}`)
+            index(this, `pot/${id}/${model}`, query)
                 .then(res => {
-                    console.log(res)
+                    this.showLoading = false
+                    let listData = res.data
+                    this.resData = listData
+                    let title
+                    switch (model) {
+                    case 'node':
+                        title = 'record'
+                        break
+                    case 'watering': case 'fertilizer': case 'order':
+                        title = 'content'
+                        break
+                    }
+                    listData.forEach(v => {
+                        let obj = {
+                            id: v.id,
+                            title: v[title],
+                            desc: v.date
+                        }
+                        if (v.imgs) {
+                            Object.assign(obj, {
+                                src: `/api${v.imgs}`,
+                                fallbackSrc: './static/image/company_default_logo.png'
+                            })
+                        }
+                        switch (v.status) {
+                        case 0:
+                            v.status = '良好'
+                            break
+                        case 1:
+                            v.status = '一般'
+                            break
+                        case 2:
+                            v.status = '较差'
+                            break
+                        case 3:
+                            v.status = '非常差'
+                            break
+                        }
+                        this.list.push(obj)
+                    })
+                    this.list.current_page = res.current_page
+                    this.list.total_page = Math.ceil(res.total / res.per_page)
                 })
+        },
+        // 初始下拉上拉
+        _initScroll () {
+            if (!this.$refs.wrapper) {
+                return
+            }
+            this.scroll = new BScroll(this.$refs.wrapper, this.options)
+            if (this.options.pullUpLoad) {
+                let vm = this
+                // 上拉刷新
+                this.scroll.on('pullingUp', () => {
+                    console.log('pullingUp')
+                    if (this.list.current_page < this.list.total_page) {
+                        this.getMsg({page: this.list.current_page + 1})
+                    }
+                    this.scroll.finishPullUp()
+                    this.scroll.refresh()
+                })
+                // 下拉加载
+                this.scroll.on('pullingDown', () => {
+                    console.log('pullingDown')
+                    this.showPullDown = true
+                    setTimeout(() => {
+                        this.list = []
+                        this.getMsg()
+                        this.showPullDown = false
+                    }, 1000)
+                    this.scroll.finishPullDown()
+                    this.scroll.refresh()
+                })
+            }
         }
     },
     mounted () {
         console.log(this.$route)
         this.getMsg()
+        setTimeout(() => {
+            this._initScroll()
+        }, 20)
     }
 }
 </script>

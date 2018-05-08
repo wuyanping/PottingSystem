@@ -59,12 +59,14 @@ export default {
         // 上传头像
         handleUpload (obj) {
             let userId = window.bdUser['id']
-            Object.assign(obj, {
-                _type: 'edit',
-                _method: 'PUT'
-            })
+            let params = {}
             console.log(obj)
-            update(this, 'user', userId, obj)
+            Object.assign(params, {
+                _type: 'edit',
+                ...obj
+            })
+            console.log(params)
+            update(this, 'user', userId, params)
                 .then(res => {
                     this.userData = res
                 })
