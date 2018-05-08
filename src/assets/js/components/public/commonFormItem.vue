@@ -46,7 +46,8 @@
             </el-radio-group>
             <el-date-picker
                 v-else-if="item.component === 'ElDate'"
-                type="date" 
+                type="date"
+                value-format="yyyy-MM-dd"
                 :placeholder="'请选择' + item.label"
                 v-model="item.value"
             />
