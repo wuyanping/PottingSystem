@@ -198,14 +198,14 @@ const user = {
                     //     ],
                     //     value: null
                     // },
-                    {
-                        component: Uploader,
-                        field: 'avatar',
-                        label: '头像',
-                        required: false,
-                        value: null,
-                        customSerializeFn: customSerializeFn
-                    },
+                    // {
+                    //     component: Uploader,
+                    //     field: 'avatar',
+                    //     label: '头像',
+                    //     required: false,
+                    //     value: null,
+                    //     customSerializeFn: customSerializeFn
+                    // },
                     // {
                     //     component: 'ElInput',
                     //     field: 'email',

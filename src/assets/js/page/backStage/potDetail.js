@@ -132,52 +132,52 @@ const potDetail = {
             // 默认表单域
             commonFormFieldsFn (type) {
                 return [
-                    {
-                        component: 'ElInput',
-                        field: 'content',
-                        label: '浇水方式',
-                        rulesType: [
-                            {
-                                max: 255,
-                                message: '最多有255字',
-                                trigger: 'blur'
-                            }
-                        ],
-                        value: null
-                    },
-                    {
-                        component: 'ElInput',
-                        // type: 'number'
-                        field: 'value',
-                        label: '浇水量',
-                        required: false,
-                        rulesType: [
-                            {
-                                max: 255,
-                                message: '最多有255字',
-                                trigger: 'blur'
-                            }
-                            // ,
-                            // {
-                            //     type: 'number',
-                            //     message: '必须为数字值',
-                            //     trigger: 'change'
-                            // }
-                        ],
-                        value: null
-                    },
-                    {
-                        component: 'ElDate',
-                        field: 'date',
-                        label: '浇水时间',
-                        value: null
-                    },
-                    {
-                        component: 'ElInput',
-                        field: 'info',
-                        label: '操作信息',
-                        value: null
-                    },
+                    // {
+                    //     component: 'ElInput',
+                    //     field: 'content',
+                    //     label: '浇水方式',
+                    //     rulesType: [
+                    //         {
+                    //             max: 255,
+                    //             message: '最多有255字',
+                    //             trigger: 'blur'
+                    //         }
+                    //     ],
+                    //     value: null
+                    // },
+                    // {
+                    //     component: 'ElInput',
+                    //     // type: 'number'
+                    //     field: 'value',
+                    //     label: '浇水量',
+                    //     required: false,
+                    //     rulesType: [
+                    //         {
+                    //             max: 255,
+                    //             message: '最多有255字',
+                    //             trigger: 'blur'
+                    //         }
+                    //         // ,
+                    //         // {
+                    //         //     type: 'number',
+                    //         //     message: '必须为数字值',
+                    //         //     trigger: 'change'
+                    //         // }
+                    //     ],
+                    //     value: null
+                    // },
+                    // {
+                    //     component: 'ElDate',
+                    //     field: 'date',
+                    //     label: '浇水时间',
+                    //     value: null
+                    // },
+                    // {
+                    //     component: 'ElInput',
+                    //     field: 'info',
+                    //     label: '操作信息',
+                    //     value: null
+                    // },
                     {
                         component: 'ElInput',
                         inputType: 'textarea',
