@@ -156,7 +156,7 @@ export default {
             this.isShowPopup = false
         },
         // 获取数据
-        getListMsg (query = {page: 1}) {
+        getListMsg (query = {page: 1, cstatus: 1}) {
             index(this, 'pot', query).then(res => {
                 this.showLoading = false
                 let potData = res.data

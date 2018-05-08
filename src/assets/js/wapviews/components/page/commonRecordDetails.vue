@@ -148,6 +148,7 @@ export default {
         }
     },
     methods: {
+        // 时间搜索
         showPlugin (index) {
             this.$vux.datetime.show({
                 cancelText: '取消',
@@ -181,6 +182,7 @@ export default {
         handleClose () {
             this.isShowPopup = false
         },
+        // 获取数据
         getMsg (query = {page: 1}) {
             let model = this.$route.params.record
             let id = this.$route.params.id
