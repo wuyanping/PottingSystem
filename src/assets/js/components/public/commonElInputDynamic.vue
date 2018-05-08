@@ -66,6 +66,10 @@
                 }
             }
         },
+        mounted () {
+            console.log('this.formItemData ---- ')
+            console.log(this.formItemData)
+        },
         methods: {
             remove (scope) {
                 this.formItemData.value.splice(scope.$index, 1)

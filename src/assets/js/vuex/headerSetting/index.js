@@ -1,4 +1,5 @@
 import * as func from '../function.js'
+// 手机端header
 const state = {
     headerSetting: func.headerSettingLocal.get() || {showBack: false, backText: '', title: ''}
 }
