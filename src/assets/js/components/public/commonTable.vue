@@ -21,6 +21,7 @@
         <el-table-column
             v-for="(tf, ky) in commonTableField"
             align="center"
+            show-overflow-tooltip
             :resizable="false"
             :label="tf.label"
             :prop="tf.field"

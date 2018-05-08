@@ -208,10 +208,11 @@
                             password: obj.password
                         }
                         ajax.call(this, 'post', '/api/domlogin', data).then(res => {
-                            console.log(res)
-                            if (res) {
+                            if (res.data) {
                                 this.$vux.toast.text('登录成功')
                                 this.$router.push('/index/potting')
+                            } else {
+                                this.$vux.toast.text('登录失败，用户名或密码错误')
                             }
                         })
                     } else {
