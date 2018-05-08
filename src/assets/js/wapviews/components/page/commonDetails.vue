@@ -14,6 +14,7 @@
 				    	:key="i"
 				    	:title="`${item.label}：`"
 				    	:value="listData[item.field]">
+                        <img v-if="item.label === '外观' && listData[item.field]!==null" :src="`/api/${listData[item.field]}`" style="width: 50px;height:50px;">
 				    </cell>
 			    </group>
 			    <div class="cd_t_more">更多信息 ></div>
@@ -43,6 +44,8 @@
 <script>
 import { Flexbox, FlexboxItem, Blur, Panel, Group, Cell, Loading } from 'vux'
 import { isArray, isObject } from 'UTILS/utils.js'
+import { index } from 'UTILS/commonApi.js'
+
 export default {
     components: {
         Blur,
@@ -112,15 +115,15 @@ export default {
     	},
     	getDetailMsg () {
     		let id = this.$route.params.id
-    		axios.get(this.$apiUrl(`pot/${id}`))
+    		index(this, `pot/${id}`)
     			.then(res => {
                     this.showLoading = false
-	                res.data['main'] = this.arrStr(res.data['main'])
-	                res.data['info'] = this.arrObj(res.data['info'])
-                    this.listData = res.data
+	                res['main'] = this.arrStr(res['main'])
+	                res['info'] = this.arrObj(res['info'])
+                    this.listData = res
 	                let obj = {
-                        title: res.data.name,
-                        desc: res.data.use_for
+                        title: res.name,
+                        desc: res.use_for
                     }
     				this.introduce.push(obj)
     		    })

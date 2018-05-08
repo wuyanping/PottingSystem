@@ -40,7 +40,6 @@ export default {
             let reader = new FileReader()
             reader.readAsDataURL(file)
             reader.onload = (e) => {
-                // console.log(e)
                 this.url = e.target.result
             }
             this.$emit('handleUpload', { avatar: file, _hasfile: true })

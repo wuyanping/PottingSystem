@@ -5,7 +5,7 @@
 	    <div v-transfer-dom>
 	        <popup v-model="isShowPopup" height="100%" width='100%' position="right">
 	            <div class="popup1">
-	                <x-header :left-options="{showBack: false}">
+	                <x-header :left-options="{showBack: false}"> 
 	                    <a slot="left" @click="handleClose">关闭</a>
 	                </x-header>
 	                <group>
@@ -113,10 +113,11 @@ export default {
                 isCanSibmit = isCanSibmit && result.valid
                 this.$set(this.formData, i, input)
             })
-            // console.log(this.formData)
+            console.log(this.formData)
             if (isCanSibmit) {
                 let params = {
-                    ...serializeData(this.formData)
+                    ...serializeData(this.formData),
+                    type: 'add'
                 }
                 store(this, 'pot', params)
                     .then(res => {

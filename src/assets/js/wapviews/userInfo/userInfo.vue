@@ -23,17 +23,25 @@
             :isShowSibmitBtn="true"
             @closePopup="closePopup"
         ></PopupForm>
+
+        <x-button
+            class= "logoutBtn"
+            plain
+            type="primary"
+            @click.native="handleLogout">
+            退出
+        </x-button>
 	</div>
 </template>
 <script>
-import { Blur, Group, Cell } from 'vux'
+import { Blur, Group, Cell, XButton } from 'vux'
 import PopupForm from 'WAPVIEWS/components/input/popupForm.vue'
 import uploadImg from './Details/uploadImg.vue'
 import { index, update, edit } from 'UTILS/commonApi'
 
 export default {
     components: {
-        Blur, Group, Cell, PopupForm, uploadImg
+        Blur, Group, Cell, PopupForm, uploadImg, XButton
     },
     data () {
         return {
@@ -59,14 +67,22 @@ export default {
         // 上传头像
         handleUpload (obj) {
             let userId = window.bdUser['id']
-            Object.assign(obj, {
-                _type: 'edit',
-                _method: 'PUT'
-            })
+            let params = {}
             console.log(obj)
-            update(this, 'user', userId, obj)
+            Object.assign(params, {
+                _type: 'edit',
+                ...obj
+            })
+            console.log(params)
+            update(this, 'user', userId, params)
                 .then(res => {
                     this.userData = res
+                })
+        },
+        handleLogout () {
+            axios.get('/api/domlogout')
+                .then(res => {
+                    this.$router.push('/login')
                 })
         }
     },
@@ -96,6 +112,12 @@ export default {
         .weui-cell{
             padding: 20px 15px;
         }
-    }  
+    }
+    .logoutBtn{
+        width: 80%;
+        position: fixed;
+        bottom: 80px;
+        margin-left: 10%;
+    } 
 }
 </style>

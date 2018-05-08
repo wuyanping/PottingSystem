@@ -13,6 +13,9 @@
 </template>
 <script>
 import { Cell, Group } from 'vux'
+import { index } from 'UTILS/commonApi.js'
+import { isArray } from 'UTILS/utils.js'
+
 export default {
     components: {
         Cell, Group
@@ -21,24 +24,39 @@ export default {
         return {
         	list: [
 		    	{
-		    		title: '盆栽名称',
-		    		key: 'name',
+		    		title: '名称',
+		    		key: 'main',
 		    		value: ''
 		    	},
 		    	{
 		    		title: '品种',
-		    		key: 'pz',
+		    		key: 'variety',
 		    		value: ''
 		    	}
 		    ],
-            listData: {
-                name: 'name111',
-                key: 'pz1111'
+            listData: {}
+        }
+    },
+    methods: {
+        getMsg () {
+            let id = this.$route.params.id
+            index(this, `pot/${id}`)
+                .then(res => {
+                    res['main'] = this.arrStr(res['main'])
+                    this.listData = res
+                })
+        },
+        arrStr (arr) {
+            let arrString = ''
+            if (isArray(arr)) {
+                arrString = arr.join()
             }
+            return arrString
         }
     },
     mounted () {
         this.$emit('setHeader', {key: 'showBack', value: true})
+        this.getMsg()
     },
     destroyed () {
     	this.$emit('setHeader', {key: 'showBack', value: false})

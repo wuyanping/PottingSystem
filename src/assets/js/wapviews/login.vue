@@ -18,7 +18,7 @@
                         @on-change="(val) => validatorResultFn('login', inputItem.name, inputItem.rule, val, i)"
                         @on-blur="(val) => validatorResultFn('login', inputItem.name, inputItem.rule, val, i)"
                         v-model="inputItem.value">
-                            <i slot="label" :class="`icon iconfont icon-${inputItem.name}`"></i>
+                            <i slot="label" :class="`icon iconfon   t icon-${inputItem.name}`"></i>
                     </x-input>
                     <span v-if="!inputItem.validatorResult.valid">{{inputItem.validatorResult.msg}}</span>
                 </div>
@@ -59,12 +59,16 @@
     </div>
 </template>
 <script>
-    import {Tab, TabItem, XButton, XInput, Group, Cell, Toast} from 'vux'
+    import {Tab, TabItem, XButton, XInput, Group, Cell, Toast, ToastPlugin} from 'vux'
     import {validatorFn} from 'UTILS/moblieValidator.js'
+    import {ajax} from '../utils/ajax.js'
+
+    Vue.use(ToastPlugin)
+
     export default{
         name: 'Login',
         components: {
-            Tab, TabItem, XButton, XInput, Group, Cell, Toast
+            Tab, TabItem, XButton, XInput, Group, Cell, Toast, ToastPlugin
         },
         data () {
             return {
@@ -145,6 +149,17 @@
                             msg: ''
                         },
                         value: ''
+                    },
+                    {
+                        name: 'password_confirmation',
+                        title: '确认密码',
+                        iconType: '',
+                        rule: {required: true},
+                        validatorResult: {
+                            valid: '',
+                            msg: ''
+                        },
+                        value: ''
                     }
                 ]
             }
@@ -166,6 +181,9 @@
             },
             // 登录/注册
             handleAction (action) {
+                console.log('=========')
+                console.log(this[`${action}Data`])
+                console.log('=========')
                 console.log('handleAction' + `  ${action}Data --------------- `)
                 let isCanSibmit = true // 是否可以提交
                 this[`${action}Data`].forEach((input, i) => {
@@ -173,15 +191,42 @@
                     let {name, rule, value} = input
                     var result = validatorFn(name, rule, value)
                     input.validatorResult = result
-                    console.log(result)
+                    // console.log(input)
                     input.iconType = !result.valid ? 'error' : ''
                     isCanSibmit = isCanSibmit && result.valid
                     this.$set(this[`${action}Data`], i, input)
                 })
-                console.log(this[`${action}Data`])
-                console.log(isCanSibmit)
+                // console.log(isCanSibmit)
                 if (isCanSibmit) {
-                    this.$router.push('/index/potting')
+                    let obj = {}
+                    this[`${action}Data`].forEach(v => {
+                        obj[v.name] = v['value']
+                    })
+                    if (action === 'login') {
+                        let data = {
+                            name: obj.nameOrPhone,
+                            password: obj.password
+                        }
+                        ajax.call(this, 'post', '/api/domlogin', data).then(res => {
+                            console.log(res)
+                            if (res) {
+                                this.$vux.toast.text('登录成功')
+                                this.$router.push('/index/potting')
+                            }
+                        })
+                    } else {
+                        let data = {
+                            name: obj.name,
+                            nickname: obj.nickname,
+                            password: obj.password,
+                            phone: obj.phone,
+                            password_confirmation: obj.password_confirmation
+                        }
+                        console.log(obj)
+                        ajax.call(this, 'post', '/api/domregister', data).then(res => {
+                            console.log(res)
+                        })
+                    }
                 }
             }
         }
