@@ -1,5 +1,13 @@
 <template>
-    <el-select clearable v-model="params.value" :class="className" :placeholder="`请选择${title}`" @change="select(params)">
+    <el-select
+        clearable
+        v-model="params.value"
+        :class="className"
+        :placeholder="`请选择${title}`"
+        :filterable="params.filterable"
+        :allow-create="params.allowCreate"
+        default-first-option
+        @change="select(params)">
         <el-option
             v-for="item in lists"
             :label="item.label"
@@ -28,7 +36,9 @@
                                 value: 0
                             }
                         ],
-                        className: 'mr-10'
+                        className: 'mr-10',
+                        filterable: false,
+                        allowCreate: false
                     }
                 }
             }

@@ -2,18 +2,30 @@
 盆栽管理
  */
 import ElSelect from 'COMPONENTS/public/commonElSelect.vue'
+// import formAjaxElSelect from 'COMPONENTS/public/commonFormAjaxElSelect.vue'
 import ElSwitch from 'COMPONENTS/public/commonElSwitch.vue'
 import ElButton from 'COMPONENTS/public/commonElButton.vue'
 import Uploader from 'COMPONENTS/public/commonUploader.vue'
 import ElInput from 'COMPONENTS/public/commonElInput.vue'
 import ElInputDynamic from 'COMPONENTS/public/commonElInputDynamic.vue'
 import TableDetailLink from 'COMPONENTS/public/commonTableDetailLink.vue'
-import selfaddPassPottingDialog from './components/selfAddPassPottingDialog.vue'
 import commonElPopver from 'COMPONENTS/public/commonElPopver.vue'
+
+import selfaddPassPottingDialog from './components/selfAddPassPottingDialog.vue'
+import selfVarietySelect from './components/selfVarietySelect.vue'
+import selfVarietyValue from './components/selfVarietyValue.vue'
 
 import validtor from 'UTILS/validator.js'
 import { ajax } from 'UTILS/ajax.js'
 import { isArray, isObject } from 'UTILS/utils.js'
+
+function getVarietyFn (vm) {
+    return new Promise(resolve => {
+        ajax.call(vm, 'get', `/api/variety`, data => {
+            resolve(data)
+        })
+    })
+}
 
 function customSerializeFn (item) {
     let obj = {}
@@ -313,31 +325,46 @@ const pot = {
                         ],
                         value: null
                     },
+                    // {
+                    //     component: formAjaxElSelect,
+                    //     field: 'variety',
+                    //     label: '品种',
+                    //     // // 是否可搜索
+                    //     filterable: true,
+                    //     // // 是否允许用户创建新条目，需配合 filterable 使用
+                    //     allowCreate: true,
+                    //     value: null,
+                    //     getDataFn: getVarietyFn
+                    // },
                     {
-                        component: 'ElInput',
+                        component: selfVarietySelect,
                         field: 'variety',
                         label: '品种',
-                        rulesType: [
-                            {
-                                max: 255,
-                                message: '最多有255字',
-                                trigger: 'blur'
-                            }
-                        ],
-                        rules: [],
+                        // // 是否可搜索
+                        filterable: true,
+                        // // 是否允许用户创建新条目，需配合 filterable 使用
+                        allowCreate: true,
                         value: null
                     },
                     {
-                        component: 'ElInput',
+                        cascade: true, // 存在受表单其他值影响
+                        cascadeField: 'variety',
+                        component: selfVarietyValue,
                         inputType: 'textarea',
                         field: 'habit',
                         label: '生长习性',
+                        filterable: true,
+                        allowCreate: true,
                         value: null
                     },
                     {
-                        component: 'ElInput',
+                        cascade: true, // 存在受表单其他值影响
+                        cascadeField: 'variety',
+                        component: selfVarietyValue,
                         field: 'origin',
                         label: '产地',
+                        filterable: true,
+                        allowCreate: true,
                         rulesType: [
                             {
                                 max: 255,
@@ -348,9 +375,13 @@ const pot = {
                         value: null
                     },
                     {
-                        component: 'ElInput',
+                        cascade: true, // 存在受表单其他值影响
+                        cascadeField: 'variety',
+                        component: selfVarietyValue,
                         field: 'use_for',
                         label: '用途',
+                        filterable: true,
+                        allowCreate: true,
                         rulesType: [
                             {
                                 max: 255,
@@ -367,11 +398,6 @@ const pot = {
                         required: false,
                         value: null,
                         customSerializeFn: customSerializeFn
-                        // component: Uploader,
-                        // field: 'imgs',
-                        // label: '外观',
-                        // value: null
-                        // customSerializeFn: customSerializeFn
                     },
                     // {
                     //     component: 'ElInput',
