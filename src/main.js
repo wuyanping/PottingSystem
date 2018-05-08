@@ -7,8 +7,10 @@ import './assets/js/config/init.js'
 Vue.config.productionTip = false
 
 router.beforeEach((to, from, next) => {
+    let loginUrl = 'islogin'
+    loginUrl = window.isPC ? 'islogin' : 'ismlogin'
     // 每次进入新页之前，都会对是否登录进行验证
-    axios.post('/api/islogin').then(res => {
+    axios.post(`/api/${loginUrl}`).then(res => {
         // 用户已登录，如果不是进入到login页，则跳转到当前页
         // 否则就直接进入到首页
         if (to.name !== 'login') {
