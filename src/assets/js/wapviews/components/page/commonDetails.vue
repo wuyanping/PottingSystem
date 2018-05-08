@@ -44,6 +44,8 @@
 <script>
 import { Flexbox, FlexboxItem, Blur, Panel, Group, Cell, Loading } from 'vux'
 import { isArray, isObject } from 'UTILS/utils.js'
+import { index } from 'UTILS/commonApi.js'
+
 export default {
     components: {
         Blur,
@@ -113,15 +115,15 @@ export default {
     	},
     	getDetailMsg () {
     		let id = this.$route.params.id
-    		axios.get(this.$apiUrl(`pot/${id}`))
+    		index(this, `pot/${id}`)
     			.then(res => {
                     this.showLoading = false
-	                res.data['main'] = this.arrStr(res.data['main'])
-	                res.data['info'] = this.arrObj(res.data['info'])
-                    this.listData = res.data
+	                res['main'] = this.arrStr(res['main'])
+	                res['info'] = this.arrObj(res['info'])
+                    this.listData = res
 	                let obj = {
-                        title: res.data.name,
-                        desc: res.data.use_for
+                        title: res.name,
+                        desc: res.use_for
                     }
     				this.introduce.push(obj)
     		    })
