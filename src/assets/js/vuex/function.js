@@ -10,3 +10,7 @@ const LocalEvent = function (item) {
     }
 }
 export const headerSettingLocal = new LocalEvent('headerSetting')
+
+export const modelLocal = new LocalEvent('record')
+
+export const siderBarLocal = new LocalEvent('siderBar')

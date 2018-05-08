@@ -1,9 +1,8 @@
 <template>
     <div>
         <el-menu
-	        default-active="2"
+	        :default-active="record"
 	        class="el-menu-vertical-demo"
-            :default-openeds="defaultOpeneds"
 	        @select="handelSelect"
 	        background-color="#545c64"
 	        text-color="#fff"
@@ -21,29 +20,35 @@
 </template>
 
 <script>
+import {mapGetters, mapMutation, mapActions} from 'vuex'
 export default {
     name: 'pNav',
     props: {
     	menu: {
     		type: Array,
     		default: []
-    	},
-        defaultOpeneds: {
-            type: Array,
-            default () {
-                return []
-            }
-        }
+    	}
     },
     data () {
     	return {
     		router: true
     	}
     },
+    computed: {
+        ...mapGetters({
+            record: 'getRecord',
+            // ture/关闭侧边栏 false/开启侧边栏
+            isShowSiderBar: 'getSiderBar'
+        })
+    },
     mounted () {
     	// console.log(this.menu)
     },
     methods: {
+        ...mapActions([
+            'switch_record',
+            'change_siderBar'
+        ]),
         handleOpen (key, keyPath) {
             // console.log(key, keyPath)
         },
@@ -53,6 +58,18 @@ export default {
         handelSelect (index, indexPath) {
         	// index: 选中菜单项的 index, indexPath: 选中菜单项的 index path
         	// console.log(index, indexPath)
+            // this.record = index
+            this.switch_record(index)
+            this.change_siderBar(false)
+        }
+    },
+    watch: {
+        isShowSiderBar () {
+            if (this.isShowSiderBar) {
+                // this.$children[0].closeMenu()
+                this.$children[0].activedIndex = ''
+                this.$store.dispatch('switch_record', '')
+            }
         }
     }
 }

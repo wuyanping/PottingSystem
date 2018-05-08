@@ -121,7 +121,7 @@ let userInfoDetail = {
                     name: 'memo',
                     title: '备注',
                     iconType: '',
-                    rule: {required: true},
+                    rule: {required: false},
                     validatorResult: {
                         valid: '',
                         msg: ''

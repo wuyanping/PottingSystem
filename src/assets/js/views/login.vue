@@ -103,7 +103,7 @@ export default{
                             })
                             // window.location.href="/#/index"
                             // window.location.href = '/'
-                            this.$router.push('/index')
+                            this.$router.push('/index/userInfo')
                         }
                     })
                 } else {
