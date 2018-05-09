@@ -22,10 +22,12 @@
 
         <!-- 盆栽列表 -->
         <div class="basic_list" v-if="hasList" ref="wrapper" :style="{height: height}">
+            <!-- <load-more tip="正在加载" v-if="showLoading"></load-more> -->
+            <!-- <loading :show="showLoading" text="加载中"></loading> -->
             <list 
                 :data="list" 
                 @onButtonClick="onButtonClick"
-                :link="link" />
+                @toDetail="toDetail" />
             <!-- <panel :list="list" type="5" @on-click-item="handlePanelItem" @on-img-error="onImgError" class="test"/> -->
         </div>
          
@@ -44,7 +46,7 @@ import { XInput, Group, Icon, Flexbox, FlexboxItem, Panel, Popup, Cell, LoadMore
 import PopupForm from '../input/popupForm.vue'
 import { isFunction, serializeData } from 'UTILS/utils.js'
 import BScroll from 'better-scroll'
-import { index, destroy, store, update } from 'UTILS/commonApi.js'
+import { index, destroy, store, update, edit } from 'UTILS/commonApi.js'
 import list from '../list.vue'
 
 Vue.use(ToastPlugin)
@@ -122,7 +124,6 @@ export default {
             height: `${he}px`,
             showLoading: true,
             searchValue: '',
-            link: this.$route.params.model,
             flag: ''
         }
     },
@@ -141,11 +142,7 @@ export default {
         newForm () {
             this.flag = 'add'
             this.isShowPopup = true
-            console.log(this.formData)
             this.formData = this.model.formField()
-            console.log(this.formData)
-            console.log(this.model)
-            console.log(this.model.formField())
         },
         // 关闭表单
         handleClose () {
@@ -159,10 +156,13 @@ export default {
             this.isShowPopup = false
         },
         // 获取数据
-        getListMsg (query = {page: 1}) {
-            index(this, 'pot/self').then(res => {
+        getInfo (query = {page: 1, cstatus: 1}) {
+            let model = this.$route.params.model
+            let url
+            url = model === 'myPotting' ? 'pot/self' : 'pot'
+            index(this, url, query).then(res => {
                 this.showLoading = false
-                this.list = res.data
+                this.list.push(...res.data)
                 this.list.current_page = res.current_page
                 this.list.total_page = Math.ceil(res.total / res.per_page)
             })
@@ -177,8 +177,9 @@ export default {
                 let vm = this
                 // 上拉刷新
                 this.scroll.on('pullingUp', () => {
+                    console.log('pullingUp')
                     if (this.list.current_page < this.list.total_page) {
-                        this.getListMsg({page: this.list.current_page + 1})
+                        this.getInfo({page: this.list.current_page + 1, cstatus: 1})
                     }
                     this.scroll.finishPullUp()
                     this.scroll.refresh()
@@ -188,7 +189,7 @@ export default {
                     this.showPullDown = true
                     setTimeout(() => {
                         this.list = []
-                        this.getListMsg()
+                        this.getInfo()
                         this.showPullDown = false
                     }, 1000)
                     this.scroll.finishPullDown()
@@ -199,7 +200,7 @@ export default {
         // 搜索
         handleSearch (val) {
             this.list = []
-            this.getListMsg({query_text: val})
+            this.getInfo({query_text: val})
         },
         // 右拉事件
         onButtonClick (val, id) {
@@ -208,24 +209,24 @@ export default {
                 destroy(this, 'pot', id)
                     .then(res => {
                         this.$vux.toast.text('删除成功', 'middle')
-                        this.getListMsg()
+                        this.getInfo()
                     })
             } else {
                 this.flag = 'edit'
                 this.isShowPopup = true
                 this.formData = this.model.formField()
-                this.list.forEach(i => {
-                    if (i.id === id) {
+                edit(this, 'pot', id)
+                    .then(res => {
+                        console.log(res)
                         this.formData.forEach(v => {
-                            Object.keys(i).forEach(y => {
-                                if (v.name === y) {
-                                    v.value = i[y]
+                            Object.keys(res).forEach(i => {
+                                if (v.name === i) {
+                                    v.value = res[i]
                                 }
                             })
                         })
                         this.formData['id'] = id
-                    }
-                })
+                    })
             }
         },
         // 表单提交
@@ -239,31 +240,43 @@ export default {
                 store(this, 'pot', params)
                     .then(res => {
                         if (res) {
-                            this.$vux.toast.text('新增成功', 'middle')
+                            this.$vux.toast.text('新增成功')
                             this.handleClose()
                         }
                     })
             } else {
                 console.log('编辑的')
-                // console.log(params)
                 params._method = 'PUT'
                 update(this, 'pot', this.formData['id'], params)
                     .then(res => {
                         if (res) {
-                            this.$vux.toast.text('编辑成功', 'middle')
+                            this.$vux.toast.text('编辑成功')
                             this.handleClose()
-                            this.getListMsg()
+                            this.getInfo()
                         }
                     })
             }
+        },
+        toDetail (id) {
+            this.$router.push(`${this.$route.params.model}/${id}`)
         }
     },
     mounted () {
-        // console.log(this.list)
-        this.getListMsg()
+        this.getInfo()
         setTimeout(() => {
             this._initScroll()
         }, 20)
+    },
+    watch: {
+        '$route': {
+            handler: function (v) {
+                console.log(v)
+                this.list = []
+                this.getInfo()
+            }
+        }
+    },
+    created () {
     }
 }
 </script>

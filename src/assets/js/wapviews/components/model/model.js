@@ -24,7 +24,108 @@ let model = {
         listItemClickFn: listItemClickFn,
         // commonConditionComponents: [],
         // 列表列 必须需要这些字段
-        commonListField: ['id', 'src', 'fallbackSrc', 'title', 'desc']
+        commonListField: ['id', 'src', 'fallbackSrc', 'title', 'desc'],
+        formField: function () {
+            return [
+                {
+                    component: 'x-input',
+                    name: 'name',
+                    title: '盆栽名称',
+                    iconType: '',
+                    rule: {required: true},
+                    validatorResult: {
+                        valid: '',
+                        msg: ''
+                    },
+                    value: ''
+                },
+                {
+                    component: 'x-input',
+                    name: 'variety',
+                    title: '品种',
+                    iconType: '',
+                    rule: {required: true},
+                    validatorResult: {
+                        valid: '',
+                        msg: ''
+                    },
+                    value: ''
+                },
+                {
+                    component: 'x-input',
+                    name: 'habit',
+                    title: '生长习性',
+                    iconType: '',
+                    rule: {required: true},
+                    validatorResult: {
+                        valid: '',
+                        msg: ''
+                    },
+                    value: ''
+                },
+                {
+                    component: 'x-input',
+                    name: 'origin',
+                    title: '产地',
+                    iconType: '',
+                    rule: {required: true},
+                    validatorResult: {
+                        valid: '',
+                        msg: ''
+                    },
+                    value: ''
+                },
+                {
+                    component: 'x-input',
+                    name: 'use_for',
+                    title: '用途',
+                    iconType: '',
+                    rule: {required: true},
+                    validatorResult: {
+                        valid: '',
+                        msg: ''
+                    },
+                    value: ''
+                },
+                {
+                    component: 'x-input',
+                    name: 'info',
+                    title: '其他信息',
+                    iconType: '',
+                    rule: {required: false},
+                    validatorResult: {
+                        valid: '',
+                        msg: ''
+                    },
+                    value: ''
+                },
+                {
+                    component: 'x-textarea',
+                    name: 'memo',
+                    title: '备注',
+                    iconType: '',
+                    rule: {required: false},
+                    validatorResult: {
+                        valid: '',
+                        msg: ''
+                    },
+                    value: ''
+                },
+                {
+                    component: 'file',
+                    name: 'imgs',
+                    title: '外观',
+                    iconType: '',
+                    rule: {required: false},
+                    validatorResult: {
+                        valid: '',
+                        msg: ''
+                    },
+                    value: '',
+                    customSerializeFn: customSerializeFn
+                }
+            ]
+        }
     },
     myPotting: {
         title: '我的盆栽',

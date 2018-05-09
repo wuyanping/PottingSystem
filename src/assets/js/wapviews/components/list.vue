@@ -10,7 +10,7 @@
                         <!-- <group> -->
                             <cell
                                 is-link
-                                :link="`/index/${link}/${pItem.id}`">
+                                @click.native="toDetail(pItem.id)">
                                 <img slot="icon" width="90" style="display:block;margin-right:5px;" :src="pItem.imgs ? `/api/${pItem.imgs}` : fallbackSrc">
                                 <span align-items="flex-start" slot="title">{{pItem.name}}</span>
                                 <span slot="inline-desc" class="list-inlinedesc">{{pItem.use_for}}</span>
@@ -36,12 +36,14 @@ export default {
         data: {
             type: Array,
             default: []
-        },
-        link: ''
+        }
     },
     methods: {
         onButtonClick (val, i) {
             this.$emit('onButtonClick', val, i)
+        },
+        toDetail (id) {
+            this.$emit('toDetail', id)
         }
     }
 }

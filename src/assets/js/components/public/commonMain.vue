@@ -642,6 +642,7 @@
                 this.formLoading = true
                 edit(this, this.route, scope.row.id)
                     .then(data => {
+                        console.log(this.route)
                         this.formLoading = false
                         this.formData = this.setFormData(scope.type, data)
                         console.log(this.formData)

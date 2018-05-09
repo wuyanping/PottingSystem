@@ -18,7 +18,7 @@
                         @on-change="(val) => validatorResultFn('login', inputItem.name, inputItem.rule, val, i)"
                         @on-blur="(val) => validatorResultFn('login', inputItem.name, inputItem.rule, val, i)"
                         v-model="inputItem.value">
-                            <i slot="label" :class="`icon iconfon   t icon-${inputItem.name}`"></i>
+                            <i slot="label" :class="`icon iconfont icon-${inputItem.name}`"></i>
                     </x-input>
                     <span v-if="!inputItem.validatorResult.valid">{{inputItem.validatorResult.msg}}</span>
                 </div>
@@ -211,7 +211,8 @@
                             password: obj.password
                         }
                         ajax.call(this, 'post', '/api/domlogin', data).then(res => {
-                            if (res.data) {
+                            console.log(res)
+                            if (res.data !== 500) {
                                 this.$vux.toast.text('登录成功')
                                 this.$router.push('/index/potting')
                             } else {

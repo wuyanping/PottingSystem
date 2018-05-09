@@ -14,12 +14,12 @@
 
         <div class="moblie_tabBar">
             <tabbar v-model="index">
-                <tabbar-item
+                <tabbar-item 
                     v-for="(tabItem,i) in tabbarData"
                     :key="i"
                     :link="tabItem.path"
                     :index="i"
-                    @on-item-click="handleTabBarItem(i)">
+                    @on-item-click="handleTabBarItem(i, tabItem)">
                         <i slot="icon" :class="`icon iconfont icon-${tabItem.icon}`"></i>
                         <span slot="label">{{tabItem.title}}</span>
                 </tabbar-item>
@@ -78,7 +78,8 @@ export default{
             'changeHeaderSetting'
         ]),
         // tabBarItem点击的时候
-        handleTabBarItem (i) {
+        handleTabBarItem (i, item) {
+            console.log(item)
             console.log(111111111)
             this.changeHeaderSetting({...this.headerSetting, title: this.tabbarData[i].title})
         }

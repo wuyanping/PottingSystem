@@ -29,9 +29,12 @@
         
         <!-- 节点列表 -->
         <div class="dd_main" ref="wrapper" :style="{height: height}">
-            <load-more tip="正在刷新" v-if="showPullDown" />
-            <panel :list="list" type="5" @on-click-item="handlePanelItem" @on-img-error="onImgError"></panel>
-            <loading :show="showLoading" text="加载中" />
+            <!-- <load-more tip="正在刷新" v-if="showPullDown" /> -->
+            <list 
+                :data="list" 
+                @onButtonClick="onButtonClick"
+                @toDetail="handlePanelItem" />
+            <!-- <loading :show="showLoading" text="加载中" /> -->
         </div>
         
         <!-- 盆栽节点详情弹框 -->
@@ -65,13 +68,16 @@
 	</div>
 </template>
 <script>
-import { XInput, Icon, Flexbox, FlexboxItem, DatetimePlugin, Panel, TransferDom, XHeader, Cell, Popup, Group, LoadMore, XSwitch, Loading } from 'vux'
+import { XInput, Icon, Flexbox, FlexboxItem, DatetimePlugin, Panel, TransferDom, XHeader, Cell, Popup, Group, LoadMore, XSwitch, Loading, ToastPlugin } from 'vux'
 import { isFunction, serializeData } from 'UTILS/utils.js'
-import { index, store } from 'UTILS/commonApi.js'
+import { index, store, destroy, edit, update } from 'UTILS/commonApi.js'
 import BScroll from 'better-scroll'
 import PopupForm from '../input/popupForm.vue'
+import list from '../list.vue'
 
 Vue.use(DatetimePlugin)
+Vue.use(ToastPlugin)
+
 export default {
     directives: {
         TransferDom
@@ -94,6 +100,7 @@ export default {
         LoadMore,
         XSwitch,
         Loading,
+        list,
         PopupForm
     },
     computed: {
@@ -161,7 +168,8 @@ export default {
             height: `${he}px`,
             showPullDown: false,
             showLoading: true,
-            isShowAdd: false
+            isShowAdd: false,
+            flag: ''
         }
     },
     methods: {
@@ -184,9 +192,10 @@ export default {
                 }
             })
         },
-        handlePanelItem (panelItem) {
+        // 详情页
+        handlePanelItem (id) {
             this.resData.forEach(v => {
-                if (v.id === panelItem.id) {
+                if (v.id === id) {
                     this.listData = v
                 }
             })
@@ -209,8 +218,8 @@ export default {
             index(this, `pot/${id}/${model}`, query)
                 .then(res => {
                     this.showLoading = false
-                    let listData = res.data
-                    this.resData = listData
+                    // let listData = res.data
+                    this.resData = res.data
                     let title
                     switch (model) {
                     case 'node':
@@ -220,11 +229,11 @@ export default {
                         title = 'content'
                         break
                     }
-                    listData.forEach(v => {
+                    res.data.forEach(v => {
                         let obj = {
                             id: v.id,
-                            title: v[title],
-                            desc: v.date
+                            name: v[title],
+                            use_for: v.date
                         }
                         if (v.imgs) {
                             Object.assign(obj, {
@@ -283,24 +292,68 @@ export default {
                 })
             }
         },
+        // 新增按钮
         handleAdd () {
-            console.log('obj')
+            this.flag = 'add'
             this.isShowAdd = true
-            console.log(this.recordDetails.formField())
+            console.log(this.formData)
             this.formData = this.recordDetails.formField()
         },
+        // 新增提交
         handleSubmit () {
             let model = this.$route.params.record
-            let id = this.$route.params.id
+            let potId = this.$route.params.id
             console.log(this.formData)
             let params = {
                 ...serializeData(this.formData)
             }
-            console.log(params)
-            store(this, `pot/${id}/${model}`, params)
-                .then(res => {
-                    console.log(res)
-                })
+            if (this.flag === 'add') {
+                store(this, `pot/${potId}/${model}`, params)
+                    .then(res => {
+                        this.$vux.toast.text('新增成功')
+                        this.closePopup()
+                        this.list = []
+                        this.getMsg()
+                    })
+            } else {
+                console.log('记录编辑')
+                params._method = 'PUT'
+                update(this, `pot/${potId}/${model}`, this.formData['id'], params)
+                    .then(res => {
+                        if (res) {
+                            this.$vux.toast.text('编辑成功')
+                            this.closePopup()
+                        }
+                    })
+            }
+        },
+        // 编辑删除
+        onButtonClick (val, id) {
+            let model = this.$route.params.record
+            let potId = this.$route.params.id
+            if (val === 'delete') {
+                console.log(val)
+            } else {
+                this.flag = 'edit'
+                this.isShowAdd = true
+                console.log(model)
+                console.log(id)
+                this.formData = this.recordDetails.formField()
+                edit(this, `pot/${potId}/${model}`, id)
+                    .then(res => {
+                        console.log(res)
+                        this.formData.forEach(v => {
+                            Object.keys(res).forEach(i => {
+                                if (v.name === i) {
+                                    v.value = res[i]
+                                }
+                            })
+                        })
+                        this.formData['id'] = id
+                    })
+            }
+            console.log(val)
+            console.log(id)
         }
     },
     mounted () {
