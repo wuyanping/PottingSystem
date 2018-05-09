@@ -62,7 +62,7 @@
     import {Tab, TabItem, XButton, XInput, Group, Cell, Toast, ToastPlugin} from 'vux'
     import {validatorFn} from 'UTILS/moblieValidator.js'
     import {ajax} from '../utils/ajax.js'
-
+    import { store } from '../utils/commonApi.js'
     Vue.use(ToastPlugin)
 
     export default{
@@ -228,9 +228,12 @@
                             password_confirmation: obj.password_confirmation
                         }
                         console.log(obj)
-                        ajax.call(this, 'post', '/api/domregister', data).then(res => {
-                            console.log(res)
-                        })
+                        store(this, 'domregister', data)
+                            .then(res => {
+                                if (res) {
+                                    this.$vux.toast.text('注册成功')
+                                }
+                            })
                     }
                 }
             }

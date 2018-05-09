@@ -28,7 +28,6 @@
                 :data="list" 
                 @onButtonClick="onButtonClick"
                 @toDetail="toDetail" />
-            <!-- <panel :list="list" type="5" @on-click-item="handlePanelItem" @on-img-error="onImgError" class="test"/> -->
         </div>
          
         <!-- 新建弹框 -->
@@ -36,7 +35,7 @@
             :formData="formData"
             :isShowPopup="isShowPopup"
             :isShowSibmitBtn="true"
-            @closePopup="closePopup"
+            @closePopup="handleClose"
             @handleSubmit="handleSubmit"
         ></PopupForm>
     </div>
@@ -146,13 +145,6 @@ export default {
         },
         // 关闭表单
         handleClose () {
-            this.isShowPopup = false
-        },
-        changeIsShowFinish () {},
-        // 提交表单
-        sibmitForm () {
-        },
-        closePopup () {
             this.isShowPopup = false
         },
         // 获取数据
@@ -270,7 +262,7 @@ export default {
     watch: {
         '$route': {
             handler: function (v) {
-                console.log(v)
+                // console.log(v)
                 this.list = []
                 this.getInfo()
             }

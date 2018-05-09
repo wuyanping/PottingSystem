@@ -296,14 +296,12 @@ export default {
         handleAdd () {
             this.flag = 'add'
             this.isShowAdd = true
-            console.log(this.formData)
             this.formData = this.recordDetails.formField()
         },
         // 新增提交
         handleSubmit () {
             let model = this.$route.params.record
             let potId = this.$route.params.id
-            console.log(this.formData)
             let params = {
                 ...serializeData(this.formData)
             }
