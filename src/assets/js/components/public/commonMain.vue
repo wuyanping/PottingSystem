@@ -644,7 +644,6 @@
                     .then(data => {
                         this.formLoading = false
                         this.formData = this.setFormData(scope.type, data)
-                        console.log(this.formData)
                     })
             },
             // 删除
