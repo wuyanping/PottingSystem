@@ -7,6 +7,7 @@
             :iconType="formItem.iconType"
             :placeholder="`请输入${formItem.title}`"
             novalidate
+            text-align="right"
             @on-change="(val) => validatorResultFn(formItem.title, formItem.rule, val)"
             @on-blur="(val) => validatorResultFn(formItem.title, formItem.rule, val)"
             v-model="formItem.value"
@@ -40,7 +41,7 @@
             :data="formItem.options"
             v-model="formItem.value"
             :columns="1"
-            @on-change="(val) => validatorResultFn(formItem.title, formItem.rule, val, formItem.component)" />
+            @on-change="onChangePick(formItem.options, formItem.value)" />
 
         <!-- 日期 -->
         <datetime
@@ -97,12 +98,15 @@ export default {
         return {
         }
     },
-    mounth () {
+    mounted () {
+        console.log('obj')
+        console.log(this.formItem)
+        console.log(this.$props.formItem)
     },
     methods: {
         // 表单验证
         validatorResultFn (name, rule, value, component) {
-            console.log('validatorResult --------------------------------------')
+            // console.log('validatorResult --------------------------------------')
             // console.log(value)
             // this.$emit('changeIsShowFinish')
             let result = validatorFn(name, rule, value)
@@ -120,6 +124,13 @@ export default {
         },
         change (value) {
             console.log('change', value)
+        },
+        onChangePick (options, value) {
+            options.forEach(v => {
+                if (value[0] == v.value) {
+                    value[0] = v.name
+                }
+            })
         },
         /*
         返回图片信息
