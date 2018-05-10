@@ -1,22 +1,7 @@
 import leader from '../page/leader.vue'
-
+import form from './recordFormField.js'
 function listItemClickFn (vm) {
     vm.isShowPopup = true
-}
-
-function customSerializeFn (item) {
-    let obj = {}
-    if (item.value instanceof Blob) {
-        obj['_hasfile'] = true
-    }
-    obj[item['name']] = item['value']
-    return obj
-}
-
-function customStatus (item) {
-    let obj = {}
-    obj[item['name']] = item['value'].join()
-    return obj
 }
 
 let model = {
@@ -57,7 +42,8 @@ let model = {
                     label: '备注',
                     field: 'memo'
                 }
-            ]
+            ],
+            formField: form.NodeFormField
         },
         watering: {
             title: '浇水记录',
@@ -90,7 +76,8 @@ let model = {
                     label: '备注',
                     field: 'memo'
                 }
-            ]
+            ],
+            formField: form.wateringField
         },
         fertilizer: {
             title: '施肥记录',
@@ -123,7 +110,8 @@ let model = {
                     label: '备注',
                     field: 'memo'
                 }
-            ]
+            ],
+            formField: form.fertilizerField
         },
         order: {
             title: '其他操作记录',
@@ -156,7 +144,8 @@ let model = {
                     label: '备注',
                     field: 'memo'
                 }
-            ]
+            ],
+            formField: form.orderField
         },
         leader: {
             title: '负责人',
@@ -213,100 +202,7 @@ let model = {
                     field: 'memo'
                 }
             ],
-            formField: function () {
-                return [
-                    {
-                        component: 'datetime',
-                        name: 'date',
-                        title: '时间',
-                        iconType: '',
-                        rule: {required: true},
-                        validatorResult: {
-                            valid: '',
-                            msg: ''
-                        },
-                        value: ''
-                    },
-                    {
-                        component: 'x-input',
-                        name: 'weather',
-                        title: '天气',
-                        iconType: '',
-                        rule: {required: true},
-                        validatorResult: {
-                            valid: '',
-                            msg: ''
-                        },
-                        value: ''
-                    },
-                    {
-                        component: 'select',
-                        name: 'status',
-                        title: '状态',
-                        iconType: '',
-                        options: [{
-                            name: '良好',
-                            value: 0
-                        },
-                        {
-                            name: '一般',
-                            value: 1
-                        },
-                        {
-                            name: '较差',
-                            value: 2
-                        },
-                        {
-                            name: '非常差',
-                            value: 3
-                        }],
-                        rule: {required: true},
-                        validatorResult: {
-                            valid: '',
-                            msg: ''
-                        },
-                        value: [],
-                        customSerializeFn: customStatus
-                    },
-                    {
-                        component: 'file',
-                        name: 'imgs',
-                        title: '外观',
-                        iconType: '',
-                        rule: {required: true},
-                        validatorResult: {
-                            valid: '',
-                            msg: ''
-                        },
-                        value: '',
-                        customSerializeFn: customSerializeFn
-                    },
-                    {
-                        component: 'x-input',
-                        name: 'record',
-                        title: '记录',
-                        iconType: '',
-                        rule: {required: true},
-                        validatorResult: {
-                            valid: '',
-                            msg: ''
-                        },
-                        value: ''
-                    },
-                    {
-                        component: 'x-textarea',
-                        name: 'memo',
-                        title: '备注',
-                        iconType: '',
-                        rule: {required: false},
-                        validatorResult: {
-                            valid: '',
-                            msg: ''
-                        },
-                        value: ''
-                    }
-                ]
-            }
+            formField: form.NodeFormField
         },
         watering: {
             title: '浇水记录',
@@ -339,7 +235,8 @@ let model = {
                     label: '备注',
                     field: 'memo'
                 }
-            ]
+            ],
+            formField: form.wateringField
         },
         fertilizer: {
             title: '施肥记录',
@@ -372,7 +269,8 @@ let model = {
                     label: '备注',
                     field: 'memo'
                 }
-            ]
+            ],
+            formField: form.fertilizerField
         },
         order: {
             title: '其他操作记录',
@@ -405,7 +303,8 @@ let model = {
                     label: '备注',
                     field: 'memo'
                 }
-            ]
+            ],
+            formField: form.orderField
         },
         leader: {
             title: '负责人',

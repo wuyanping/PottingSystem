@@ -82,7 +82,10 @@ export default {
         handleLogout () {
             axios.get('/api/domlogout')
                 .then(res => {
-                    this.$router.push('/login')
+                    console.log(res)
+                    if (res.data === 200) {
+                        this.$router.push('/login')
+                    }
                 })
         }
     },

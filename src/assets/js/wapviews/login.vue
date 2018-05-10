@@ -18,7 +18,7 @@
                         @on-change="(val) => validatorResultFn('login', inputItem.name, inputItem.rule, val, i)"
                         @on-blur="(val) => validatorResultFn('login', inputItem.name, inputItem.rule, val, i)"
                         v-model="inputItem.value">
-                            <i slot="label" :class="`icon iconfon   t icon-${inputItem.name}`"></i>
+                            <i slot="label" :class="`icon iconfont icon-${inputItem.name}`"></i>
                     </x-input>
                     <span v-if="!inputItem.validatorResult.valid">{{inputItem.validatorResult.msg}}</span>
                 </div>
@@ -62,8 +62,13 @@
     import {Tab, TabItem, XButton, XInput, Group, Cell, Toast, ToastPlugin} from 'vux'
     import {validatorFn} from 'UTILS/moblieValidator.js'
     import {ajax} from '../utils/ajax.js'
+<<<<<<< .mine
     import { isObject } from 'UTILS/utils.js'
 
+=======
+    import { store } from '../utils/commonApi.js'
+
+>>>>>>> .theirs
     Vue.use(ToastPlugin)
 
     export default{
@@ -212,7 +217,13 @@
                             password: obj.password
                         }
                         ajax.call(this, 'post', '/api/domlogin', data).then(res => {
+<<<<<<< .mine
                             if (res.data !== 500 && isObject(res.data)) {
+
+=======
+                            console.log(res)
+                            if (res.data !== 500) {
+>>>>>>> .theirs
                                 this.$vux.toast.text('登录成功')
                                 this.$router.push('/index/potting')
                             } else {
@@ -228,9 +239,12 @@
                             password_confirmation: obj.password_confirmation
                         }
                         console.log(obj)
-                        ajax.call(this, 'post', '/api/domregister', data).then(res => {
-                            console.log(res)
-                        })
+                        store(this, 'domregister', data)
+                            .then(res => {
+                                if (res) {
+                                    this.$vux.toast.text('注册成功')
+                                }
+                            })
                     }
                 }
             }
