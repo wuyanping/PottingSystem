@@ -43,8 +43,6 @@ export default {
                 this.url = e.target.result
             }
             this.$emit('handleUpload', { avatar: file, _hasfile: true })
-            // console.log(reader)
-            // console.log(file)
         },
         select () {
             this.$refs.input.click()
