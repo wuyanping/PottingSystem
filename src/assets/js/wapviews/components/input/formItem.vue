@@ -109,9 +109,9 @@ export default {
         }
     },
     mounted () {
-        console.log('obj')
-        console.log(this.formItem)
-        console.log(this.$props.formItem)
+        // console.log('obj')
+        // console.log(this.formItem)
+        // console.log(this.$props.formItem)
     },
     methods: {
         // 表单验证
