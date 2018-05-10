@@ -61,6 +61,14 @@
             :name="formItem.name"
             :editValue="formItem.value"
         ></Camera>
+        
+        <!-- 键值对的形式输入（如：新建盆栽的其他信息） -->
+        <InputDynamic 
+            v-if="formItem.component === 'inputDynamic'" 
+            :name="formItem.name"
+            :title="formItem.title"
+            :formItemData="formItem"
+        ></InputDynamic>
 
         <!-- 错误提示 -->
         <span v-if="isShowMsg" style="color: red">
@@ -72,6 +80,7 @@
 import { XInput, Radio, Datetime, Toast, XTextarea, PopupPicker } from 'vux'
 import {validatorFn} from 'UTILS/moblieValidator.js'
 import Camera from './camera.vue'
+import InputDynamic from './inputDynamic.vue'
 export default {
     components: {
         XInput,
@@ -80,7 +89,8 @@ export default {
         Toast,
         Camera,
         XTextarea,
-        PopupPicker
+        PopupPicker,
+        InputDynamic
     },
     props: {
         formItem: Object,

@@ -62,6 +62,7 @@
     import {Tab, TabItem, XButton, XInput, Group, Cell, Toast, ToastPlugin} from 'vux'
     import {validatorFn} from 'UTILS/moblieValidator.js'
     import {ajax} from '../utils/ajax.js'
+    import { isObject } from 'UTILS/utils.js'
     import { store } from '../utils/commonApi.js'
     Vue.use(ToastPlugin)
 
@@ -211,8 +212,7 @@
                             password: obj.password
                         }
                         ajax.call(this, 'post', '/api/domlogin', data).then(res => {
-                            console.log(res)
-                            if (res.data !== 500) {
+                            if (res.data !== 500 && isObject(res.data)) {
                                 this.$vux.toast.text('登录成功')
                                 this.$router.push('/index/potting')
                             } else {

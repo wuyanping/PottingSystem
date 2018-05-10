@@ -144,6 +144,8 @@ export default {
             this.flag = 'add'
             this.isShowPopup = true
             this.formData = this.model.formField()
+            console.log('this.formData ---- ')
+            console.log(this.formData)
         },
         // 关闭表单
         handleClose () {

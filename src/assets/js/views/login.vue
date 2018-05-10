@@ -34,6 +34,7 @@
 <script>
 // import { ajax } from '../../../public/utils/ajax.js'
 import {ajax} from '../utils/ajax.js'
+import { isObject } from 'UTILS/utils.js'
 export default{
     name: 'Login',
     data () {
@@ -92,7 +93,7 @@ export default{
                     }
                     ajax.call(this, 'post', '/api/login', data, (data) => {
                         console.log(data)
-                        if (data !== '') { // 成功是返回用户的信息
+                        if (data !== 500 && isObject(data)) { // 成功是返回用户的信息
                             this.$message({
                                 showClose: false,
                                 message: '登录成功',
@@ -104,6 +105,15 @@ export default{
                             // window.location.href="/#/index"
                             // window.location.href = '/'
                             this.$router.push('/index/userInfo')
+                        } else {
+                            this.$message({
+                                showClose: false,
+                                message: '登录失败',
+                                type: 'error',
+                                duration: 1000,
+                                customClass: 'message success',
+                                iconClass: 'messageicon'
+                            })
                         }
                     })
                 } else {
