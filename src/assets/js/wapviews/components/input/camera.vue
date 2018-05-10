@@ -100,8 +100,10 @@ export default {
             reader.readAsDataURL(file)
             reader.onload = e => {
                 this.imageUrl = e.target.result
+                console.log(this.imageUrl)
                 this.flag = true
                 this.$emit('return-shuju', {name: this.name, value: file})
+                this.flag = false
             }
         }
     },
