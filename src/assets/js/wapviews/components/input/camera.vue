@@ -104,7 +104,7 @@ export default {
     },
     watch: {
         editValue () {
-            if (this.editValue !== undefined && this.editValue !== '' && this.editValue !== null) {
+            if (this.editValue !== undefined || this.editValue !== '' || this.editValue !== null) {
                 if (!this.flag) {
                     this.imageUrl = this.editValue
                 }

@@ -9,9 +9,14 @@ function customSerializeFn (item) {
 
 function customStatus (item) {
     let obj = {}
-    obj[item['name']] = item['value'].join()
+    item['options'].forEach(v => {
+        if (item['value'].join() == v.name) {
+            obj[item['name']] = v.value
+        }
+    })
     return obj
 }
+
 let formField = {
     NodeFormField: function () {
         return [
@@ -189,18 +194,6 @@ let formField = {
                 component: 'datetime',
                 name: 'date',
                 title: '施肥时间',
-                iconType: '',
-                rule: {required: true},
-                validatorResult: {
-                    valid: '',
-                    msg: ''
-                },
-                value: ''
-            },
-            {
-                component: 'x-input',
-                name: 'user_id',
-                title: '操作人',
                 iconType: '',
                 rule: {required: true},
                 validatorResult: {

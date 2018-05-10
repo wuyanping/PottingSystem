@@ -32,10 +32,6 @@ let details = {
                 field: 'use_for'
             },
             {
-                label: '外观',
-                field: 'imgs'
-            },
-            {
                 label: '负责人',
                 field: 'main'
             },
@@ -106,10 +102,6 @@ let details = {
             {
                 label: '用途',
                 field: 'use_for'
-            },
-            {
-                label: '外观',
-                field: 'imgs'
             },
             {
                 label: '负责人',

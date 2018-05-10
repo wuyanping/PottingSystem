@@ -7,25 +7,24 @@
                     <swipeout-button @click.native="onButtonClick('delete', pItem.id)" background-color="#D23934">删除</swipeout-button>
                 </div>
                     <div slot="content">
-                        <!-- <group> -->
                             <cell
                                 is-link
                                 @click.native="toDetail(pItem.id)">
-                                <img slot="icon" width="90" style="display:block;margin-right:5px;" :src="pItem.imgs ? `/api/${pItem.imgs}` : fallbackSrc">
+                                <img slot="icon" width="90" v-if="Object.keys(pItem).includes('imgs')"  style="display:block;margin-right:5px;" :src="pItem.imgs ? `/api/${pItem.imgs}` : fallbackSrc">
                                 <span align-items="flex-start" slot="title">{{pItem.name}}</span>
                                 <span slot="inline-desc" class="list-inlinedesc">{{pItem.use_for}}</span>
                             </cell>
-                        <!-- </group> -->
                     </div>
             </swipeout-item>
         </swipeout>
+        <load-more :show-loading="false" v-if="isNoMsg" />
 	</div>
 </template>
 <script>
-import { Cell, CellBox, Group, Badge, Swipeout, SwipeoutItem, SwipeoutButton } from 'vux'
+import { Cell, CellBox, Group, Badge, Swipeout, SwipeoutItem, SwipeoutButton, LoadMore } from 'vux'
 export default {
     components: {
-        Cell, CellBox, Group, Badge, Swipeout, SwipeoutItem, SwipeoutButton
+        Cell, CellBox, Group, Badge, Swipeout, SwipeoutItem, SwipeoutButton, LoadMore
     },
     data () {
         return {
@@ -36,6 +35,10 @@ export default {
         data: {
             type: Array,
             default: []
+        },
+        isNoMsg: {
+            type: Boolean,
+            default: false
         }
     },
     methods: {

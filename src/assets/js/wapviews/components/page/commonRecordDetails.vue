@@ -29,12 +29,13 @@
         
         <!-- 节点列表 -->
         <div class="dd_main" ref="wrapper" :style="{height: height}">
-            <!-- <load-more tip="正在刷新" v-if="showPullDown" /> -->
+            <load-more tip="正在刷新" v-if="showPullDown" />
             <list 
                 :data="list" 
+                :isNoMsg="isNoMsg"
                 @onButtonClick="onButtonClick"
                 @toDetail="handlePanelItem" />
-            <!-- <loading :show="showLoading" text="加载中" /> -->
+            <loading :show="showLoading" text="加载中" />
         </div>
         
         <!-- 盆栽节点详情弹框 -->
@@ -151,8 +152,8 @@ export default {
             list: [],
             listData: {},
             resData: [],
-            isShowPopup: false,
-            options: {
+            isShowPopup: false, // 详情弹框
+            options: { // 上下拉参数
                 pullDownRefresh: {
                     threshold: 50,
                     stop: 20
@@ -166,10 +167,11 @@ export default {
                 scrollbar: false
             },
             height: `${he}px`,
-            showPullDown: false,
-            showLoading: true,
-            isShowAdd: false,
-            flag: ''
+            showPullDown: false, // 下拉刷新
+            showLoading: false, // 全局加载中
+            isShowAdd: false, // 新建弹框
+            flag: '',
+            isNoMsg: false // 暂无数据
         }
     },
     methods: {
@@ -213,12 +215,13 @@ export default {
         },
         // 获取数据
         getMsg (query = {page: 1}) {
+            this.showLoading = true
             let model = this.$route.params.record
             let id = this.$route.params.id
             index(this, `pot/${id}/${model}`, query)
                 .then(res => {
+                    console.log(res)
                     this.showLoading = false
-                    // let listData = res.data
                     this.resData = res.data
                     let title
                     switch (model) {
@@ -237,7 +240,7 @@ export default {
                         }
                         if (v.imgs) {
                             Object.assign(obj, {
-                                src: `/api${v.imgs}`,
+                                imgs: v.imgs,
                                 fallbackSrc: './static/image/company_default_logo.png'
                             })
                         }
@@ -271,19 +274,20 @@ export default {
                 let vm = this
                 // 上拉刷新
                 this.scroll.on('pullingUp', () => {
-                    console.log('pullingUp')
                     if (this.list.current_page < this.list.total_page) {
                         this.getMsg({page: this.list.current_page + 1})
+                    } else if (this.list.current_page === this.list.total_page) {
+                        this.isNoMsg = true
                     }
                     this.scroll.finishPullUp()
                     this.scroll.refresh()
                 })
                 // 下拉加载
                 this.scroll.on('pullingDown', () => {
-                    console.log('pullingDown')
                     this.showPullDown = true
                     setTimeout(() => {
                         this.list = []
+                        this.isNoMsg = false
                         this.getMsg()
                         this.showPullDown = false
                     }, 1000)
@@ -314,13 +318,14 @@ export default {
                         this.getMsg()
                     })
             } else {
-                console.log('记录编辑')
                 params._method = 'PUT'
                 update(this, `pot/${potId}/${model}`, this.formData['id'], params)
                     .then(res => {
                         if (res) {
                             this.$vux.toast.text('编辑成功')
                             this.closePopup()
+                            this.list = []
+                            this.getMsg()
                         }
                     })
             }
@@ -339,7 +344,20 @@ export default {
                 this.formData = this.recordDetails.formField()
                 edit(this, `pot/${potId}/${model}`, id)
                     .then(res => {
-                        console.log(res)
+                        switch (res.status) {
+                        case 0:
+                            res.status = ['良好']
+                            break
+                        case 1:
+                            res.status = ['一般']
+                            break
+                        case 2:
+                            res.status = ['较差']
+                            break
+                        case 3:
+                            res.status = ['非常差']
+                            break
+                        }
                         this.formData.forEach(v => {
                             Object.keys(res).forEach(i => {
                                 if (v.name === i) {
@@ -350,12 +368,9 @@ export default {
                         this.formData['id'] = id
                     })
             }
-            console.log(val)
-            console.log(id)
         }
     },
     mounted () {
-        console.log(this.$route)
         this.getMsg()
         setTimeout(() => {
             this._initScroll()

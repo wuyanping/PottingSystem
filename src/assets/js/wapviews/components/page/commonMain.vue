@@ -22,12 +22,13 @@
 
         <!-- 盆栽列表 -->
         <div class="basic_list" v-if="hasList" ref="wrapper" :style="{height: height}">
-            <!-- <load-more tip="正在加载" v-if="showLoading"></load-more> -->
-            <!-- <loading :show="showLoading" text="加载中"></loading> -->
+            <load-more tip="正在刷新" v-if="showPullDown"></load-more>
             <list 
                 :data="list" 
+                :isNoMsg="isNoMsg"
                 @onButtonClick="onButtonClick"
                 @toDetail="toDetail" />
+            <loading :show="showLoading" text="加载中" />
         </div>
          
         <!-- 新建弹框 -->
@@ -104,9 +105,9 @@ export default {
         let he = window.screen.height - 140
         return {
             list: [],
-            isShowPopup: false,
+            isShowPopup: false, // 新建弹框
             formData: [],
-            options: {
+            options: { // 上下拉参数
                 pullDownRefresh: {
                     threshold: 50,
                     stop: 20
@@ -119,10 +120,11 @@ export default {
                 startY: 0,
                 scrollbar: false
             },
-            showPullDown: false,
+            showPullDown: false, // 下拉刷新
             height: `${he}px`,
-            showLoading: true,
+            showLoading: false, // 全局加载中
             searchValue: '',
+            isNoMsg: false, // 暂无数据
             flag: ''
         }
     },
@@ -166,6 +168,7 @@ export default {
         },
         // 获取数据
         getInfo (query = {page: 1, cstatus: 1}) {
+            this.showLoading = true
             let model = this.$route.params.model
             let url
             url = model === 'myPotting' ? 'pot/self' : 'pot'
@@ -189,6 +192,8 @@ export default {
                     console.log('pullingUp')
                     if (this.list.current_page < this.list.total_page) {
                         this.getInfo({page: this.list.current_page + 1, cstatus: 1})
+                    } else if (this.list.current_page === this.list.total_page) {
+                        this.isNoMsg = true
                     }
                     this.scroll.finishPullUp()
                     this.scroll.refresh()
@@ -198,6 +203,7 @@ export default {
                     this.showPullDown = true
                     setTimeout(() => {
                         this.list = []
+                        this.isNoMsg = false
                         this.getInfo()
                         this.showPullDown = false
                     }, 1000)
@@ -218,7 +224,11 @@ export default {
                 destroy(this, 'pot', id)
                     .then(res => {
                         this.$vux.toast.text('删除成功', 'middle')
+                        this.list = []
                         this.getInfo()
+                        console.log('~~~~~~~~')
+                        console.log(this.list)
+                        console.log('~~~~~~~~')
                     })
             } else {
                 this.flag = 'edit'
@@ -239,6 +249,9 @@ export default {
                         //     })
                         // })
                         this.formData['id'] = id
+                        console.log('============')
+                        console.log(this.formData)
+                        console.log('============')
                     })
             }
         },
@@ -266,6 +279,7 @@ export default {
                         if (res) {
                             this.$vux.toast.text('编辑成功')
                             this.handleClose()
+                            this.list = []
                             this.getInfo()
                         }
                     })
@@ -284,7 +298,6 @@ export default {
     watch: {
         '$route': {
             handler: function (v) {
-                // console.log(v)
                 this.list = []
                 this.getInfo()
             }
