@@ -141,9 +141,24 @@ export default {
         newForm () {
             this.flag = 'add'
             this.isShowPopup = true
-            this.formData = this.model.formField()
+            this.formData = this.setFormData(this.flag)
             console.log('this.formData ---- ')
             console.log(this.formData)
+        },
+        // 设置表单对话框数据
+        setFormData (type, row = {}) {
+            let data = this.model.formField(type)
+            data.forEach(item => {
+                // 在打开对话框同时赋值
+                if (Object.keys(row).includes(item['name'])) {
+                    if (item.customEditFn) {
+                        item['value'] = item.customEditFn(row[item['name']])
+                    } else {
+                        item['value'] = row[item['name']]
+                    }
+                }
+            })
+            return data
         },
         // 关闭表单
         handleClose () {
@@ -211,14 +226,18 @@ export default {
                 this.formData = this.model.formField()
                 edit(this, 'pot', id)
                     .then(res => {
+                        console.log('res --- ')
                         console.log(res)
-                        this.formData.forEach(v => {
-                            Object.keys(res).forEach(i => {
-                                if (v.name === i) {
-                                    v.value = res[i]
-                                }
-                            })
-                        })
+                        console.log('this.setFormData(this.flag, res) --- ')
+                        console.log(this.setFormData(this.flag, res))
+                        this.formData = this.setFormData(this.flag, res)
+                        // this.formData.forEach(v => {
+                        //     Object.keys(res).forEach(i => {
+                        //         if (v.name === i) {
+                        //             v.value = res[i]
+                        //         }
+                        //     })
+                        // })
                         this.formData['id'] = id
                     })
             }
@@ -227,6 +246,7 @@ export default {
         handleSubmit () {
             console.log(this.flag)
             let params = {
+                _type: this.flag,
                 ...serializeData(this.formData)
             }
             if (this.flag === 'add') {
