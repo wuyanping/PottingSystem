@@ -62,6 +62,9 @@ export default {
             }
         }
     },
+    mounted () {
+        this.flag = false
+    },
     methods: {
         // 删除图片
         delImgFn (src) {
