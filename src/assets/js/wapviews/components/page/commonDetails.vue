@@ -116,9 +116,10 @@ export default {
     		let id = this.$route.params.id
     		index(this, `pot/${id}`)
     			.then(res => {
+                    console.log(typeof res['info'])
                     this.showLoading = false
 	                res['main'] = this.arrStr(res['main'])
-	                res['info'] = this.arrObj(res['info'])
+                    res['info'] = res['info'].substr(1, res['info'].length - 2)
                     this.listData = res
 	                let obj = {
                         title: res.name,
