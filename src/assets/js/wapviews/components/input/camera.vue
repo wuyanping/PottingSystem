@@ -63,7 +63,9 @@ export default {
         }
     },
     mounted () {
-        this.flag = false
+        // this.flag = false
+        console.log('this.mounted --- camera')
+        console.log(this.editValue)
     },
     methods: {
         // 删除图片
@@ -96,23 +98,29 @@ export default {
                 this.$emit('return-shuju', 'size')
                 return
             }
+            console.log(11111111)
             let reader = new FileReader()
             reader.readAsDataURL(file)
             reader.onload = e => {
                 this.imageUrl = e.target.result
                 this.flag = true
                 this.$emit('return-shuju', {name: this.name, value: file})
-                this.flag = false
             }
         }
     },
     watch: {
         editValue () {
-            if (this.editValue !== undefined || this.editValue !== '' || this.editValue !== null) {
-                if (!this.flag) {
-                    this.imageUrl = this.editValue
-                }
+            console.log('this.editValue -- ')
+            console.log(this.editValue)
+            console.log('this.flag --- ')
+            console.log(this.flag)
+            // if (this.editValue) {
+            if (!this.flag) {
+                this.imageUrl = this.editValue
+            //         // this.$emit('return-shuju', {name: this.name, value: this.editValue})
             }
+            // }
+            this.flag = false
         }
     }
 }
