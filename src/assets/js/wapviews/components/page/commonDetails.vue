@@ -119,7 +119,9 @@ export default {
                     console.log(typeof res['info'])
                     this.showLoading = false
 	                res['main'] = this.arrStr(res['main'])
-                    res['info'] = res['info'].substr(1, res['info'].length - 2)
+                    if (res['info'] !== null && res['info'] !== '') {
+                        res['info'] = res['info'].substr(1, res['info'].length - 2)
+                    }
                     this.listData = res
 	                let obj = {
                         title: res.name,

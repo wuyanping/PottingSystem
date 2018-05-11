@@ -2,7 +2,7 @@
 	<div class='list'>
         <swipeout>
             <swipeout-item v-for="(pItem,i) in data" :key="i">
-                <div slot="right-menu">
+                <div slot="right-menu" v-if="(pItem.main).join()===user">
                     <swipeout-button @click.native="onButtonClick('edit', pItem.id)" background-color="#336DD6">编辑</swipeout-button>
                     <swipeout-button @click.native="onButtonClick('delete', pItem.id)" background-color="#D23934">删除</swipeout-button>
                 </div>
@@ -28,7 +28,9 @@ export default {
     },
     data () {
         return {
-            fallbackSrc: './static/image/company_default_logo.png'
+            fallbackSrc: './static/image/company_default_logo.png',
+            flag: true,
+            user: window.bdUser.name
         }
     },
     props: {

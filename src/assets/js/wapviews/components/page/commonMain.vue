@@ -294,6 +294,7 @@ export default {
         setTimeout(() => {
             this._initScroll()
         }, 20)
+        console.log(window.bdUser)
     },
     watch: {
         '$route': {
