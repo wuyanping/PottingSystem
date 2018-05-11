@@ -6,7 +6,7 @@
 
             <flexbox :gutter="0">
                 <flexbox-item :span="1/12" class="txt-c">
-                    <div @click="handleAdd">新增</div>
+                    <div @click="handleAdd" v-if="msgUser">新增</div>
                 </flexbox-item>
                 <flexbox-item :span="2/12" class="txt-c">
                     时间搜索
@@ -171,7 +171,8 @@ export default {
             showLoading: false, // 全局加载中
             isShowAdd: false, // 新建弹框
             flag: '',
-            isNoMsg: false // 暂无数据
+            isNoMsg: false, // 暂无数据,
+            msgUser: ''
         }
     },
     methods: {
@@ -213,12 +214,20 @@ export default {
         closePopup () {
             this.isShowAdd = false
         },
+        getMsgUser () {
+            let potId = this.$route.params.id
+            index(this, `pot/${potId}`)
+                .then(res => {
+                    this.msgUser = res['main'].join().includes(window.bdUser['name'])
+                    console.log(res)
+                })
+        },
         // 获取数据
         getMsg (query = {page: 1}) {
             this.showLoading = true
             let model = this.$route.params.record
-            let id = this.$route.params.id
-            index(this, `pot/${id}/${model}`, query)
+            let potId = this.$route.params.id
+            index(this, `pot/${potId}/${model}`, query)
                 .then(res => {
                     console.log(res)
                     this.showLoading = false
@@ -236,7 +245,8 @@ export default {
                         let obj = {
                             id: v.id,
                             name: v[title],
-                            use_for: v.date
+                            use_for: v.date,
+                            main: [v.user_id]
                         }
                         if (v.imgs) {
                             Object.assign(obj, {
@@ -372,6 +382,7 @@ export default {
     },
     mounted () {
         this.getMsg()
+        this.getMsgUser()
         setTimeout(() => {
             this._initScroll()
         }, 20)
