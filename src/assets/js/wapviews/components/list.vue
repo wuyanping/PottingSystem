@@ -10,7 +10,7 @@
                             <cell
                                 is-link
                                 @click.native="toDetail(pItem.id)">
-                                <img slot="icon" width="90" v-if="Object.keys(pItem).includes('imgs')"  style="display:block;margin-right:5px;" :src="pItem.imgs ? `/api/${pItem.imgs}` : fallbackSrc">
+                                <img slot="icon" width="90" height="80" v-if="Object.keys(pItem).includes('imgs')"  style="display:block;margin-right:5px;" :src="pItem.imgs ? `/api/${pItem.imgs}` : fallbackSrc">
                                 <span align-items="flex-start" slot="title">{{pItem.name}}</span>
                                 <span slot="inline-desc" class="list-inlinedesc">{{pItem.use_for}}</span>
                             </cell>
