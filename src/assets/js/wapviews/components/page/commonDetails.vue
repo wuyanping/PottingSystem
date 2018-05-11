@@ -9,12 +9,30 @@
                 <loading :show="showLoading" text="加载中"></loading>
 				<panel :list="introduce" type="2"></panel>
   				<group>
-				    <cell
-				    	v-for="(item,i) in introduceListField"
-				    	:key="i"
-				    	:title="`${item.label}：`"
-				    	:value="listData[item.field]">
-				    </cell>
+                    <div 
+                        v-for="(item,i) in introduceListField"
+                        :key="i">
+                        <div v-if="item.params">
+                            <cell
+                                :title="`${item.label}：`"
+                                is-link
+                                :border-intent="false"
+                                :arrow-direction="item.params.showContent ? 'up' : 'down'"
+                                @click.native="item.params.showContent = !item.params.showContent">
+                            </cell>
+
+                            <template v-if="item.params.showContent">
+                                <cell-form-preview :border-intent="false" :list="listData[item.field]"></cell-form-preview>
+                            </template>
+                        </div>
+
+                        <div v-else>
+                            <cell
+                                :title="`${item.label}：`"
+                                :value="listData[item.field]">
+                            </cell>
+                        </div>
+                    </div>
 			    </group>
 			    <div class="cd_t_more">更多信息 ></div>
 			</div>
@@ -38,22 +56,40 @@
 		      	</flexbox-item>
 		    </flexbox>
 		</div>
+
+        <actionsheet v-model="show3" :menus="menus3" @on-click-menu-confirm="onConfirm" show-cancel></actionsheet>
+
+        <toast v-model="showSuccess">发送成功，等待盆栽管理员审核通过！</toast>
+        
+        <!-- 邀请弹框 -->
+        <PopupForm 
+            :formData="formData"
+            :isShowPopup="isShowPopup"
+            :isShowSibmitBtn="true"
+            @closePopup="handleClose"
+            @handleSubmit="handleSubmit"
+        ></PopupForm>
 	</div>
 </template>
 <script>
-import { Flexbox, FlexboxItem, Blur, Panel, Group, Cell, Loading } from 'vux'
-import { isArray, isObject } from 'UTILS/utils.js'
+import { Flexbox, FlexboxItem, Blur, Panel, Group, Cell, CellFormPreview, Loading, Actionsheet, Toast } from 'vux'
+import PopupForm from '../input/popupForm.vue'
+import { isArray, isObject, isString } from 'UTILS/utils.js'
 import { index } from 'UTILS/commonApi.js'
 
 export default {
     components: {
+        PopupForm,
         Blur,
         Flexbox,
         FlexboxItem,
         Panel,
         Group,
         Cell,
-        Loading
+        Loading,
+        CellFormPreview,
+        Actionsheet,
+        Toast
     },
     props: {
     	details: Object
@@ -66,7 +102,17 @@ export default {
 		    // 介绍列表
 		    listData: {},
             // 加载
-            showLoading: true
+            showLoading: true,
+            // 发出邀请的数据(盆栽列表部分的)
+            show3: false,
+            menus3: {
+                title: '确定发送？',
+                confirm: '<span style="color:red">确定</span>'
+            },
+            showSuccess: false,
+            // （我的盆栽部分）
+            formData: [],
+            isShowPopup: false // 邀请弹框
         }
     },
     computed: {
@@ -107,22 +153,39 @@ export default {
         }
     },
     methods: {
+        // 记录跳转
     	go ({title, record}) {
-    		console.log('gogo')
-    		this.$emit('setHeader', {key: 'title', value: title})
-    		this.$router.push(`${this.$route.path}/${record}`)
+            // invite不跳转
+            if (record === 'invite') {
+                console.log(this.$route)
+                if (this.$route.params.model === 'potting') { // 盆栽列表的发出申请
+                    this.show3 = true
+                } else if (this.$route.params.model === 'myPotting') { // 我的盆栽的发出邀请
+                    this.isShowPopup = true
+                }
+            } else {
+                this.$emit('setHeader', {key: 'title', value: title})
+                this.$router.push(`${this.$route.path}/${record}`)
+            }
     	},
+        // （盆栽列表部分）发出申请，点击确定触发
+        onConfirm () {
+            this.showSuccess = true
+        },
+        // 关闭弹窗
+        handleClose () {
+            this.isShowPopup = false
+        },
+        // 表单提交
+        handleSubmit () {
+            console.log('handleSubmit')
+        },
     	getDetailMsg () {
     		let id = this.$route.params.id
     		index(this, `pot/${id}`)
     			.then(res => {
-                    console.log(typeof res['info'])
                     this.showLoading = false
-	                res['main'] = this.arrStr(res['main'])
-                    if (res['info'] !== null && res['info'] !== '') {
-                        res['info'] = res['info'].substr(1, res['info'].length - 2)
-                    }
-                    this.listData = res
+                    this.listData = this.tableFieldFn(res)
 	                let obj = {
                         title: res.name,
                         desc: res.use_for
@@ -130,24 +193,46 @@ export default {
     				this.introduce.push(obj)
     		    })
     	},
-    	arrStr (arr) {
-    		let arrString = ''
-            if (isArray(arr)) {
-                arrString = arr.join()
+    	// 列表特殊值处理
+        tableFieldFn: function (data) {
+            // 处理数组变成字符串
+            const arrStr = function (arr) {
+                let arrString = ''
+                if (isArray(arr)) {
+                    arrString = arr.join()
+                }
+                return arrString
             }
-            return arrString
-    	},
-    	arrObj (arr) {
-    		let arrString = ''
-            if (isArray(arr)) {
-                arr.forEach(obj => {
-                    if (isObject(obj)) {
-                        arrString += `${obj.param}：${obj.val}，`
+
+            // 处理json字符串变成字符串
+            const strObj = function (str) {
+                let arrString = ''
+                let arr = []
+                if (str && isString(str)) {
+                    let json = JSON.parse(str)
+                    if (isObject(json)) {
+                        for (let key in json) {
+                            arr.push({
+                                label: key,
+                                value: json[key]
+                            })
+                        }
                     }
-                })
+                } else {
+                    arr.push({
+                        label: '',
+                        value: '无'
+                    })
+                }
+                return arr
             }
-            return arrString
-    	}
+
+            if (isObject(data)) {
+                data.main = arrStr(data.main)
+                data.info = strObj(data.info)
+            }
+            return data
+        }
     },
     mounted () {
     	this.getDetailMsg()

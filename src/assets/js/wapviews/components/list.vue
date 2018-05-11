@@ -1,19 +1,19 @@
 <template>
-	<div class='list'>
+	<div class="list">
         <swipeout>
             <swipeout-item v-for="(pItem,i) in data" :key="i">
                 <div slot="right-menu" v-if="(pItem.main).join().includes(user)">
                     <swipeout-button @click.native="onButtonClick('edit', pItem.id)" background-color="#336DD6">编辑</swipeout-button>
                     <swipeout-button @click.native="onButtonClick('delete', pItem.id)" background-color="#D23934">删除</swipeout-button>
                 </div>
-                    <div slot="content">
-                            <cell
-                                is-link
-                                @click.native="toDetail(pItem.id)">
-                                <img slot="icon" width="90" height="80" v-if="Object.keys(pItem).includes('imgs')"  style="display:block;margin-right:5px;" :src="pItem.imgs ? `/api/${pItem.imgs}` : fallbackSrc">
-                                <span align-items="flex-start" slot="title">{{pItem.name}}</span>
-                                <span slot="inline-desc" class="list-inlinedesc">{{pItem.use_for}}</span>
-                            </cell>
+                    <div slot="content" class="vux-1px-t">
+                        <cell
+                            is-link
+                            @click.native="toDetail(pItem.id)">
+                            <img slot="icon" width="90" height="80" v-if="Object.keys(pItem).includes('imgs')"  style="display:block;margin-right:5px;" :src="pItem.imgs ? `/api/${pItem.imgs}` : fallbackSrc">
+                            <span align-items="flex-start" slot="title">{{pItem.name}}</span>
+                            <span slot="inline-desc" class="list-inlinedesc">{{pItem.use_for}}</span>
+                        </cell>
                     </div>
             </swipeout-item>
         </swipeout>
@@ -63,6 +63,22 @@ export default {
         display: inline-block;
         width: 6rem;
         word-break:break-all;
+    }
+    .vux-1px-t:before {
+        content: " ";
+        position: absolute;
+        left: 0;
+        right: 0;
+        height: 1px;
+        color: #c7c7c7;
+    }
+    .vux-1px-t:before {
+        top: 0;
+        border-top: 1px solid #c7c7c7;
+        -webkit-transform-origin: 0 0;
+        transform-origin: 0 0;
+        -webkit-transform: scaleY(.5);
+        transform: scaleY(.5);
     }
 }
 </style>

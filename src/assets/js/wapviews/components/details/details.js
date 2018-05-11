@@ -37,7 +37,10 @@ let details = {
             },
             {
                 label: '其他信息',
-                field: 'info'
+                field: 'info',
+                params: {
+                    showContent: false
+                }
             },
             {
                 label: '备注',
@@ -67,7 +70,7 @@ let details = {
 	    		record: 'leader'
 	    	},
 	    	{
-	    		title: '申请/邀请',
+	    		title: '发出申请',
 	    		record: 'invite'
 	    	}
 	    ]
@@ -109,7 +112,10 @@ let details = {
             },
             {
                 label: '其他信息',
-                field: 'info'
+                field: 'info',
+                params: {
+                    showContent: false
+                }
             },
             {
                 label: '备注',
@@ -139,7 +145,7 @@ let details = {
 	    		record: 'leader'
 	    	},
 	    	{
-	    		title: '申请/邀请',
+	    		title: '发出邀请',
 	    		record: 'invite'
 	    	}
 	    ]

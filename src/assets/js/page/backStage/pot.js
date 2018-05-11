@@ -17,7 +17,7 @@ import selfVarietyValue from './components/selfVarietyValue.vue'
 
 import validtor from 'UTILS/validator.js'
 import { ajax } from 'UTILS/ajax.js'
-import { isArray, isObject } from 'UTILS/utils.js'
+import { isArray, isObject, isString } from 'UTILS/utils.js'
 
 function getVarietyFn (vm) {
     return new Promise(resolve => {
@@ -219,9 +219,12 @@ const pot = {
             ],
             // 表格列特殊值处理
             tableFieldFn: function (data) {
+                // 处理性别
                 const g = function (gender) {
                     return gender === 1 ? '女' : '男'
                 }
+
+                // 处理数组变成字符串
                 const arrStr = function (arr) {
                     let arrString = ''
                     if (isArray(arr)) {
@@ -230,18 +233,21 @@ const pot = {
                     return arrString
                 }
 
-                const arrObj = function (arr) {
+                // 处理json字符串变成字符串
+                const strObj = function (str) {
                     let arrString = ''
-                    if (isArray(arr)) {
-                        arr.forEach(obj => {
-                            if (isObject(obj)) {
-                                arrString += `${obj.param}： ${obj.val} ； `
+                    if (isString(str)) {
+                        let json = JSON.parse(str)
+                        if (isObject(json)) {
+                            for (let key in json) {
+                                arrString += `${key}： ${json[key]} ； `
                             }
-                        })
+                        }
                     }
                     return arrString
                 }
 
+                // 处理状态，根据有无rfid
                 const statusFn = function (rfid) {
                     if (rfid) {
                         return 1
@@ -254,13 +260,13 @@ const pot = {
                     data.forEach(v => {
                         v.gender = g(v.gender)
                         v.main = arrStr(v.main)
-                        v.info = arrObj(v.info)
+                        v.info = strObj(v.info)
                         v.status = statusFn(v.rfid)
                     })
                 }
                 if (isObject(data)) {
                     data.main = arrStr(data.main)
-                    data.info = arrObj(data.info)
+                    data.info = strObj(data.info)
                     data.status = statusFn(data.rfid)
                 }
                 return data
