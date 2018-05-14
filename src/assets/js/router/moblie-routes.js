@@ -32,7 +32,7 @@ let routes = [
                 component: model
             },
             {
-                path: '/potManage',
+                path: '/index/userInfo/potManage',
                 name: 'potManage',
                 component: potManage
             },

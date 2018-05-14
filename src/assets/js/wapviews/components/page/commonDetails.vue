@@ -58,12 +58,9 @@
 		</div>
 
         <actionsheet v-model="show3" :menus="menus3" @on-click-menu-confirm="onConfirm" show-cancel></actionsheet>
-
-        <toast v-model="showSuccess">发送成功，等待盆栽管理员审核通过！</toast>
         
         <!-- 邀请弹框 -->
         <PopupForm
-            v-if="isShowPopup"
             :formData="formData"
             :isShowPopup="isShowPopup"
             :isShowSibmitBtn="true"
@@ -73,10 +70,11 @@
 	</div>
 </template>
 <script>
-import { Flexbox, FlexboxItem, Blur, Panel, Group, Cell, CellFormPreview, Loading, Actionsheet, Toast } from 'vux'
+import { Flexbox, FlexboxItem, Blur, Panel, Group, Cell, CellFormPreview, Loading, Actionsheet, Toast, ToastPlugin } from 'vux'
 import PopupForm from '../input/popupForm.vue'
 import { isArray, isObject, isString } from 'UTILS/utils.js'
-import { index } from 'UTILS/commonApi.js'
+import { index, store } from 'UTILS/commonApi.js'
+Vue.use(ToastPlugin)
 
 export default {
     components: {
@@ -107,10 +105,9 @@ export default {
             // 发出邀请的数据(盆栽列表部分的)
             show3: false,
             menus3: {
-                title: '确定发送？',
+                title: '确定发送申请?',
                 confirm: '<span style="color:red">确定</span>'
             },
-            showSuccess: false,
             // （我的盆栽部分）
             formData: [],
             isShowPopup: false // 邀请弹框
@@ -163,8 +160,10 @@ export default {
             if (record === 'invite') {
                 console.log(this.$route)
                 if (this.$route.params.model === 'potting') { // 盆栽列表的发出申请
-                    this.show3 = true
-                } else if (this.$route.params.model === 'myPotting') { // 我的盆栽的发出邀请
+                    // this.show3 = true
+                    // this.formData = this.setFormData('add', i)
+                    // console.log(this.formData)
+                // } else if (this.$route.params.model === 'myPotting') { // 我的盆栽的发出邀请
                     this.isShowPopup = true
                     this.formData = this.setFormData('add', i)
                     console.log(this.formData)
@@ -176,7 +175,11 @@ export default {
     	},
         // （盆栽列表部分）发出申请，点击确定触发
         onConfirm () {
-            this.showSuccess = true
+            this.$vux.toast.show('发送成功，等待盆栽管理员审核通过！')
+            let params = {
+                id: window.bdUser.id
+            }
+            // store(this, 'apply', )
         },
         // 关闭弹窗
         handleClose () {
