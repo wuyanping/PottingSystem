@@ -4,7 +4,8 @@
             <tab-item selected @on-item-click="switchTabItem">申请</tab-item>
             <tab-item  @on-item-click="switchTabItem">邀请</tab-item>
         </tab>
-        <div v-for="(item, index) in apply" v-if="i === 0">
+        <template v-if="i === 0 ? manageData === 'apply' : manageData === 'invite' ">
+            <div v-for="(item, index) in manageData" >
             <cell>
                 <img slot="icon" style="width: 50px;height: 50px;" :src="defaultSrc">
                 <span align-items="flex-start" slot="title">{{item.name}}</span>
@@ -12,26 +13,29 @@
                 <x-button type="primary">是否通过</x-button>
             </cell>
         </div>
-        <div v-for="(item, index) in invite" v-if="i === 1">
+        </template>
+        
+        <!-- <div v-for="(item, index) in invite" v-if="i === 1">
             <cell>
                 <img slot="icon" style="width: 50px;height: 50px;" :src="defaultSrc">
                 <span align-items="flex-start" slot="title">{{item.name}}</span>
                 <span slot="inline-desc" class="list-inlinedesc">{{`邀请人：${item.user_id}`}}</span>
                 <x-button type="primary">是否通过</x-button>
             </cell>
-        </div>
+        </div> -->
     </div>
 </template>
 
 <script>
 import { mapGetters, mapActions } from 'vuex'
-import { Tab, TabItem, Swiper, SwiperItem, Cell, XButton, LoadingPlugin } from 'vux'
+import { Tab, TabItem, Swiper, SwiperItem, Cell, XButton, LoadingPlugin, XSwitch } from 'vux'
 import { index } from 'UTILS/commonApi'
 Vue.use(LoadingPlugin)
 
 export default {
     data () {
         return {
+            manageData: '',
             apply: [{
                 name: '向日葵',
                 user_id: 1
@@ -84,7 +88,13 @@ export default {
     	this.changeHeaderSetting({...this.headerSetting, showBack: true, title: '盆栽管理'})
     },
     components: {
-        Tab, TabItem, Swiper, SwiperItem, Cell, XButton
+        Tab, TabItem, Swiper, SwiperItem, Cell, XButton, XSwitch
     }
 }
 </script>
+
+<style lang="sass">
+    .weui-label{
+        color: #000;
+    }
+</style>
