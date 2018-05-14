@@ -50,7 +50,7 @@ export default {
                 user_id: 1
             }],
             i: 0,
-            defaultSrc: '../../../../../../static/image/company_default_logo.png'
+            defaultSrc: './static/image/company_default_logo.png'
         }
     },
     computed: {
@@ -82,7 +82,7 @@ export default {
         console.log(this.list1)
     },
     created () {
-    	this.changeHeaderSetting({...this.headerSetting, showBack: true, title: '盆栽管理'})
+        this.changeHeaderSetting({...this.headerSetting, showBack: true, title: '盆栽管理'})
     },
     components: {
         Tab, TabItem, Swiper, SwiperItem, Cell, XButton, XSwitch

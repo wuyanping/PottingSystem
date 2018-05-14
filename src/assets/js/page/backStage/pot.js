@@ -236,7 +236,7 @@ const pot = {
                 // 处理json字符串变成字符串
                 const strObj = function (str) {
                     let arrString = ''
-                    if (isString(str)) {
+                    if (str) {
                         let json = JSON.parse(str)
                         if (isObject(json)) {
                             for (let key in json) {

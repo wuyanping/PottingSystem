@@ -2,11 +2,6 @@ import userInfoDetail from '../../userInfo/Details/userInfoDetail.vue'
 import formAjaxCheckList from '../input/formAjaxCheckList.vue'
 import { ajax } from 'UTILS/ajax.js'
 function getAllUserList (vm) {
-    // return vm.$store.dispatch('getStaticData', {
-    //     vm: vm,
-    //     arr: 'USERLIST_CHECK',
-    //     url: '/api/user'
-    // })
     return new Promise(resolve => {
         ajax.call(vm, 'get', '/api/user', data => {
             resolve(data)
@@ -86,7 +81,24 @@ let details = {
 	    	},
 	    	{
 	    		title: '发出申请',
-	    		record: 'invite'
+	    		record: 'invite',
+                // 新建表单
+                formField: function () {
+                    return [
+                        {
+                            component: 'x-textarea',
+                            name: 'memo',
+                            title: '备注',
+                            iconType: '',
+                            rule: {required: false},
+                            validatorResult: {
+                                valid: '',
+                                msg: ''
+                            },
+                            value: ''
+                        }
+                    ]
+                }
 	    	}
 	    ]
     },
