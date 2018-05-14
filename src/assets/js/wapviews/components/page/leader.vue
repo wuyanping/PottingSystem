@@ -2,23 +2,28 @@
 <template>
 	<div class="leader">
 		<group name="">
-		    <cell
+		    <!-- <cell
 		    	v-for="(item,i) in list"
 		    	:key="i"
 		    	:title="`${item.title}：`"
 		    	:value="listData[item.key]">
-		    </cell>
+		    </cell> -->
+            <cell-box 
+                v-for="(item,i) in listData"
+                :key="i">
+                {{item}}
+            </cell-box>
 	    </group>
 	</div>
 </template>
 <script>
-import { Cell, Group } from 'vux'
+import { Cell, Group, CellBox } from 'vux'
 import { index } from 'UTILS/commonApi.js'
 import { isArray } from 'UTILS/utils.js'
 
 export default {
     components: {
-        Cell, Group
+        Cell, Group, CellBox
     },
     data () {
         return {
@@ -34,7 +39,7 @@ export default {
 		    		value: ''
 		    	}
 		    ],
-            listData: {}
+            listData: []
         }
     },
     methods: {
@@ -42,17 +47,17 @@ export default {
             let id = this.$route.params.id
             index(this, `pot/${id}`)
                 .then(res => {
-                    res['main'] = this.arrStr(res['main'])
-                    this.listData = res
+                    // res['main'] = this.arrStr(res['main'])
+                    this.listData = res.main ? res.main : []
                 })
-        },
-        arrStr (arr) {
-            let arrString = ''
-            if (isArray(arr)) {
-                arrString = arr.join()
-            }
-            return arrString
         }
+        // arrStr (arr) {
+        //     let arrString = ''
+        //     if (isArray(arr)) {
+        //         arrString = arr.join()
+        //     }
+        //     return arrString
+        // }
     },
     mounted () {
         this.$emit('setHeader', {key: 'showBack', value: true})

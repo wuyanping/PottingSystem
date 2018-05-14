@@ -69,6 +69,16 @@
             :title="formItem.title"
             :formItemData="formItem"
         ></InputDynamic>
+        
+        <!-- 多选框 -->
+        <checklist 
+            v-if="formItem.component === 'checklist'" 
+            :label-position="labelPosition"
+            required
+            :options="commonList"
+            v-model="checklist001"
+            @on-change="change">
+        </checklist>
 
         <!-- 错误提示 -->
         <span v-if="isShowMsg" style="color: red">
@@ -77,7 +87,7 @@
     </div>
 </template>
 <script>
-import { XInput, Radio, Datetime, Toast, XTextarea, PopupPicker } from 'vux'
+import { XInput, Radio, Datetime, Toast, XTextarea, PopupPicker, Checklist } from 'vux'
 import {validatorFn} from 'UTILS/moblieValidator.js'
 import Camera from './camera.vue'
 import InputDynamic from './inputDynamic.vue'
@@ -90,7 +100,8 @@ export default {
         Camera,
         XTextarea,
         PopupPicker,
-        InputDynamic
+        InputDynamic,
+        Checklist
     },
     props: {
         formItem: Object,
@@ -106,6 +117,9 @@ export default {
     },
     data () {
         return {
+            labelPosition: '',
+            commonList: [ 'China', 'Japan', 'America' ],
+            checklist001: []
         }
     },
     mounted () {
@@ -132,8 +146,8 @@ export default {
             console.log('on-confirm arg', val)
             console.log('current value', this.value1)
         },
-        change (value) {
-            console.log('change', value)
+        change (value, label) {
+            console.log('change', value, label)
         },
         onChangePick (options, value) {
             options.forEach(v => {

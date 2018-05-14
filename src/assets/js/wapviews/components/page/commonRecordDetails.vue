@@ -183,15 +183,25 @@ export default {
                 confirmText: '确定',
                 format: 'YYYY-MM-DD',
                 value: this.defaultDate,
-                onConfirm: (val) => {
-                    this.$set(this.searchDate, index, val)
-                    if (!this.searchDate.includes(null)) {
+                clearText: 'clear',
+                onHide: () => {
+                    console.log(this.searchDate)
+                    if (this.searchDate[0] === null && this.searchDate[1] === null) {
+                        this.list = []
+                        this.getMsg()
+                    } else if (this.searchDate[0] !== null && this.searchDate[1] !== null) {
                         let select = {
                             date: this.searchDate
                         }
                         this.list = []
                         this.getMsg(select)
                     }
+                },
+                onClear: () => {
+                    this.$set(this.searchDate, index, null)
+                },
+                onConfirm: (val) => {
+                    this.$set(this.searchDate, index, val)
                 }
             })
         },

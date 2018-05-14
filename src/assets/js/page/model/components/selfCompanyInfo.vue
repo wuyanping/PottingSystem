@@ -23,7 +23,7 @@
 </template>
 <script>
 import { show } from 'UTILS/commonApi.js'
-import { isArray, isObject } from 'UTILS/utils.js'
+import { isArray, isObject, isString } from 'UTILS/utils.js'
 
 export default {
     name: 'selfCompanyInfo',
@@ -66,6 +66,7 @@ export default {
         // 表格列特殊值处理
         dataFieldFn (data) {
             console.log('dataFieldFn ---- ')
+            // 处理数组变成字符串
             function arrStr (arr) {
                 let arrString = ''
                 if (isArray(arr)) {
@@ -74,21 +75,34 @@ export default {
                 return arrString
             }
 
-            function arrObj (arr) {
+            // 处理json字符串变成字符串
+            function strObj (str) {
                 let arrString = ''
-                if (isArray(arr)) {
-                    arr.forEach(obj => {
-                        if (isObject(obj)) {
-                            arrString += `${obj.param}： ${obj.val} ； `
+                if (isString(str)) {
+                    let json = JSON.parse(str)
+                    if (isObject(json)) {
+                        for (let key in json) {
+                            arrString += `${key}： ${json[key]} ； `
                         }
-                    })
+                    }
                 }
                 return arrString
             }
+
+            // 处理状态，根据有无rfid
+            const statusFn = function (rfid) {
+                if (rfid) {
+                    return '通过'
+                } else {
+                    return '不通过'
+                }
+            }
+
             if (isObject(data)) {
-                console.log()
+                console.log(data)
                 data.main = arrStr(data.main)
-                data.info = arrObj(data.info)
+                data.info = strObj(data.info)
+                data.cstatus = statusFn(data.rfid)
                 // data.imgs = data.imgs ? this.$apiUrl(data.imgs) : ''
             }
             return data

@@ -153,7 +153,7 @@ let model = {
             CustomComponent: leader
         },
         invite: {
-            title: '申请/邀请',
+            title: '发出申请',
             // 是否显示搜索
             hasConditonSelect: true,
             // 是否列表
@@ -312,7 +312,7 @@ let model = {
             CustomComponent: leader
         },
         invite: {
-            title: '申请/邀请',
+            title: '发出邀请',
             // 是否显示搜索
             hasConditonSelect: true,
             // 是否列表
