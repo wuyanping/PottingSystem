@@ -642,9 +642,9 @@
                 this.formLoading = true
                 edit(this, this.route, scope.row.id)
                     .then(data => {
+                        console.log(this.route)
                         this.formLoading = false
                         this.formData = this.setFormData(scope.type, data)
-                        console.log(this.formData)
                     })
             },
             // 删除
@@ -733,6 +733,8 @@
 
             // 数据处理方法
             set_tableData (data) {
+                console.log('set_tableData')
+                console.log(data)
                 for (let i in data) {
                     if (i === 'data') {
                         this.tableData = this.model.tableFieldFn ? this.model.tableFieldFn(data.data, this) : data.data

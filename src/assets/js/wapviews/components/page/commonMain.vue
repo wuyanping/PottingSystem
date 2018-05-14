@@ -22,9 +22,12 @@
 
         <!-- 盆栽列表 -->
         <div class="basic_list" v-if="hasList" ref="wrapper" :style="{height: height}">
-            <!-- <load-more :show-loading="false" tip="暂无数据" v-if="!list.length" /> -->
-            <load-more tip="正在刷新" v-if="showPullDown" />
-            <panel :list="list" type="5" @on-click-item="handlePanelItem" @on-img-error="onImgError" />
+            <load-more tip="正在刷新" v-if="showPullDown"></load-more>
+            <list 
+                :data="list" 
+                :isNoMsg="isNoMsg"
+                @onButtonClick="onButtonClick"
+                @toDetail="toDetail" />
             <loading :show="showLoading" text="加载中" />
         </div>
          
@@ -33,16 +36,20 @@
             :formData="formData"
             :isShowPopup="isShowPopup"
             :isShowSibmitBtn="true"
-            @closePopup="closePopup"
+            @closePopup="handleClose"
+            @handleSubmit="handleSubmit"
         ></PopupForm>
     </div>
 </template>
 <script>
-import { XInput, Group, Icon, Flexbox, FlexboxItem, Panel, Popup, Cell, LoadMore, Loading } from 'vux'
+import { XInput, Group, Icon, Flexbox, FlexboxItem, Panel, Popup, Cell, LoadMore, Loading, ToastPlugin, Search } from 'vux'
 import PopupForm from '../input/popupForm.vue'
-import { isFunction } from 'UTILS/utils.js'
+import { isFunction, serializeData } from 'UTILS/utils.js'
 import BScroll from 'better-scroll'
-import { index } from 'UTILS/commonApi.js'
+import { index, destroy, store, update, edit } from 'UTILS/commonApi.js'
+import list from '../list.vue'
+
+Vue.use(ToastPlugin)
 
 export default {
     components: {
@@ -56,7 +63,9 @@ export default {
         Cell,
         PopupForm,
         LoadMore,
-        Loading
+        Loading,
+        list,
+        Search
     },
     props: {
         model: {
@@ -96,18 +105,10 @@ export default {
     data () {
         let he = window.screen.height - 140
         return {
-            list: [
-                // {
-                //     id: 0,
-                //     src: 'http://somedomain.somdomain/x.jpg',
-                //     fallbackSrc: './static/image/company_default_logo.png',
-                //     title: '标题一标题一标题一标题一标题一标题一标题一',
-                //     desc: '由各种物质组成的巨型球状天体，叫做星球。星球有一定的形状，有自己的运行轨道。由各种物质组成的巨型球状天体，叫做星球。星球有一定的形状，有自己的运行轨道。'
-                // }
-            ],
-            isShowPopup: false,
+            list: [],
+            isShowPopup: false, // 新建弹框
             formData: [],
-            options: {
+            options: { // 上下拉参数
                 pullDownRefresh: {
                     threshold: 50,
                     stop: 20
@@ -120,10 +121,12 @@ export default {
                 startY: 0,
                 scrollbar: false
             },
-            showPullDown: false,
+            showPullDown: false, // 下拉刷新
             height: `${he}px`,
-            showLoading: true,
-            searchValue: ''
+            showLoading: false, // 全局加载中
+            searchValue: '',
+            isNoMsg: false, // 暂无数据
+            flag: ''
         }
     },
     methods: {
@@ -139,37 +142,40 @@ export default {
         },
         // 新增表单
         newForm () {
+            this.flag = 'add'
             this.isShowPopup = true
-            this.formData = this.model.formField()
-            // console.log(this.formData)
+            this.formData = this.setFormData(this.flag)
+            console.log('this.formData ---- ')
+            console.log(this.formData)
+        },
+        // 设置表单对话框数据
+        setFormData (type, row = {}) {
+            let data = this.model.formField(type)
+            data.forEach(item => {
+                // 在打开对话框同时赋值
+                if (Object.keys(row).includes(item['name'])) {
+                    if (item.customEditFn) {
+                        item['value'] = item.customEditFn(row[item['name']])
+                    } else {
+                        item['value'] = row[item['name']]
+                    }
+                }
+            })
+            return data
         },
         // 关闭表单
         handleClose () {
             this.isShowPopup = false
         },
-        changeIsShowFinish () {},
-        // 提交表单
-        sibmitForm () {
-
-        },
-        closePopup () {
-            this.isShowPopup = false
-        },
         // 获取数据
-        getListMsg (query = {page: 1, cstatus: 1}) {
-            index(this, 'pot', query).then(res => {
+        getInfo (query = {page: 1, cstatus: 1}) {
+            this.showLoading = true
+            let model = this.$route.params.model
+            let url
+            url = model === 'myPotting' ? 'pot/self' : 'pot'
+            index(this, url, query).then(res => {
                 this.showLoading = false
-                let potData = res.data
-                potData.forEach(v => {
-                    let obj = {
-                        id: v.id,
-                        title: v.name,
-                        desc: v.use_for,
-                        src: `/api/${v.imgs}`,
-                        fallbackSrc: './static/image/company_default_logo.png'
-                    }
-                    this.list.push(obj)
-                })
+                this.list.push(...res.data)
                 this.list.current_page = res.current_page
                 this.list.total_page = Math.ceil(res.total / res.per_page)
             })
@@ -184,8 +190,11 @@ export default {
                 let vm = this
                 // 上拉刷新
                 this.scroll.on('pullingUp', () => {
+                    console.log('pullingUp')
                     if (this.list.current_page < this.list.total_page) {
-                        this.getListMsg({page: this.list.current_page + 1})
+                        this.getInfo({page: this.list.current_page + 1, cstatus: 1})
+                    } else if (this.list.current_page === this.list.total_page) {
+                        this.isNoMsg = true
                     }
                     this.scroll.finishPullUp()
                     this.scroll.refresh()
@@ -195,7 +204,8 @@ export default {
                     this.showPullDown = true
                     setTimeout(() => {
                         this.list = []
-                        this.getListMsg()
+                        this.isNoMsg = false
+                        this.getInfo()
                         this.showPullDown = false
                     }, 1000)
                     this.scroll.finishPullDown()
@@ -206,14 +216,95 @@ export default {
         // 搜索
         handleSearch (val) {
             this.list = []
-            this.getListMsg({query_text: val})
+            this.getInfo({query_text: val})
+        },
+        // 右拉事件
+        onButtonClick (val, id) {
+            console.log(id)
+            if (val === 'delete') {
+                destroy(this, 'pot', id)
+                    .then(res => {
+                        this.$vux.toast.text('删除成功', 'middle')
+                        this.list = []
+                        this.getInfo()
+                        console.log('~~~~~~~~')
+                        console.log(this.list)
+                        console.log('~~~~~~~~')
+                    })
+            } else {
+                this.flag = 'edit'
+                this.isShowPopup = true
+                this.formData = this.model.formField()
+                edit(this, 'pot', id)
+                    .then(res => {
+                        console.log('res --- ')
+                        console.log(res)
+                        console.log('this.setFormData(this.flag, res) --- ')
+                        console.log(this.setFormData(this.flag, res))
+                        this.formData = this.setFormData(this.flag, res)
+                        // this.formData.forEach(v => {
+                        //     Object.keys(res).forEach(i => {
+                        //         if (v.name === i) {
+                        //             v.value = res[i]
+                        //         }
+                        //     })
+                        // })
+                        this.formData['id'] = id
+                        console.log('============')
+                        console.log(this.formData)
+                        console.log('============')
+                    })
+            }
+        },
+        // 表单提交
+        handleSubmit () {
+            console.log(this.flag)
+            let params = {
+                _type: this.flag,
+                ...serializeData(this.formData)
+            }
+            if (this.flag === 'add') {
+                console.log(this.formData)
+                store(this, 'pot', params)
+                    .then(res => {
+                        if (res) {
+                            this.$vux.toast.text('新增成功')
+                            this.handleClose()
+                        }
+                    })
+            } else {
+                console.log('编辑的')
+                params._method = 'PUT'
+                update(this, 'pot', this.formData['id'], params)
+                    .then(res => {
+                        if (res) {
+                            this.$vux.toast.text('编辑成功')
+                            this.handleClose()
+                            this.list = []
+                            this.getInfo()
+                        }
+                    })
+            }
+        },
+        toDetail (id) {
+            this.$router.push(`${this.$route.params.model}/${id}`)
         }
     },
     mounted () {
-        this.getListMsg()
+        this.getInfo()
         setTimeout(() => {
             this._initScroll()
         }, 20)
+    },
+    watch: {
+        '$route': {
+            handler: function (v) {
+                this.list = []
+                this.getInfo()
+            }
+        }
+    },
+    created () {
     }
 }
 </script>

@@ -3,8 +3,12 @@
 	<div class="detailsDetails">
         <!-- 记录搜索 -->
 		<div class="dd_top">
+
             <flexbox :gutter="0">
-                <flexbox-item :span="3/12" class="txt-c">
+                <flexbox-item :span="1/12" class="txt-c">
+                    <div @click="handleAdd" v-if="msgUser">新增</div>
+                </flexbox-item>
+                <flexbox-item :span="2/12" class="txt-c">
                     时间搜索
                 </flexbox-item>
                 <flexbox-item :span="4/12">
@@ -26,7 +30,11 @@
         <!-- 节点列表 -->
         <div class="dd_main" ref="wrapper" :style="{height: height}">
             <load-more tip="正在刷新" v-if="showPullDown" />
-            <panel :list="list" type="5" @on-click-item="handlePanelItem" @on-img-error="onImgError"></panel>
+            <list 
+                :data="list" 
+                :isNoMsg="isNoMsg"
+                @onButtonClick="onButtonClick"
+                @toDetail="handlePanelItem" />
             <loading :show="showLoading" text="加载中" />
         </div>
         
@@ -49,15 +57,28 @@
                 </div>
             </popup>
         </div>
+
+        <!-- 新建弹框 -->
+        <PopupForm 
+            :formData="formData"
+            :isShowPopup="isShowAdd"
+            :isShowSibmitBtn="true"
+            @closePopup="closePopup"
+            @handleSubmit="handleSubmit"
+        ></PopupForm>
 	</div>
 </template>
 <script>
-import { XInput, Icon, Flexbox, FlexboxItem, DatetimePlugin, Panel, TransferDom, XHeader, Cell, Popup, Group, LoadMore, XSwitch, Loading } from 'vux'
-import { isFunction } from 'UTILS/utils.js'
-import { index } from 'UTILS/commonApi.js'
+import { XInput, Icon, Flexbox, FlexboxItem, DatetimePlugin, Panel, TransferDom, XHeader, Cell, Popup, Group, LoadMore, XSwitch, Loading, ToastPlugin } from 'vux'
+import { isFunction, serializeData } from 'UTILS/utils.js'
+import { index, store, destroy, edit, update } from 'UTILS/commonApi.js'
 import BScroll from 'better-scroll'
+import PopupForm from '../input/popupForm.vue'
+import list from '../list.vue'
 
 Vue.use(DatetimePlugin)
+Vue.use(ToastPlugin)
+
 export default {
     directives: {
         TransferDom
@@ -79,7 +100,9 @@ export default {
         Group,
         LoadMore,
         XSwitch,
-        Loading
+        Loading,
+        list,
+        PopupForm
     },
     computed: {
         title () {
@@ -123,13 +146,14 @@ export default {
         let date = new Date()
         let dDate = `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`
         return {
+            formData: [],
             defaultDate: dDate,
             searchDate: [null, null],
             list: [],
             listData: {},
             resData: [],
-            isShowPopup: false,
-            options: {
+            isShowPopup: false, // 详情弹框
+            options: { // 上下拉参数
                 pullDownRefresh: {
                     threshold: 50,
                     stop: 20
@@ -143,8 +167,12 @@ export default {
                 scrollbar: false
             },
             height: `${he}px`,
-            showPullDown: false,
-            showLoading: true
+            showPullDown: false, // 下拉刷新
+            showLoading: false, // 全局加载中
+            isShowAdd: false, // 新建弹框
+            flag: '',
+            isNoMsg: false, // 暂无数据,
+            msgUser: ''
         }
     },
     methods: {
@@ -155,21 +183,32 @@ export default {
                 confirmText: '确定',
                 format: 'YYYY-MM-DD',
                 value: this.defaultDate,
-                onConfirm: (val) => {
-                    this.$set(this.searchDate, index, val)
-                    if (!this.searchDate.includes(null)) {
+                clearText: 'clear',
+                onHide: () => {
+                    console.log(this.searchDate)
+                    if (this.searchDate[0] === null && this.searchDate[1] === null) {
+                        this.list = []
+                        this.getMsg()
+                    } else if (this.searchDate[0] !== null && this.searchDate[1] !== null) {
                         let select = {
                             date: this.searchDate
                         }
                         this.list = []
                         this.getMsg(select)
                     }
+                },
+                onClear: () => {
+                    this.$set(this.searchDate, index, null)
+                },
+                onConfirm: (val) => {
+                    this.$set(this.searchDate, index, val)
                 }
             })
         },
-        handlePanelItem (panelItem) {
+        // 详情页
+        handlePanelItem (id) {
             this.resData.forEach(v => {
-                if (v.id === panelItem.id) {
+                if (v.id === id) {
                     this.listData = v
                 }
             })
@@ -182,15 +221,27 @@ export default {
         handleClose () {
             this.isShowPopup = false
         },
+        closePopup () {
+            this.isShowAdd = false
+        },
+        getMsgUser () {
+            let potId = this.$route.params.id
+            index(this, `pot/${potId}`)
+                .then(res => {
+                    this.msgUser = res['main'].join().includes(window.bdUser['name'])
+                    console.log(res)
+                })
+        },
         // 获取数据
         getMsg (query = {page: 1}) {
+            this.showLoading = true
             let model = this.$route.params.record
-            let id = this.$route.params.id
-            index(this, `pot/${id}/${model}`, query)
+            let potId = this.$route.params.id
+            index(this, `pot/${potId}/${model}`, query)
                 .then(res => {
+                    console.log(res)
                     this.showLoading = false
-                    let listData = res.data
-                    this.resData = listData
+                    this.resData = res.data
                     let title
                     switch (model) {
                     case 'node':
@@ -200,15 +251,16 @@ export default {
                         title = 'content'
                         break
                     }
-                    listData.forEach(v => {
+                    res.data.forEach(v => {
                         let obj = {
                             id: v.id,
-                            title: v[title],
-                            desc: v.date
+                            name: v[title],
+                            use_for: v.date,
+                            main: [v.user_id]
                         }
                         if (v.imgs) {
                             Object.assign(obj, {
-                                src: `/api${v.imgs}`,
+                                imgs: v.imgs,
                                 fallbackSrc: './static/image/company_default_logo.png'
                             })
                         }
@@ -242,19 +294,20 @@ export default {
                 let vm = this
                 // 上拉刷新
                 this.scroll.on('pullingUp', () => {
-                    console.log('pullingUp')
                     if (this.list.current_page < this.list.total_page) {
                         this.getMsg({page: this.list.current_page + 1})
+                    } else if (this.list.current_page === this.list.total_page) {
+                        this.isNoMsg = true
                     }
                     this.scroll.finishPullUp()
                     this.scroll.refresh()
                 })
                 // 下拉加载
                 this.scroll.on('pullingDown', () => {
-                    console.log('pullingDown')
                     this.showPullDown = true
                     setTimeout(() => {
                         this.list = []
+                        this.isNoMsg = false
                         this.getMsg()
                         this.showPullDown = false
                     }, 1000)
@@ -262,11 +315,84 @@ export default {
                     this.scroll.refresh()
                 })
             }
+        },
+        // 新增按钮
+        handleAdd () {
+            this.flag = 'add'
+            this.isShowAdd = true
+            this.formData = this.recordDetails.formField()
+        },
+        // 新增提交
+        handleSubmit () {
+            let model = this.$route.params.record
+            let potId = this.$route.params.id
+            let params = {
+                ...serializeData(this.formData)
+            }
+            if (this.flag === 'add') {
+                store(this, `pot/${potId}/${model}`, params)
+                    .then(res => {
+                        this.$vux.toast.text('新增成功')
+                        this.closePopup()
+                        this.list = []
+                        this.getMsg()
+                    })
+            } else {
+                params._method = 'PUT'
+                update(this, `pot/${potId}/${model}`, this.formData['id'], params)
+                    .then(res => {
+                        if (res) {
+                            this.$vux.toast.text('编辑成功')
+                            this.closePopup()
+                            this.list = []
+                            this.getMsg()
+                        }
+                    })
+            }
+        },
+        // 编辑删除
+        onButtonClick (val, id) {
+            let model = this.$route.params.record
+            let potId = this.$route.params.id
+            if (val === 'delete') {
+                console.log(val)
+            } else {
+                this.flag = 'edit'
+                this.isShowAdd = true
+                console.log(model)
+                console.log(id)
+                this.formData = this.recordDetails.formField()
+                edit(this, `pot/${potId}/${model}`, id)
+                    .then(res => {
+                        switch (res.status) {
+                        case 0:
+                            res.status = ['良好']
+                            break
+                        case 1:
+                            res.status = ['一般']
+                            break
+                        case 2:
+                            res.status = ['较差']
+                            break
+                        case 3:
+                            res.status = ['非常差']
+                            break
+                        }
+                        this.formData.forEach(v => {
+                            Object.keys(res).forEach(i => {
+                                if (v.name === i) {
+                                    v.value = res[i]
+                                }
+                            })
+                        })
+                        this.formData['id'] = id
+                    })
+            }
         }
     },
     mounted () {
-        console.log(this.$route)
         this.getMsg()
+        this.getMsgUser()
         setTimeout(() => {
             this._initScroll()
         }, 20)

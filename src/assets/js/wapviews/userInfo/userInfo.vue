@@ -14,6 +14,7 @@
         <group>
             <cell title="修改个人信息" is-link link="userInfo/editUserInfo"></cell>
             <cell title="修改密码" is-link link="userInfo/editPassword"></cell>
+            <cell title="盆栽管理"></cell>
         </group>
 
         <!-- 新建弹框 -->
@@ -82,7 +83,10 @@ export default {
         handleLogout () {
             axios.get('/api/domlogout')
                 .then(res => {
-                    this.$router.push('/login')
+                    console.log(res)
+                    if (res.data === 200) {
+                        this.$router.push('/login')
+                    }
                 })
         }
     },
@@ -115,9 +119,11 @@ export default {
     }
     .logoutBtn{
         width: 80%;
+        height: 56px;
         position: fixed;
         bottom: 80px;
         margin-left: 10%;
+        border-radius: 20px;
     } 
 }
 </style>

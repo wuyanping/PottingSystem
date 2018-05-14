@@ -13,6 +13,45 @@ function customSerializeFn (item) {
     return obj
 }
 
+function customSerializeParamsValue (item) {
+    let obj = {}
+    item.value.forEach(pv => {
+        if (pv.param === '') return false
+        obj[pv.param] = pv.value
+    })
+    if (Object.keys(obj).length > 0) {
+        return {
+            [item['name']]: JSON.stringify(obj)
+        }
+    } else {
+        return {
+            [item['name']]: null
+        }
+    }
+}
+
+function customEditParamsValue (value) {
+    if (value) {
+        let params_value = JSON.parse(value), arr = []
+        Object.keys(params_value).forEach(param => {
+            arr.push({
+                param: param,
+                value: params_value[param]
+            })
+        })
+        arr.push({
+            param: '',
+            value: ''
+        })
+        return arr
+    } else {
+        return [{
+            param: '',
+            value: ''
+        }]
+    }
+}
+
 let model = {
     potting: {
         title: '盆栽列表',
@@ -24,16 +63,7 @@ let model = {
         listItemClickFn: listItemClickFn,
         // commonConditionComponents: [],
         // 列表列 必须需要这些字段
-        commonListField: ['id', 'src', 'fallbackSrc', 'title', 'desc']
-    },
-    myPotting: {
-        title: '我的盆栽',
-        hasConditonSelect: true,
-        hasList: true,
-        listItemClickFn: listItemClickFn,
-        // commonConditionComponents: []，
         commonListField: ['id', 'src', 'fallbackSrc', 'title', 'desc'],
-        // 新建表单
         formField: function () {
             return [
                 {
@@ -107,6 +137,118 @@ let model = {
                         msg: ''
                     },
                     value: ''
+                },
+                {
+                    component: 'x-textarea',
+                    name: 'memo',
+                    title: '备注',
+                    iconType: '',
+                    rule: {required: false},
+                    validatorResult: {
+                        valid: '',
+                        msg: ''
+                    },
+                    value: ''
+                },
+                {
+                    component: 'file',
+                    name: 'imgs',
+                    title: '外观',
+                    iconType: '',
+                    rule: {required: false},
+                    validatorResult: {
+                        valid: '',
+                        msg: ''
+                    },
+                    value: '',
+                    customSerializeFn: customSerializeFn
+                }
+            ]
+        }
+    },
+    myPotting: {
+        title: '我的盆栽',
+        hasConditonSelect: true,
+        hasList: true,
+        listItemClickFn: listItemClickFn,
+        // commonConditionComponents: []，
+        commonListField: ['id', 'src', 'fallbackSrc', 'title', 'desc'],
+        // 新建表单
+        formField: function () {
+            return [
+                {
+                    component: 'x-input',
+                    name: 'name',
+                    title: '盆栽名称',
+                    iconType: '',
+                    rule: {required: true},
+                    validatorResult: {
+                        valid: '',
+                        msg: ''
+                    },
+                    value: ''
+                },
+                {
+                    component: 'x-input',
+                    name: 'variety',
+                    title: '品种',
+                    iconType: '',
+                    rule: {required: true},
+                    validatorResult: {
+                        valid: '',
+                        msg: ''
+                    },
+                    value: ''
+                },
+                {
+                    component: 'x-input',
+                    name: 'habit',
+                    title: '生长习性',
+                    iconType: '',
+                    rule: {required: true},
+                    validatorResult: {
+                        valid: '',
+                        msg: ''
+                    },
+                    value: ''
+                },
+                {
+                    component: 'x-input',
+                    name: 'origin',
+                    title: '产地',
+                    iconType: '',
+                    rule: {required: true},
+                    validatorResult: {
+                        valid: '',
+                        msg: ''
+                    },
+                    value: ''
+                },
+                {
+                    component: 'x-input',
+                    name: 'use_for',
+                    title: '用途',
+                    iconType: '',
+                    rule: {required: true},
+                    validatorResult: {
+                        valid: '',
+                        msg: ''
+                    },
+                    value: ''
+                },
+                {
+                    component: 'inputDynamic',
+                    name: 'info',
+                    title: '其他信息',
+                    iconType: '',
+                    rule: {required: false},
+                    validatorResult: {
+                        valid: '',
+                        msg: ''
+                    },
+                    value: [],
+                    customSerializeFn: customSerializeParamsValue,
+                    customEditFn: customEditParamsValue
                 },
                 {
                     component: 'x-textarea',

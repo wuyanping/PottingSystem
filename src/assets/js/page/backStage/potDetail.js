@@ -25,7 +25,7 @@ const potDetail = {
     hasTabs: true,
     hasConditionStatusSelect: false,
     hasConditionSearch: true,
-    hasConditionAdd: true,
+    hasConditionAdd: false,
     hasConditionRefresh: true,
     hasTableSelection: true,
     hasTableIndex: true,
@@ -260,45 +260,45 @@ const potDetail = {
             // 默认表单域
             commonFormFieldsFn (type) {
                 return [
-                    {
-                        component: 'ElInput',
-                        field: 'content',
-                        label: '施肥名称',
-                        rulesType: [
-                            {
-                                max: 255,
-                                message: '最多有255字',
-                                trigger: 'blur'
-                            }
-                        ],
-                        value: null
-                    },
-                    {
-                        component: 'ElInput',
-                        field: 'value',
-                        label: '施肥量',
-                        required: false,
-                        rulesType: [
-                            {
-                                max: 255,
-                                message: '最多有255字',
-                                trigger: 'blur'
-                            }
-                        ],
-                        value: null
-                    },
-                    {
-                        component: 'ElDate',
-                        field: 'date',
-                        label: '施肥时间',
-                        value: null
-                    },
-                    {
-                        component: 'ElInput',
-                        field: 'info',
-                        label: '操作信息',
-                        value: null
-                    },
+                    // {
+                    //     component: 'ElInput',
+                    //     field: 'content',
+                    //     label: '施肥名称',
+                    //     rulesType: [
+                    //         {
+                    //             max: 255,
+                    //             message: '最多有255字',
+                    //             trigger: 'blur'
+                    //         }
+                    //     ],
+                    //     value: null
+                    // },
+                    // {
+                    //     component: 'ElInput',
+                    //     field: 'value',
+                    //     label: '施肥量',
+                    //     required: false,
+                    //     rulesType: [
+                    //         {
+                    //             max: 255,
+                    //             message: '最多有255字',
+                    //             trigger: 'blur'
+                    //         }
+                    //     ],
+                    //     value: null
+                    // },
+                    // {
+                    //     component: 'ElDate',
+                    //     field: 'date',
+                    //     label: '施肥时间',
+                    //     value: null
+                    // },
+                    // {
+                    //     component: 'ElInput',
+                    //     field: 'info',
+                    //     label: '操作信息',
+                    //     value: null
+                    // },
                     {
                         component: 'ElInput',
                         inputType: 'textarea',
@@ -350,7 +350,7 @@ const potDetail = {
                 },
                 {
                     label: '操作人',
-                    field: 'username'
+                    field: 'user_id'
                 },
                 {
                     label: '备注',
@@ -381,32 +381,32 @@ const potDetail = {
             // 默认表单域
             commonFormFieldsFn (type) {
                 return [
-                    {
-                        component: 'ElInput',
-                        field: 'content',
-                        label: '操作名称',
-                        rulesType: [
-                            {
-                                max: 255,
-                                message: '最多有255字',
-                                trigger: 'blur'
-                            }
-                        ],
-                        value: null
-                    },
-                    {
-                        component: 'ElDate',
-                        field: 'date',
-                        label: '操作时间',
-                        value: null
-                    },
-                    {
-                        component: 'ElInput',
-                        field: 'info',
-                        label: '操作信息',
-                        required: false,
-                        value: null
-                    },
+                    // {
+                    //     component: 'ElInput',
+                    //     field: 'content',
+                    //     label: '操作名称',
+                    //     rulesType: [
+                    //         {
+                    //             max: 255,
+                    //             message: '最多有255字',
+                    //             trigger: 'blur'
+                    //         }
+                    //     ],
+                    //     value: null
+                    // },
+                    // {
+                    //     component: 'ElDate',
+                    //     field: 'date',
+                    //     label: '操作时间',
+                    //     value: null
+                    // },
+                    // {
+                    //     component: 'ElInput',
+                    //     field: 'info',
+                    //     label: '操作信息',
+                    //     required: false,
+                    //     value: null
+                    // },
                     {
                         component: 'ElInput',
                         inputType: 'textarea',
@@ -444,31 +444,31 @@ const potDetail = {
             // ],
             // 表格列
             commonTableField: [
-                {
-                    label: '时间',
-                    field: 'date'
-                },
-                {
-                    label: '天气',
-                    field: 'weather'
-                },
-                {
-                    label: '盆栽状态',
-                    field: 'status'
-                },
-                {
-                    label: '外观',
-                    field: 'imgs',
-                    component: commonElPopver,
-                    props: {
-                        detailUrl: 'detailModel',
-                        current: 'watering'
-                    }
-                },
-                {
-                    label: '记录',
-                    field: 'record'
-                },
+                // {
+                //     label: '时间',
+                //     field: 'date'
+                // },
+                // {
+                //     label: '天气',
+                //     field: 'weather'
+                // },
+                // {
+                //     label: '盆栽状态',
+                //     field: 'status'
+                // },
+                // {
+                //     label: '外观',
+                //     field: 'imgs',
+                //     component: commonElPopver,
+                //     props: {
+                //         detailUrl: 'detailModel',
+                //         current: 'watering'
+                //     }
+                // },
+                // {
+                //     label: '记录',
+                //     field: 'record'
+                // },
                 {
                     label: '备注',
                     field: 'memo'

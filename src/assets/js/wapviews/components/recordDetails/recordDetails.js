@@ -1,5 +1,5 @@
 import leader from '../page/leader.vue'
-
+import form from './recordFormField.js'
 function listItemClickFn (vm) {
     vm.isShowPopup = true
 }
@@ -42,7 +42,8 @@ let model = {
                     label: '备注',
                     field: 'memo'
                 }
-            ]
+            ],
+            formField: form.NodeFormField
         },
         watering: {
             title: '浇水记录',
@@ -75,7 +76,8 @@ let model = {
                     label: '备注',
                     field: 'memo'
                 }
-            ]
+            ],
+            formField: form.wateringField
         },
         fertilizer: {
             title: '施肥记录',
@@ -108,7 +110,8 @@ let model = {
                     label: '备注',
                     field: 'memo'
                 }
-            ]
+            ],
+            formField: form.fertilizerField
         },
         order: {
             title: '其他操作记录',
@@ -141,7 +144,8 @@ let model = {
                     label: '备注',
                     field: 'memo'
                 }
-            ]
+            ],
+            formField: form.orderField
         },
         leader: {
             title: '负责人',
@@ -149,7 +153,7 @@ let model = {
             CustomComponent: leader
         },
         invite: {
-            title: '申请/邀请',
+            title: '发出申请',
             // 是否显示搜索
             hasConditonSelect: true,
             // 是否列表
@@ -197,7 +201,8 @@ let model = {
                     label: '备注',
                     field: 'memo'
                 }
-            ]
+            ],
+            formField: form.NodeFormField
         },
         watering: {
             title: '浇水记录',
@@ -230,7 +235,8 @@ let model = {
                     label: '备注',
                     field: 'memo'
                 }
-            ]
+            ],
+            formField: form.wateringField
         },
         fertilizer: {
             title: '施肥记录',
@@ -263,7 +269,8 @@ let model = {
                     label: '备注',
                     field: 'memo'
                 }
-            ]
+            ],
+            formField: form.fertilizerField
         },
         order: {
             title: '其他操作记录',
@@ -296,7 +303,8 @@ let model = {
                     label: '备注',
                     field: 'memo'
                 }
-            ]
+            ],
+            formField: form.orderField
         },
         leader: {
             title: '负责人',
@@ -304,7 +312,7 @@ let model = {
             CustomComponent: leader
         },
         invite: {
-            title: '申请/邀请',
+            title: '发出邀请',
             // 是否显示搜索
             hasConditonSelect: true,
             // 是否列表

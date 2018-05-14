@@ -104,15 +104,19 @@ export default {
                 this.$set(this.formData, i, input)
             })
             if (isCanSibmit) {
-                console.log(this.formData)
-                let params = {...serializeData(this.formData)}
-                update(this, 'user', this.formData['id'], params)
-                    .then(res => {
-                        if (res) {
-                            this.$vux.toast.text('修改成功', 'middle')
-                            this.$router.go(-1)
-                        }
-                    })
+                let flag = this.$route.params.id
+                if (flag && flag === Object.keys(theUserInfoDetail)[0]) {
+                    let params = {...serializeData(this.formData)}
+                    update(this, 'user', this.formData['id'], params)
+                        .then(res => {
+                            if (res) {
+                                this.$vux.toast.show('修改成功', 'middle')
+                                this.$router.go(-1)
+                            }
+                        })
+                } else {
+                    console.log('我是重置密码的')
+                }
             } else {
                 console.log('验证失败')
                 this.$vux.alert.show({

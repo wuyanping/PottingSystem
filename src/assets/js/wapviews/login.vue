@@ -10,7 +10,7 @@
                 <div v-for="(inputItem,i) in loginData" :key="i">
                     <x-input
                         class="commonInput"
-                        type="text"
+                        :type="inputItem.type ? inputItem.type : 'text'"
                         novalidate
                         :iconType="inputItem.iconType"
                         :placeholder="`请输入${inputItem.title}`"
@@ -18,7 +18,7 @@
                         @on-change="(val) => validatorResultFn('login', inputItem.name, inputItem.rule, val, i)"
                         @on-blur="(val) => validatorResultFn('login', inputItem.name, inputItem.rule, val, i)"
                         v-model="inputItem.value">
-                            <i slot="label" :class="`icon iconfon   t icon-${inputItem.name}`"></i>
+                            <i slot="label" :class="`icon iconfont icon-${inputItem.name}`"></i>
                     </x-input>
                     <span v-if="!inputItem.validatorResult.valid">{{inputItem.validatorResult.msg}}</span>
                 </div>
@@ -36,7 +36,7 @@
                 <div v-for="(inputItem,i) in signInData" :key="i">
                     <x-input
                         class="commonInput"
-                        type="text"
+                        :type="inputItem.type ? inputItem.type : 'text'"
                         novalidate
                         :iconType="inputItem.iconType"
                         :placeholder="`请输入${inputItem.title}`"
@@ -62,7 +62,8 @@
     import {Tab, TabItem, XButton, XInput, Group, Cell, Toast, ToastPlugin} from 'vux'
     import {validatorFn} from 'UTILS/moblieValidator.js'
     import {ajax} from '../utils/ajax.js'
-
+    import { isObject } from 'UTILS/utils.js'
+    import { store } from '../utils/commonApi.js'
     Vue.use(ToastPlugin)
 
     export default{
@@ -102,7 +103,8 @@
                             valid: '',
                             msg: ''
                         },
-                        value: ''
+                        value: '',
+                        type: 'password'
                     }
                 ],
                 signInData: [
@@ -148,7 +150,8 @@
                             valid: '',
                             msg: ''
                         },
-                        value: ''
+                        value: '',
+                        type: 'password'
                     },
                     {
                         name: 'password_confirmation',
@@ -159,7 +162,8 @@
                             valid: '',
                             msg: ''
                         },
-                        value: ''
+                        value: '',
+                        type: 'password'
                     }
                 ]
             }
@@ -208,8 +212,9 @@
                             password: obj.password
                         }
                         ajax.call(this, 'post', '/api/domlogin', data).then(res => {
-                            if (res.data) {
-                                this.$vux.toast.text('登录成功')
+                            if (res.data !== 500 && isObject(res.data)) {
+                                console.log(res.data)
+                                this.$vux.toast.show('登录成功')
                                 this.$router.push('/index/potting')
                             } else {
                                 this.$vux.toast.text('登录失败，用户名或密码错误')
@@ -224,9 +229,12 @@
                             password_confirmation: obj.password_confirmation
                         }
                         console.log(obj)
-                        ajax.call(this, 'post', '/api/domregister', data).then(res => {
-                            console.log(res)
-                        })
+                        store(this, 'domregister', data)
+                            .then(res => {
+                                if (res) {
+                                    this.$vux.toast.show('注册成功')
+                                }
+                            })
                     }
                 }
             }

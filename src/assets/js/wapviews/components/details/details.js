@@ -32,16 +32,15 @@ let details = {
                 field: 'use_for'
             },
             {
-                label: '外观',
-                field: 'imgs'
-            },
-            {
                 label: '负责人',
                 field: 'main'
             },
             {
                 label: '其他信息',
-                field: 'info'
+                field: 'info',
+                params: {
+                    showContent: false
+                }
             },
             {
                 label: '备注',
@@ -71,7 +70,7 @@ let details = {
 	    		record: 'leader'
 	    	},
 	    	{
-	    		title: '申请/邀请',
+	    		title: '发出申请',
 	    		record: 'invite'
 	    	}
 	    ]
@@ -108,16 +107,15 @@ let details = {
                 field: 'use_for'
             },
             {
-                label: '外观',
-                field: 'imgs'
-            },
-            {
                 label: '负责人',
                 field: 'main'
             },
             {
                 label: '其他信息',
-                field: 'info'
+                field: 'info',
+                params: {
+                    showContent: false
+                }
             },
             {
                 label: '备注',
@@ -147,7 +145,7 @@ let details = {
 	    		record: 'leader'
 	    	},
 	    	{
-	    		title: '申请/邀请',
+	    		title: '发出邀请',
 	    		record: 'invite'
 	    	}
 	    ]

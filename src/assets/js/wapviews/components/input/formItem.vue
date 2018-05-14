@@ -7,6 +7,7 @@
             :iconType="formItem.iconType"
             :placeholder="`请输入${formItem.title}`"
             novalidate
+            text-align="right"
             @on-change="(val) => validatorResultFn(formItem.title, formItem.rule, val)"
             @on-blur="(val) => validatorResultFn(formItem.title, formItem.rule, val)"
             v-model="formItem.value"
@@ -33,6 +34,15 @@
             @on-change="(val) => validatorResultFn(formItem.title, formItem.rule, val, formItem.component)">
         </radio>
 
+        <!-- 下拉框 -->
+        <popup-picker
+            v-if="formItem.component === 'select'"
+            :title="formItem.title"
+            :data="formItem.options"
+            v-model="formItem.value"
+            :columns="1"
+            @on-change="onChangePick(formItem.options, formItem.value)" />
+
         <!-- 日期 -->
         <datetime
             v-if="formItem.component === 'datetime'"
@@ -51,6 +61,24 @@
             :name="formItem.name"
             :editValue="formItem.value"
         ></Camera>
+        
+        <!-- 键值对的形式输入（如：新建盆栽的其他信息） -->
+        <InputDynamic 
+            v-if="formItem.component === 'inputDynamic'" 
+            :name="formItem.name"
+            :title="formItem.title"
+            :formItemData="formItem"
+        ></InputDynamic>
+        
+        <!-- 多选框 -->
+        <checklist 
+            v-if="formItem.component === 'checklist'" 
+            :label-position="labelPosition"
+            required
+            :options="commonList"
+            v-model="checklist001"
+            @on-change="change">
+        </checklist>
 
         <!-- 错误提示 -->
         <span v-if="isShowMsg" style="color: red">
@@ -59,9 +87,10 @@
     </div>
 </template>
 <script>
-import { XInput, Radio, Datetime, Toast, XTextarea } from 'vux'
+import { XInput, Radio, Datetime, Toast, XTextarea, PopupPicker, Checklist } from 'vux'
 import {validatorFn} from 'UTILS/moblieValidator.js'
 import Camera from './camera.vue'
+import InputDynamic from './inputDynamic.vue'
 export default {
     components: {
         XInput,
@@ -69,7 +98,10 @@ export default {
         Datetime,
         Toast,
         Camera,
-        XTextarea
+        XTextarea,
+        PopupPicker,
+        InputDynamic,
+        Checklist
     },
     props: {
         formItem: Object,
@@ -85,18 +117,24 @@ export default {
     },
     data () {
         return {
+            labelPosition: '',
+            commonList: [ 'China', 'Japan', 'America' ],
+            checklist001: []
         }
     },
-    mounth () {
+    mounted () {
+        // console.log('obj')
+        // console.log(this.formItem)
+        // console.log(this.$props.formItem)
     },
     methods: {
         // 表单验证
         validatorResultFn (name, rule, value, component) {
-            console.log('validatorResult --------------------------------------')
-            console.log(value)
+            // console.log('validatorResult --------------------------------------')
+            // console.log(value)
             // this.$emit('changeIsShowFinish')
             let result = validatorFn(name, rule, value)
-            console.log(result)
+            // console.log(result)
             this.formItem.validatorResult = result
             this.formItem.iconType = !result.valid ? 'error' : ''
             // return result
@@ -108,8 +146,15 @@ export default {
             console.log('on-confirm arg', val)
             console.log('current value', this.value1)
         },
-        change (value) {
-            console.log('change', value)
+        change (value, label) {
+            console.log('change', value, label)
+        },
+        onChangePick (options, value) {
+            options.forEach(v => {
+                if (value[0] == v.value) {
+                    value[0] = v.name
+                }
+            })
         },
         /*
         返回图片信息
