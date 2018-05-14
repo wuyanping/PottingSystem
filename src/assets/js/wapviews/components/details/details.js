@@ -1,4 +1,19 @@
 import userInfoDetail from '../../userInfo/Details/userInfoDetail.vue'
+import formAjaxCheckList from '../input/formAjaxCheckList.vue'
+import { ajax } from 'UTILS/ajax.js'
+function getAllUserList (vm) {
+    // return vm.$store.dispatch('getStaticData', {
+    //     vm: vm,
+    //     arr: 'USERLIST_CHECK',
+    //     url: '/api/user'
+    // })
+    return new Promise(resolve => {
+        ajax.call(vm, 'get', '/api/user', data => {
+            resolve(data)
+        })
+    })
+}
+
 let details = {
     potting: {
         title: '盆栽详情',
@@ -146,7 +161,27 @@ let details = {
 	    	},
 	    	{
 	    		title: '发出邀请',
-	    		record: 'invite'
+	    		record: 'invite',
+                // 新建表单
+                formField: function () {
+                    return [
+                        {
+                            component: formAjaxCheckList,
+                            name: 'name',
+                            title: '用户列表',
+                            iconType: '',
+                            rule: {required: false},
+                            validatorResult: {
+                                valid: '',
+                                msg: ''
+                            },
+                            getDataFn: getAllUserList,
+                            value: []
+                            // ,
+                            // checklist: [{key: '1', value: '001 value'}, {key: '2', value: '002 value'}, {key: '3', value: '003 value'}]
+                        }
+                    ]
+                }
 	    	}
 	    ]
     },

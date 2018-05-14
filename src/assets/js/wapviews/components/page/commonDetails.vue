@@ -48,7 +48,7 @@
 		      		:span="2/7"
 		      		v-for='(rItem,i) in records'
 		      		:key="i"
-		      		@click.native="go(rItem)">
+		      		@click.native="go(rItem.title, rItem.record, i)">
 		      		<div class="flex-demo" >
 		      			<i :class="`icon iconfont icon-${rItem.record}`"></i>
 		      			<p>{{rItem.title}}</p>
@@ -62,7 +62,8 @@
         <toast v-model="showSuccess">发送成功，等待盆栽管理员审核通过！</toast>
         
         <!-- 邀请弹框 -->
-        <PopupForm 
+        <PopupForm
+            v-if="isShowPopup"
             :formData="formData"
             :isShowPopup="isShowPopup"
             :isShowSibmitBtn="true"
@@ -154,7 +155,10 @@ export default {
     },
     methods: {
         // 记录跳转
-    	go ({title, record}) {
+    	go (title, record, i) {
+            console.log(title)
+            console.log(record)
+            console.log(i)
             // invite不跳转
             if (record === 'invite') {
                 console.log(this.$route)
@@ -162,6 +166,8 @@ export default {
                     this.show3 = true
                 } else if (this.$route.params.model === 'myPotting') { // 我的盆栽的发出邀请
                     this.isShowPopup = true
+                    this.formData = this.setFormData('add', i)
+                    console.log(this.formData)
                 }
             } else {
                 this.$emit('setHeader', {key: 'title', value: title})
@@ -232,10 +238,26 @@ export default {
                 data.info = strObj(data.info)
             }
             return data
+        },
+        // 设置表单对话框数据
+        setFormData (type, i, row = {}) {
+            let data = this.details.records[i].formField(type)
+            data.forEach(item => {
+                // 在打开对话框同时赋值
+                if (Object.keys(row).includes(item['name'])) {
+                    if (item.customEditFn) {
+                        item['value'] = item.customEditFn(row[item['name']])
+                    } else {
+                        item['value'] = row[item['name']]
+                    }
+                }
+            })
+            return data
         }
     },
     mounted () {
     	this.getDetailMsg()
+        console.log(this.details)
     }
 }
 </script>
