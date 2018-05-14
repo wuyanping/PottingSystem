@@ -78,7 +78,6 @@ export default {
         }
     },
     mounted () {
-        console.log(this.date)
         console.log(this.list1)
     },
     created () {
