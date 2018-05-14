@@ -31,19 +31,17 @@ let routes = [
                 name: 'model',
                 component: model
             },
-
+            {
+                path: '/potManage',
+                name: 'potManage',
+                component: potManage
+            },
             // 详情页路由
             {
                 path: '/index/:model/:id',
                 name: 'details',
                 component: details
             },
-            {
-                path: '/index/potManage/potManage',
-                name: 'potManage',
-                component: potManage
-            },
-
             // 详情页的详情页路由
             {
                 path: '/index/:model/:id/:record',

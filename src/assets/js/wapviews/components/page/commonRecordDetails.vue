@@ -356,6 +356,14 @@ export default {
             let potId = this.$route.params.id
             if (val === 'delete') {
                 console.log(val)
+                destroy(this, `pot/${potId}/${model}`, id)
+                    .then(res => {
+                        if (res === 1) {
+                            this.$vux.toast.text('删除成功')
+                            this.list = []
+                            this.getMsg()
+                        }
+                    })
             } else {
                 this.flag = 'edit'
                 this.isShowAdd = true
