@@ -72,7 +72,7 @@
 <script>
 import { Flexbox, FlexboxItem, Blur, Panel, Group, Cell, CellFormPreview, Loading, Actionsheet, Toast, ToastPlugin } from 'vux'
 import PopupForm from '../input/popupForm.vue'
-import { isArray, isObject, isString } from 'UTILS/utils.js'
+import { isArray, isObject, isString, serializeData } from 'UTILS/utils.js'
 import { index, store } from 'UTILS/commonApi.js'
 Vue.use(ToastPlugin)
 
@@ -166,7 +166,6 @@ export default {
                 // } else if (this.$route.params.model === 'myPotting') { // 我的盆栽的发出邀请
                     this.isShowPopup = true
                     this.formData = this.setFormData('add', i)
-                    console.log(this.formData)
                 }
             } else {
                 this.$emit('setHeader', {key: 'title', value: title})
@@ -188,6 +187,19 @@ export default {
         // 表单提交
         handleSubmit () {
             console.log('handleSubmit')
+            console.log(this.formData)
+            let params = {
+                _type: 'add',
+                id: window.bdUser.id,
+                ...serializeData(this.formData)
+            }
+            store(this, 'apply', params)
+                .then(res => {
+                    if (res) {
+                        this.$vux.toast.show('发送成功，等待盆栽管理员审核通过！')
+                        this.handleClose()
+                    }
+                })
         },
     	getDetailMsg () {
     		let id = this.$route.params.id

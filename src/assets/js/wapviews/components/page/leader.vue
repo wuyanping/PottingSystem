@@ -1,29 +1,35 @@
 <!-- 负责人页 -->
 <template>
 	<div class="leader">
-		<group name="">
-		    <!-- <cell
-		    	v-for="(item,i) in list"
-		    	:key="i"
-		    	:title="`${item.title}：`"
-		    	:value="listData[item.key]">
-		    </cell> -->
+        <swipeout>
+            <swipeout-item v-for="(pItem,i) in listData" :key="i">
+                <div slot="right-menu">
+                    <swipeout-button @click.native="onButtonClick(pItem.id)" background-color="#D23934">删除</swipeout-button>
+                </div>
+                    <div slot="content" class="vux-1px-t">
+                        <cell>
+                            <span align-items="flex-start" slot="title">{{pItem.name}}</span>
+                        </cell>
+                    </div>
+            </swipeout-item>
+        </swipeout>
+	<!-- 	<group name="">
             <cell-box 
                 v-for="(item,i) in listData"
                 :key="i">
                 {{item}}
             </cell-box>
-	    </group>
+	    </group> -->
 	</div>
 </template>
 <script>
-import { Cell, Group, CellBox } from 'vux'
+import { Cell, Group, CellBox, Swipeout, SwipeoutItem, SwipeoutButton } from 'vux'
 import { index } from 'UTILS/commonApi.js'
 import { isArray } from 'UTILS/utils.js'
 
 export default {
     components: {
-        Cell, Group, CellBox
+        Cell, Group, CellBox, Swipeout, SwipeoutItem, SwipeoutButton
     },
     data () {
         return {
@@ -39,25 +45,22 @@ export default {
 		    		value: ''
 		    	}
 		    ],
-            listData: []
+            listData: [{id: 1, name: 'aa'}]
         }
     },
     methods: {
         getMsg () {
             let id = this.$route.params.id
-            index(this, `pot/${id}`)
+            console.log(this.$route)
+            index(this, `pot/${id}/main`)
                 .then(res => {
-                    // res['main'] = this.arrStr(res['main'])
-                    this.listData = res.main ? res.main : []
+                    console.log(res)
+                    this.listData = res
                 })
+        },
+        onButtonClick (i) {
+            console.log('onButtonClick')
         }
-        // arrStr (arr) {
-        //     let arrString = ''
-        //     if (isArray(arr)) {
-        //         arrString = arr.join()
-        //     }
-        //     return arrString
-        // }
     },
     mounted () {
         this.$emit('setHeader', {key: 'showBack', value: true})
