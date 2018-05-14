@@ -17,6 +17,9 @@ const details = resolve => require(['WAPVIEWS/components/details/details.vue'], 
 // --------------------------- 二级详情页 ----------------------------------
 const recordDetails = resolve => require(['WAPVIEWS/components/recordDetails/recordDetails.vue'], resolve)
 
+// --------------------------- 盆栽管理 ----------------------------------
+const potManage = resolve => require(['WAPVIEWS/userInfo/Details/potManage.vue'], resolve)
+
 let routes = [
     {
         path: '/',
@@ -28,14 +31,17 @@ let routes = [
                 name: 'model',
                 component: model
             },
-
+            {
+                path: '/potManage',
+                name: 'potManage',
+                component: potManage
+            },
             // 详情页路由
             {
                 path: '/index/:model/:id',
                 name: 'details',
                 component: details
             },
-
             // 详情页的详情页路由
             {
                 path: '/index/:model/:id/:record',

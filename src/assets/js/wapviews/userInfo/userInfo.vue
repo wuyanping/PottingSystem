@@ -14,6 +14,7 @@
         <group>
             <cell title="修改个人信息" is-link link="userInfo/editUserInfo"></cell>
             <cell title="修改密码" is-link link="userInfo/editPassword"></cell>
+            <cell title="盆栽管理" is-link link="/potManage"></cell>
         </group>
 
         <!-- 新建弹框 -->

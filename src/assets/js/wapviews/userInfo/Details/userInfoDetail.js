@@ -1,3 +1,4 @@
+import pot from './potManage.vue'
 // userInfoDetail 修改个人信息 和 修改密码 的
 
 // 特殊处理value
