@@ -42,7 +42,7 @@
     </div>
 </template>
 <script>
-import { XInput, Group, Icon, Flexbox, FlexboxItem, Panel, Popup, Cell, LoadMore, Loading, ToastPlugin } from 'vux'
+import { XInput, Group, Icon, Flexbox, FlexboxItem, Panel, Popup, Cell, LoadMore, Loading, ToastPlugin, Search } from 'vux'
 import PopupForm from '../input/popupForm.vue'
 import { isFunction, serializeData } from 'UTILS/utils.js'
 import BScroll from 'better-scroll'
@@ -64,7 +64,8 @@ export default {
         PopupForm,
         LoadMore,
         Loading,
-        list
+        list,
+        Search
     },
     props: {
         model: {
@@ -294,7 +295,6 @@ export default {
         setTimeout(() => {
             this._initScroll()
         }, 20)
-        console.log(window.bdUser)
     },
     watch: {
         '$route': {

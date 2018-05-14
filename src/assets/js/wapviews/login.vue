@@ -213,7 +213,8 @@
                         }
                         ajax.call(this, 'post', '/api/domlogin', data).then(res => {
                             if (res.data !== 500 && isObject(res.data)) {
-                                this.$vux.toast.text('登录成功')
+                                console.log(res.data)
+                                this.$vux.toast.show('登录成功')
                                 this.$router.push('/index/potting')
                             } else {
                                 this.$vux.toast.text('登录失败，用户名或密码错误')
@@ -231,7 +232,7 @@
                         store(this, 'domregister', data)
                             .then(res => {
                                 if (res) {
-                                    this.$vux.toast.text('注册成功')
+                                    this.$vux.toast.show('注册成功')
                                 }
                             })
                     }

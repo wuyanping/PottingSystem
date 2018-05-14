@@ -110,7 +110,7 @@ export default {
                     update(this, 'user', this.formData['id'], params)
                         .then(res => {
                             if (res) {
-                                this.$vux.toast.text('修改成功', 'middle')
+                                this.$vux.toast.show('修改成功', 'middle')
                                 this.$router.go(-1)
                             }
                         })

@@ -14,6 +14,7 @@
                                 <span align-items="flex-start" slot="title">{{pItem.name}}</span>
                                 <span slot="inline-desc" class="list-inlinedesc">{{pItem.use_for}}</span>
                             </cell>
+
                     </div>
             </swipeout-item>
         </swipeout>
