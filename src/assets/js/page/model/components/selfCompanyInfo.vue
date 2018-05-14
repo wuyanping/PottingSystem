@@ -50,8 +50,6 @@ export default {
     },
     mounted () {
         // http://localhost:8081/api/pot/11/edit
-        console.log(this.$route)
-        console.log(this.route)
         show(this, this.$route.params.model, this.$route.params.id)
             .then(data => {
                 console.log('data11111  11111')
@@ -66,6 +64,7 @@ export default {
         // 表格列特殊值处理
         dataFieldFn (data) {
             console.log('dataFieldFn ---- ')
+            console.log(data)
             // 处理数组变成字符串
             function arrStr (arr) {
                 let arrString = ''
@@ -78,7 +77,7 @@ export default {
             // 处理json字符串变成字符串
             function strObj (str) {
                 let arrString = ''
-                if (isString(str)) {
+                if (str) {
                     let json = JSON.parse(str)
                     if (isObject(json)) {
                         for (let key in json) {
@@ -103,8 +102,10 @@ export default {
                 data.main = arrStr(data.main)
                 data.info = strObj(data.info)
                 data.cstatus = statusFn(data.rfid)
+                console.log(2222222)
                 // data.imgs = data.imgs ? this.$apiUrl(data.imgs) : ''
             }
+            console.log(data)
             return data
         }
     }
