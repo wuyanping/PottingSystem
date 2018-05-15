@@ -25,6 +25,8 @@
                 <x-button v-else disabled>通过</x-button>
             </cell>
         </div>
+
+        <!-- <load-more v-if="" :show-loading="false" tip="暂无数据" background-color="#fbf9fe"></load-more> -->
     </div>
 </template>
 

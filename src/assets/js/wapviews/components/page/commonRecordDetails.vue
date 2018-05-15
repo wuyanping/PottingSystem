@@ -3,23 +3,23 @@
 	<div class="detailsDetails">
         <!-- 记录搜索 -->
 		<div class="dd_top">
-
             <flexbox :gutter="0">
-                <flexbox-item :span="1/12" class="txt-c">
-                    <div @click="handleAdd" v-if="msgUser">新增</div>
+                <flexbox-item :span="2/12" class="txt-c" v-if="!disabled">
+                    <div @click="handleAdd" >新增</div>
                 </flexbox-item>
-                <flexbox-item :span="2/12" class="txt-c">
+                <!-- <flexbox-item :span="2/12" class="txt-c">
                     时间搜索
-                </flexbox-item>
-                <flexbox-item :span="4/12">
+                </flexbox-item> -->
+
+                <flexbox-item :span="!disabled ? 4/12 : 5/12">
                     <x-input class="dd_inputDate" @click.native="showPlugin(0)" disabled :value="searchDate[0]" placeholder="开始时间">
                         <i slot="right" class="icon iconfont icon-date dd_inputIcon" ></i>
                     </x-input>
                 </flexbox-item>
-                <flexbox-item :span="1/12" class="txt-c">
+                <flexbox-item :span="!disabled ? 1/12 : 2/12" class="txt-c">
                     至
                 </flexbox-item>
-                <flexbox-item :span="4/12">
+                <flexbox-item :span="!disabled ? 4/12 : 5/12">
                     <x-input class="dd_inputDate" @click.native="showPlugin(1)" disabled :value="searchDate[1]" placeholder="结束时间">
                         <i slot="right" class="icon iconfont icon-date dd_inputIcon" ></i>
                     </x-input>
@@ -39,24 +39,12 @@
         </div>
         
         <!-- 盆栽节点详情弹框 -->
-        <div v-transfer-dom>
-            <popup v-model="isShowPopup" height="100%" width='100%' position="right">
-                <div class="popup1">
-                    <x-header :left-options="{showBack: false}">
-                        <a slot="left" @click="handleClose">关闭</a>
-                    </x-header>
-                    <group>
-                        <cell
-                            v-for="(item,i) in introduceListField"
-                            :key="i"
-                            :title="`${item.label}：`"
-                            :value="listData[item.field]">
-                            <img v-if="item.label === '外观' && listData[item.field]!==null" :src="`/api/${listData[item.field]}`" style="width: 50px;height:50px;">
-                        </cell>
-                    </group>
-                </div>
-            </popup>
-        </div>
+        <PopupShowForm
+            :isShowPopup="isShowPopup"
+            :introduceListField="introduceListField"
+            :listData="listData"
+            @close="handleClose">
+        </PopupShowForm>
 
         <!-- 新建弹框 -->
         <PopupForm 
@@ -69,40 +57,35 @@
 	</div>
 </template>
 <script>
-import { XInput, Icon, Flexbox, FlexboxItem, DatetimePlugin, Panel, TransferDom, XHeader, Cell, Popup, Group, LoadMore, XSwitch, Loading, ToastPlugin } from 'vux'
+import { XInput, Icon, Flexbox, FlexboxItem, DatetimePlugin, Panel, LoadMore, XSwitch, Loading, ToastPlugin } from 'vux'
 import { isFunction, serializeData } from 'UTILS/utils.js'
 import { index, store, destroy, edit, update } from 'UTILS/commonApi.js'
 import BScroll from 'better-scroll'
 import PopupForm from '../input/popupForm.vue'
 import list from '../list.vue'
+import PopupShowForm from '../input/popupShowForm.vue'
 
 Vue.use(DatetimePlugin)
 Vue.use(ToastPlugin)
 
 export default {
-    directives: {
-        TransferDom
-    },
     props: {
         recordDetails: Object,
         route: ''
     },
     components: {
-        XHeader,
         // List,
         XInput,
         Icon,
         Flexbox,
         FlexboxItem,
         Panel,
-        Cell,
-        Popup,
-        Group,
         LoadMore,
         XSwitch,
         Loading,
         list,
-        PopupForm
+        PopupForm,
+        PopupShowForm
     },
     computed: {
         title () {
@@ -137,7 +120,14 @@ export default {
             if (this.recordDetails.introduceListField) {
                 return this.recordDetails.introduceListField
             } else {
-                return ''
+                return []
+            }
+        },
+        disabled () {
+            if (this.$route.params.model === 'potting') {
+                return true
+            } else {
+                return false
             }
         }
     },
@@ -224,14 +214,14 @@ export default {
         closePopup () {
             this.isShowAdd = false
         },
-        getMsgUser () {
-            let potId = this.$route.params.id
-            index(this, `pot/${potId}`)
-                .then(res => {
-                    this.msgUser = res['main'].join().includes(window.bdUser['name'])
-                    console.log(res)
-                })
-        },
+        // getMsgUser () {
+        //     let potId = this.$route.params.id
+        //     index(this, `pot/${potId}`)
+        //         .then(res => {
+        //             this.msgUser = res['main'].join().includes(window.bdUser['name'])
+        //             console.log(res)
+        //         })
+        // },
         // 获取数据
         getMsg (query = {page: 1}) {
             this.showLoading = true
@@ -400,7 +390,7 @@ export default {
     },
     mounted () {
         this.getMsg()
-        this.getMsgUser()
+        // this.getMsgUser()
         setTimeout(() => {
             this._initScroll()
         }, 20)
@@ -413,6 +403,7 @@ $theme-color: #1eac94;
     .dd_top{
         width: 98%;
         padding: 10px 0px;
+        margin: 0 auto;
         .dd_inputDate{
             border: 1px solid $theme-color;
             .dd_inputIcon{

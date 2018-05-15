@@ -34,7 +34,7 @@
                         </div>
                     </div>
 			    </group>
-			    <div class="cd_t_more">更多信息 ></div>
+			    <!-- <div class="cd_t_more">更多信息 ></div> -->
 			</div>
 			
 		</div>
@@ -159,14 +159,14 @@ export default {
             // invite不跳转
             if (record === 'invite') {
                 console.log(this.$route)
-                if (this.$route.params.model === 'potting') { // 盆栽列表的发出申请
-                    // this.show3 = true
-                    // this.formData = this.setFormData('add', i)
-                    // console.log(this.formData)
+                // if (this.$route.params.model === 'potting') { // 盆栽列表的发出申请
+                // this.show3 = true
+                // this.formData = this.setFormData('add', i)
+                // console.log(this.formData)
                 // } else if (this.$route.params.model === 'myPotting') { // 我的盆栽的发出邀请
-                    this.isShowPopup = true
-                    this.formData = this.setFormData('add', i)
-                }
+                this.isShowPopup = true
+                this.formData = this.setFormData('add', i)
+                // }
             } else {
                 this.$emit('setHeader', {key: 'title', value: title})
                 this.$router.push(`${this.$route.path}/${record}`)
@@ -189,12 +189,20 @@ export default {
             console.log('handleSubmit')
             console.log(this.formData)
             let id = this.$route.params.id
+            let type = 0
+            let url = 'apply'
+            if (this.$route.params.model === 'myPotting') {
+                type = 1
+                url = 'apply/apply'
+            }
             let params = {
-                _type: 'add',
+                type: type,
                 id: id,
                 ...serializeData(this.formData)
             }
-            store(this, 'apply', params)
+            console.log('params ---- ')
+            console.log(params)
+            store(this, url, params)
                 .then(res => {
                     if (res) {
                         this.$vux.toast.show('发送成功，等待盆栽管理员审核通过！')
@@ -258,6 +266,7 @@ export default {
         // 设置表单对话框数据
         setFormData (type, i, row = {}) {
             let data = this.details.records[i].formField(type)
+            console.log(data)
             data.forEach(item => {
                 // 在打开对话框同时赋值
                 if (Object.keys(row).includes(item['name'])) {

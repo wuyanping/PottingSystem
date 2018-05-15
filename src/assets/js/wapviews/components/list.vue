@@ -1,8 +1,8 @@
 <template>
 	<div class="list">
-        <swipeout>
-            <swipeout-item v-for="(pItem,i) in data" :key="i">
-                <div slot="right-menu" v-if="(pItem.main).join().includes(user)">
+        <swipeout v-if="data.length > 0">
+            <swipeout-item v-for="(pItem,i) in data" :key="i" :disabled="disabled">
+                <div slot="right-menu">
                     <swipeout-button @click.native="onButtonClick('edit', pItem.id)" background-color="#336DD6">编辑</swipeout-button>
                     <swipeout-button @click.native="onButtonClick('delete', pItem.id)" background-color="#D23934">删除</swipeout-button>
                 </div>
@@ -17,6 +17,7 @@
                     </div>
             </swipeout-item>
         </swipeout>
+        <load-more v-else :show-loading="false" tip="暂无数据" background-color="#fbf9fe"></load-more>
         <load-more :show-loading="false" v-if="isNoMsg" />
 	</div>
 </template>
@@ -41,6 +42,15 @@ export default {
         isNoMsg: {
             type: Boolean,
             default: false
+        }
+    },
+    computed: {
+        disabled () {
+            if (this.$route.params.model === 'potting') {
+                return true
+            } else {
+                return false
+            }
         }
     },
     methods: {

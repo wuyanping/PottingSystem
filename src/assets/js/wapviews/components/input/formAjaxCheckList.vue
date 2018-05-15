@@ -45,10 +45,6 @@ export default {
     mounted () {
         this.getAjaxData()
         console.log(this.formItemData)
-        console.log(55959595)
-    },
-    updated () {
-        // this.getAjaxData()
     },
     methods: {
         change (value, label) {
@@ -63,8 +59,6 @@ export default {
             this.loading = true
             this.formItemData.getDataFn(this)
                 .then(data => {
-                    console.log('data---')
-                    console.log(data.data)
                     this.loading = false
                     let arr = []
                     if (isArray(data.data)) {
@@ -76,8 +70,6 @@ export default {
                             })
                         })
                     }
-                    console.log('arr ----- ')
-                    console.log(arr)
                     this.checkList = arr
                     this.checkListAtSearchbefore = arr
                 })

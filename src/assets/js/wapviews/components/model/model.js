@@ -298,7 +298,42 @@ let model = {
                     value: ''
                 }
             ]
-        }
+        },
+        // 介绍列表
+        introduceListField: [
+            {
+                label: '用户名',
+                field: 'name'
+            },
+            {
+                label: '用户昵称',
+                field: 'nickname'
+            },
+            {
+                label: '手机号',
+                field: 'phone'
+            },
+            {
+                label: '电子邮箱',
+                field: 'email'
+            },
+            {
+                label: '真实姓名',
+                field: 'realname'
+            },
+            {
+                label: '性别',
+                field: 'gender'
+            },
+            {
+                label: '出生日期',
+                field: 'birth_date'
+            },
+            {
+                label: '备注',
+                field: 'memo'
+            }
+        ]
     }
 }
 export default model

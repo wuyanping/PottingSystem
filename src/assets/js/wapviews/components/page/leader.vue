@@ -2,15 +2,15 @@
 <template>
 	<div class="leader">
         <swipeout>
-            <swipeout-item v-for="(pItem,i) in listData" :key="i">
+            <swipeout-item v-for="(pItem,i) in listData" :key="i" :disabled="disabled">
                 <div slot="right-menu">
                     <swipeout-button @click.native="onButtonClick(pItem.id)" background-color="#D23934">删除</swipeout-button>
                 </div>
-                    <div slot="content" class="vux-1px-t">
-                        <cell>
-                            <span align-items="flex-start" slot="title">{{pItem.name}}</span>
-                        </cell>
-                    </div>
+                <div slot="content" class="vux-1px-t">
+                    <cell>
+                        <span align-items="flex-start" slot="title">{{pItem.name}}</span>
+                    </cell>
+                </div>
             </swipeout-item>
         </swipeout>
 	<!-- 	<group name="">
@@ -46,6 +46,15 @@ export default {
 		    	}
 		    ],
             listData: [{id: 1, name: 'aa'}]
+        }
+    },
+    computed: {
+        disabled () {
+            if (this.$route.params.model === 'potting') {
+                return true
+            } else {
+                return false
+            }
         }
     },
     methods: {
