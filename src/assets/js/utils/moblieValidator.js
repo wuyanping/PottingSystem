@@ -1,3 +1,4 @@
+import { isObject } from 'UTILS/utils.js'
 module.exports = {
     validatorFn: (name, rule, value) => {
         if (value === null) value = ''

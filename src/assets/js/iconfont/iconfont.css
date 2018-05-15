@@ -25,7 +25,7 @@
 
 .icon-phone:before { content: "\e7d0"; }
 
-.icon-password:before { content: "\e617"; }
+.icon-password:before, .icon-password_confirmation:before { content: "\e617"; }
 
 .icon-nameOrPhone:before, .icon-name:before { content: "\e68a"; }
 
