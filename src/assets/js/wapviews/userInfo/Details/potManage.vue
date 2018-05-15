@@ -4,8 +4,8 @@
             <tab-item selected @on-item-click="switchTabItem">申请</tab-item>
             <tab-item  @on-item-click="switchTabItem">邀请</tab-item>
         </tab>
-        <div v-for="(item, index) in apply" v-if="i === 0">
-            <load-more tip="正在刷新" v-if="showPullDown"></load-more>
+        <div v-for="(item, index) in apply" v-if="i === 0"><!-- 
+            <load-more tip="正在刷新" v-if="showPullDown"></load-more> -->
             <cell>
                 <img slot="icon" style="width: 50px;height: 50px;" :src="item.avatar ? item.avatar : defaultSrc">
                 <span align-items="flex-start" slot="title">{{item.pot_id}}</span>
@@ -15,12 +15,14 @@
             </cell>
         </div>
         
-        <div v-for="(item, index) in invite" v-if="i === 1">
+        <div v-for="(item, index) in apply" v-if="i === 1">
+            <!-- <load-more tip="正在刷新" v-if="showPullDown"></load-more> -->
             <cell>
                 <img slot="icon" style="width: 50px;height: 50px;" :src="item.avatar ? item.avatar : defaultSrc">
-                <span align-items="flex-start" slot="title">{{item.name}}</span>
-                <span slot="inline-desc" class="list-inlinedesc">{{`邀请人：${item.user_id}`}}</span>
-                <x-button type="primary">是否通过</x-button>
+                <span align-items="flex-start" slot="title">{{item.pot_id}}</span>
+                <span slot="inline-desc" class="list-inlinedesc">{{`申请人：${item.apply_user_name}`}}</span>
+                <x-button v-if="!item.isagree" type="primary" @click.native="handlerPass(item.id)">是否通过</x-button>
+                <x-button v-else disabled>通过</x-button>
             </cell>
         </div>
     </div>
@@ -70,16 +72,17 @@ export default {
             setTimeout(() => {
                 this.$vux.loading.hide()
             }, 1000)
-            if (i === 0) {
-                this.getApplyList()
-            }
+            this.getApplyList()
         },
         getApplyList (query = {page: 1}) {
+            let arr = ['']
+            query = {
+                type: this.i
+            }
             index(this, 'apply', query).then(res => {
+                console.log(res)
                 this.apply = []
-                this.apply.push(...res.data)
-                this.apply.current_page = res.current_page
-                this.apply.total_page = Math.ceil(res.total / res.per_page)
+                this.apply = res
             })
         },
         handlerPass (id) {
