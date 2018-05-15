@@ -188,9 +188,10 @@ export default {
         handleSubmit () {
             console.log('handleSubmit')
             console.log(this.formData)
+            let id = this.$route.params.id
             let params = {
                 _type: 'add',
-                id: window.bdUser.id,
+                id: id,
                 ...serializeData(this.formData)
             }
             store(this, 'apply', params)
