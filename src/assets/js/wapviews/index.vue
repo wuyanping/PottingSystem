@@ -9,7 +9,7 @@
         </div>
             
         <div class="moblie_main">
-            <router-view></router-view>
+            <router-view class="moblie_content"></router-view>
         </div>
 
         <div class="moblie_tabBar">
@@ -95,18 +95,24 @@ export default{
 .moblie_wrap{
     .moblie_header{
         position: fixed;
+        z-index: 10;
         width: 100%;
         top: 0px;
         left: 0px;
     }
     .moblie_main{
-        max-height: 100%;
+        height: 100%;
         padding-top: 46px;
         padding-bottom: 53px;
-        overflow: auto;
+        box-sizing: border-box;
+        .moblie_content{
+            height: 100%;
+            // overflow: auto;
+        }
     }
     .moblie_tabBar{
         position: fixed;
+        z-index: 10;
         width: 100%;
         bottom: 0px;
         left: 0px;

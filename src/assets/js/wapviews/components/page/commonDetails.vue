@@ -1,6 +1,6 @@
 <!-- 一级详情页 -->
 <template>
-	<div class="commonDetails">
+	<div class="commonDetails h100">
 
 		<!-- 盆栽介绍 -->
 		<div class="cd_top">
@@ -217,8 +217,7 @@ export default {
                     this.showLoading = false
                     this.listData = this.tableFieldFn(res)
 	                let obj = {
-                        title: res.name,
-                        desc: res.use_for
+                        title: res.name
                     }
     				this.introduce.push(obj)
     		    })
@@ -289,6 +288,8 @@ export default {
 <style lang="sass">
 $theme-color: #1eac94;
 .commonDetails{
+    height: 100%;
+    overflow: auto;
 	.cd_top{
 		>img {
 		  	width: 96%;

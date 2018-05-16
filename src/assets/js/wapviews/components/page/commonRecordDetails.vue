@@ -1,6 +1,6 @@
 <!-- 二级详情页 -->
 <template>
-	<div class="detailsDetails">
+	<div class="detailsDetails h100">
         <!-- 记录搜索 -->
 		<div class="dd_top">
             <flexbox :gutter="0">
@@ -28,14 +28,17 @@
         </div>
         
         <!-- 节点列表 -->
-        <div class="dd_main" ref="wrapper" :style="{height: height}">
-            <load-more tip="正在刷新" v-if="showPullDown" />
-            <list 
-                :data="list" 
-                :isNoMsg="isNoMsg"
-                @onButtonClick="onButtonClick"
-                @toDetail="handlePanelItem" />
-            <loading :show="showLoading" text="加载中" />
+        <!-- <div class="dd_main" ref="wrapper" :style="{height: height}"> -->
+        <div class="dd_main" >
+            <div class="dd_main_content" ref="wrapper">
+                <load-more tip="正在刷新" v-if="showPullDown" />
+                <list 
+                    :data="list" 
+                    :isNoMsg="isNoMsg"
+                    @onButtonClick="onButtonClick"
+                    @toDetail="handlePanelItem" />
+                <loading :show="showLoading" text="加载中" />
+            </div>
         </div>
         
         <!-- 盆栽节点详情弹框 -->
@@ -223,7 +226,7 @@ export default {
         //         })
         // },
         // 获取数据
-        getMsg (query = {page: 1}) {
+        getMsg (query = {page: 1}, fn) {
             this.showLoading = true
             let model = this.$route.params.record
             let potId = this.$route.params.id
@@ -272,6 +275,9 @@ export default {
                     })
                     this.list.current_page = res.current_page
                     this.list.total_page = Math.ceil(res.total / res.per_page)
+                    if (fn) {
+                        fn()
+                    }
                 })
         },
         // 初始下拉上拉
@@ -389,21 +395,33 @@ export default {
         }
     },
     mounted () {
-        this.getMsg()
-        // this.getMsgUser()
-        setTimeout(() => {
+    //     this.getMsg()
+    //     // this.getMsgUser()
+    //     setTimeout(() => {
+    //         this._initScroll()
+    //     }, 20)
+    },
+    created () {
+        this.getMsg(undefined, () => {
             this._initScroll()
-        }, 20)
+        })
     }
 }
 </script>
 <style lang="sass">
 $theme-color: #1eac94;
 .detailsDetails{
+    position: relative;
     .dd_top{
-        width: 98%;
-        padding: 10px 0px;
-        margin: 0 auto;
+        width: 100%;
+        padding: 5px 0px;
+        box-sizing: border-box;
+        position: absolute;
+        left: 0;
+        top: 0;
+        background-color: white;
+        z-index: 5;
+        box-shadow: 0px -1px 5px 1px #999999;
         .dd_inputDate{
             border: 1px solid $theme-color;
             .dd_inputIcon{
@@ -416,7 +434,13 @@ $theme-color: #1eac94;
         }
     }
     .dd_main{
-
+        height: 100%;
+        padding-top: 42px;
+        box-sizing: border-box;
+        .dd_main_content{
+            height: 100%;
+            overflow: auto;
+        }
     }
 }
 </style>

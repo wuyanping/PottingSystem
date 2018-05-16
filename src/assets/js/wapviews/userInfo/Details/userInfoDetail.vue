@@ -1,5 +1,5 @@
 <template>
-    <div class="userInfoDetail">
+    <div class="userInfoDetail h100">
         <div class="infoList">
             <group>
                 <cell
@@ -211,6 +211,8 @@ export default {
 <style lang="sass">
 $theme-color: #1eac94;
 .userInfoDetail{
+    height: 100%;
+    overflow: auto;
     .infoList{
         .weui-cells{
             margin-top: 0;
@@ -227,7 +229,7 @@ $theme-color: #1eac94;
         height: 56px;
         border-radius:20px;
         width: 80%;
-        margin: 50px auto 0px;
+        margin: 50px auto;
         border-color: $theme-color;
         color: $theme-color;
     }

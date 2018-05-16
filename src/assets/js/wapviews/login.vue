@@ -63,7 +63,7 @@
 </template>
 <script>
     import {Tab, TabItem, XButton, XInput, Group, Cell, Toast, ToastPlugin} from 'vux'
-    import {validatorFn} from 'UTILS/moblieValidator.js'
+    import { validatorFn, checkValid } from 'UTILS/moblieValidator.js'
     import {ajax} from '../utils/ajax.js'
     import { isObject } from 'UTILS/utils.js'
     import { store } from '../utils/commonApi.js'
@@ -199,7 +199,9 @@
                         name: 'name',
                         title: '用户名',
                         iconType: '',
-                        rule: {required: true},
+                        // validator :为验证的方法
+                        // params： 为方法的参数
+                        rule: {required: true, validator: checkValid, params: { vm: this, url: 'sysman', field: 'name' }},
                         validatorResult: {
                             valid: '',
                             msg: ''

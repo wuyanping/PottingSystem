@@ -56,13 +56,14 @@ export default {
                 console.error(`模块中表单域:'${this.formItemData.label}'缺少getDataFn方法`)
                 return
             }
+            let id = this.$route.params.id
             this.loading = true
-            this.formItemData.getDataFn(this)
+            this.formItemData.getDataFn(this, id)
                 .then(data => {
                     this.loading = false
                     let arr = []
-                    if (isArray(data.data)) {
-                        data.data.forEach(item => {
+                    if (isArray(data)) {
+                        data.forEach(item => {
                             arr.push({
                                 key: item.id,
                                 value: item.name,

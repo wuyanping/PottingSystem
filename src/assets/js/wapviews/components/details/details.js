@@ -1,9 +1,9 @@
 import userInfoDetail from '../../userInfo/Details/userInfoDetail.vue'
 import formAjaxCheckList from '../input/formAjaxCheckList.vue'
 import { ajax } from 'UTILS/ajax.js'
-function getAllUserList (vm) {
+function getAllUserList (vm, id) {
     return new Promise(resolve => {
-        ajax.call(vm, 'get', '/api/user', data => {
+        ajax.call(vm, 'get', `/api/pot/${id}/notmain`, data => {
             resolve(data)
         })
     })
@@ -21,10 +21,6 @@ let details = {
     	hasRecords: true,
     	// 介绍列表
     	introduceListField: [
-	    	{
-                label: '盆栽名称',
-                field: 'name'
-            },
             {
                 label: '品种',
                 field: 'variety'
@@ -113,10 +109,6 @@ let details = {
     	hasRecords: true,
     	// 介绍列表
     	introduceListField: [
-	    	{
-                label: '盆栽名称',
-                field: 'name'
-            },
             {
                 label: '品种',
                 field: 'variety'
