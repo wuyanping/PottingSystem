@@ -81,7 +81,7 @@ const pot = {
     hasTabs: false,
     hasConditionStatusSelect: true,
     hasConditionSearch: true,
-    hasConditionAdd: true,
+    hasConditionAdd: false,
     hasConditionRefresh: true,
     hasTableSelection: true,
     hasTableIndex: true,
