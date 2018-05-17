@@ -28,6 +28,7 @@
                     </x-header>
                     <group>
                         <FormItem
+                            :formData="formData"
                             :formItem="formData[i]"
                             :isShowMsg="true"
                             @changeIsShowFinish="changeIsShowFinish"
@@ -93,48 +94,66 @@ export default {
         ]),
         // 保存
         handleSave () {
+            let promiseArr = [] // 存储每个验证的promise
             let isCanSibmit = true // 是否可以提交
+            // this.formData.forEach((input, i) => {
+            //     // 遍历验证每个input
+            //     let {name, rule, value} = input
+            //     var result = validatorFn(name, rule, value)
+            //     input.validatorResult = result
+            //     input.iconType = !result.valid ? 'error' : ''
+            //     isCanSibmit = isCanSibmit && result.valid
+            //     this.$set(this.formData, i, input)
+            // })
+
             this.formData.forEach((input, i) => {
-                // 遍历验证每个input
-                let {name, rule, value} = input
-                var result = validatorFn(name, rule, value)
-                input.validatorResult = result
-                input.iconType = !result.valid ? 'error' : ''
-                isCanSibmit = isCanSibmit && result.valid
-                this.$set(this.formData, i, input)
-            })
-            if (isCanSibmit) {
-                let flag = this.$route.params.id
-                let params = {...serializeData(this.formData)}
-                if (flag && flag === Object.keys(theUserInfoDetail)[0]) {
-                    update(this, 'user', this.formData['id'], params)
-                        .then(res => {
-                            if (res !== 500) {
-                                this.$vux.toast.show('修改成功', 'middle')
-                                this.$router.go(-1)
-                            }
-                        })
-                } else {
-                    console.log(this.formData)
-                    update(this, 'user', this.formData['id'], params)
-                        .then(res => {
-                            if (res !== 500) {
-                                this.$vux.toast.show('修改成功', 'middle')
-                                this.$router.go(-1)
-                            } else {
-                                this.$vux.toast.text('修改失败，原始密码错误')
-                            }
-                        })
-                    console.log(window.bdUser)
-                }
-            } else {
-                console.log('验证失败')
-                this.$vux.alert.show({
-                    title: '内容验证提示',
-                    content: '验证失败',
-                    buttonText: '我知道了'
+                let p = new Promise((resolve) => {
+                    let {name, rule, value} = input
+                    validatorFn(name, rule, value, this.formData, (undefined, data) => resolve(data))
                 })
-            }
+                promiseArr.push(p)
+            })
+            Promise.all(promiseArr).then(results => {
+                // 返回一个数组后，把结果循环给data，并判断isCanSibmit 是否可以通过
+                this.formData.forEach((input, i) => {
+                    input.validatorResult = results[i]
+                    input.iconType = !results[i].valid ? 'error' : ''
+                    isCanSibmit = isCanSibmit && results[i].valid
+                    this.$set(this.formData, i, input)
+                })
+                if (isCanSibmit) {
+                    let flag = this.$route.params.id
+                    let params = {...serializeData(this.formData)}
+                    if (flag && flag === Object.keys(theUserInfoDetail)[0]) {
+                        update(this, 'user', this.formData['id'], params)
+                            .then(res => {
+                                if (res !== 500) {
+                                    this.$vux.toast.show('修改成功', 'middle')
+                                    this.$router.go(-1)
+                                }
+                            })
+                    } else {
+                        console.log(this.formData)
+                        update(this, 'user', this.formData['id'], params)
+                            .then(res => {
+                                if (res !== 500) {
+                                    this.$vux.toast.show('修改成功', 'middle')
+                                    this.$router.go(-1)
+                                } else {
+                                    this.$vux.toast.text('修改失败，原始密码错误')
+                                }
+                            })
+                        console.log(window.bdUser)
+                    }
+                } else {
+                    console.log('验证失败')
+                    this.$vux.alert.show({
+                        title: '内容验证提示',
+                        content: '验证失败',
+                        buttonText: '我知道了'
+                    })
+                }
+            })
         },
         // 弹窗编辑弹框
         handleShowPopup (i) {
@@ -170,7 +189,7 @@ export default {
         },
         // 设置表单对话框数据
         setFormData (row = {}) {
-            let formField = this.currentModel.formField()
+            let formField = this.currentModel.formField(this)
             formField.forEach(item => {
                 // 在打开对话框同时赋值
                 if (Object.keys(row).includes(item['name'])) {

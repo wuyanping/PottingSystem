@@ -8,7 +8,7 @@
             <div class="potManage_main_content">
                 <group title="tip:别人申请加入我的盆栽列表" v-if="i === 0">
                     <load-more v-if="list.length === 0" :show-loading="false" tip="暂无数据" background-color="#fbf9fe"></load-more>
-                    <div v-for="(item, index) in list" v-else style="height: 300px">
+                    <div v-for="(item, index) in list" v-else>
                         <cell @click.native="seeDetails(index)">
                             <img slot="icon" style="width: 50px;height: 50px;" :src="item.avatar ? item.avatar : defaultSrc">
                             <span align-items="flex-start" slot="title">申请加入的盆栽：{{item.pot_id}}</span>

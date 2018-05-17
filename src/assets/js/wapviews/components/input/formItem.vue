@@ -47,11 +47,11 @@
         <datetime
             v-else-if="formItem.component === 'datetime'"
             v-model="formItem.value"
-            @on-change="change"
+            @on-change="() => validatorResultFn(formItem.title, formItem.rule, formItem.value)"
             :title="isShowTiTle ? formItem.title : ''"
             @on-cancel="log('cancel')"
             @on-confirm="onConfirm"
-            @on-hide="log('hide', $event)">
+            @on-hide="() => validatorResultFn(formItem.title, formItem.rule, formItem.value)">
         </datetime>
 
         <!-- 图片选择框 -->
@@ -118,6 +118,9 @@ export default {
         Checklist
     },
     props: {
+        // 表单的所有数据
+        formData: Array,
+        // 当前的表单
         formItem: Object,
         // 是否展示错误信息
         isShowMsg: {
@@ -142,14 +145,18 @@ export default {
     methods: {
         // 表单验证
         validatorResultFn (name, rule, value, component) {
-            // console.log('validatorResult --------------------------------------')
-            // console.log(value)
-            // this.$emit('changeIsShowFinish')
-            let result = validatorFn(name, rule, value)
-            // console.log(result)
-            this.formItem.validatorResult = result
-            this.formItem.iconType = !result.valid ? 'error' : ''
-            // return result
+            // let result = validatorFn(name, rule, value)
+            // this.formItem.validatorResult = result
+            // this.formItem.iconType = !result.valid ? 'error' : ''
+
+            new Promise((resolve) => {
+                validatorFn(name, rule, value, this.formData, (undefined, data) => resolve(data))
+            }).then(data => {
+                console.log(data)
+                let result = data
+                this.formItem.validatorResult = result
+                this.formItem.iconType = !result.valid ? 'error' : ''
+            })
         },
         log (str1, str2 = '') {
             console.log(str1, str2)
@@ -181,7 +188,6 @@ export default {
             } else {
                 this.formItem.value = obj.value
                 this.validatorResultFn(obj.name, this.formItem.rule, obj.value)
-                // validatorFn({name: obj.name, rule: this.formItem.rule, value: obj.value})
             }
         },
         // 提示弹窗

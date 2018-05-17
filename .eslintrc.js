@@ -41,6 +41,9 @@ module.exports = {
         "no-unneeded-ternary": 0,
         "no-unused-expressions": 0,
         "no-useless-return": 0,
-        "camelcase": 0
+        "camelcase": 0,
+        "no-callback-literal": 0,
+        "standard%2Fno-callback-literal": 0,
+        "no-shadow-restricted-names": 0
     }
 }

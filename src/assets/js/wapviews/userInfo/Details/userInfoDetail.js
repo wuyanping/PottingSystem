@@ -1,4 +1,5 @@
 import pot from './potManage.vue'
+import { checkValid } from 'UTILS/moblieValidator.js'
 // userInfoDetail 修改个人信息 和 修改密码 的
 
 // 特殊处理value
@@ -20,14 +21,18 @@ let userInfoDetail = {
     editUserInfo: {
         title: '修改个人信息',
         // 介绍列表
-        formField: function () {
+        formField: function (vm) {
             return [
                 {
                     component: 'x-input',
                     name: 'name',
                     title: '用户名',
                     iconType: '',
-                    rule: {required: true},
+                    rule: {
+                        required: true,
+                        validator: checkValid,
+                        params: { vm: vm, url: 'sysman', field: 'name' }
+                    },
                     validatorResult: {
                         valid: '',
                         msg: ''

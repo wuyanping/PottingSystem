@@ -49,7 +49,7 @@ module.exports = {
 		devtool: '#source-map',
 
 		// 下面是是否在生产环境中压缩代码，如果要压缩必须安装compression-webpack-plugin
-	    productionGzip: true,
+	    productionGzip: false,
 
 	    // 下面定义要压缩哪些类型的文件
 	    productionGzipExtensions: ['js', 'css']

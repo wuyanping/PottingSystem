@@ -1,6 +1,6 @@
 <template>
     <div class="waplogin">
-        <tab :line-width="1" custom-bar-width="60px">
+        <tab :line-width="1" custom-bar-width="60px" v-model="index">
             <tab-item selected @on-item-click="handleTabClick">登录</tab-item>
             <tab-item @on-item-click="handleTabClick">注册</tab-item>
         </tab>
@@ -16,8 +16,8 @@
                         :iconType="inputItem.iconType"
                         :placeholder="`请输入${inputItem.title}`"
                         :should-toast-error="false"
-                        @on-change="(val) => validatorResultFn('login', inputItem.name, inputItem.rule, val, i)"
-                        @on-blur="(val) => validatorResultFn('login', inputItem.name, inputItem.rule, val, i)"
+                        @on-change="(val) => validatorResultFn('login', inputItem.name, inputItem.rule, val, i, loginData)"
+                        @on-blur="(val) => validatorResultFn('login', inputItem.name, inputItem.rule, val, i, loginData)"
                         v-model="inputItem.value">
                             <i slot="label" :class="`icon iconfont icon-${inputItem.name}`"></i>
                     </x-input>
@@ -44,8 +44,8 @@
                         :iconType="inputItem.iconType"
                         :placeholder="`请输入${inputItem.title}`"
                         :should-toast-error="false"
-                        @on-change="(val) => validatorResultFn('signIn', inputItem.name, inputItem.rule, val, i)"
-                        @on-blur="(val) => validatorResultFn('signIn', inputItem.name, inputItem.rule, val, i)"
+                        @on-change="(val) => validatorResultFn('signIn', inputItem.name, inputItem.rule, val, i, signInData)"
+                        @on-blur="(val) => validatorResultFn('signIn', inputItem.name, inputItem.rule, val, i, signInData)"
                         v-model="inputItem.value">
                             <i slot="label" :class="`icon iconfont icon-${inputItem.name}`"></i>
                     </x-input>
@@ -63,7 +63,7 @@
 </template>
 <script>
     import {Tab, TabItem, XButton, XInput, Group, Cell, Toast, ToastPlugin} from 'vux'
-    import { validatorFn, checkValid } from 'UTILS/moblieValidator.js'
+    import { validatorFn, checkValid, checkPassword } from 'UTILS/moblieValidator.js'
     import {ajax} from '../utils/ajax.js'
     import { isObject } from 'UTILS/utils.js'
     import { store } from '../utils/commonApi.js'
@@ -96,20 +96,23 @@
         methods: {
             // tabItem 点击时触发
             handleTabClick (index) {
-                console.log(4444444)
                 this.index = index
                 this.loginData = this.loginDataFieldsFn()
                 this.signInData = this.signInDataFieldsFn()
             },
             // 验证表单
-            validatorResultFn (action, name, rule, value, i) {
+            validatorResultFn (action, name, rule, value, i, formAllData) {
                 console.log('validatorResult --------------------------------------')
                 let input = this[`${action}Data`][i]
-                let result = validatorFn(name, rule, value)
-                input.validatorResult = result
-                input.iconType = !result.valid ? 'error' : ''
-                this[`${action}Data`].splice(i, 1, input)
-                return result
+                new Promise((resolve) => {
+                    validatorFn(name, rule, value, formAllData, (undefined, data) => resolve(data))
+                }).then(data => {
+                    let result = data
+                    input.validatorResult = result
+                    input.iconType = !result.valid ? 'error' : ''
+                    this[`${action}Data`].splice(i, 1, input)
+                    return result
+                })
             },
             // 登录/注册
             handleAction (action) {
@@ -118,53 +121,66 @@
                 console.log('=========')
                 console.log('handleAction' + `  ${action}Data --------------- `)
                 let isCanSibmit = true // 是否可以提交
+                let promiseArr = [] // 存储每个验证的promise
                 this[`${action}Data`].forEach((input, i) => {
-                    // 遍历验证每个input
-                    let {name, rule, value} = input
-                    var result = validatorFn(name, rule, value)
-                    input.validatorResult = result
-                    // console.log(input)
-                    input.iconType = !result.valid ? 'error' : ''
-                    isCanSibmit = isCanSibmit && result.valid
-                    this.$set(this[`${action}Data`], i, input)
-                })
-                // console.log(isCanSibmit)
-                if (isCanSibmit) {
-                    let obj = {}
-                    this[`${action}Data`].forEach(v => {
-                        obj[v.name] = v['value']
+                    console.log(i)
+                    let p = new Promise((resolve) => {
+                        let {name, rule, value} = input
+                        validatorFn(name, rule, value, this[`${action}Data`], (undefined, data) => resolve(data))
                     })
-                    if (action === 'login') { // 登录
-                        let data = {
-                            name: obj.nameOrPhone,
-                            password: obj.password
-                        }
-                        ajax.call(this, 'post', '/api/domlogin', data).then(res => {
-                            if (res.data !== 500 && isObject(res.data)) {
-                                console.log(res.data)
-                                this.$vux.toast.show('登录成功')
-                                this.$router.push('/index/potting')
-                            } else {
-                                this.$vux.toast.text('登录失败，用户名或密码错误')
-                            }
+                    promiseArr.push(p)
+                })
+                // 同时执行所有的存储验证promise，并在它们都完成后执行then: 获得一个Array
+                Promise.all(promiseArr).then(results => {
+                    // 返回一个数组后，把结果循环给data，并判断isCanSibmit 是否可以通过
+                    this[`${action}Data`].forEach((input, i) => {
+                        input.validatorResult = results[i]
+                        input.iconType = !results[i].valid ? 'error' : ''
+                        isCanSibmit = isCanSibmit && results[i].valid
+                        this.$set(this[`${action}Data`], i, input)
+                    })
+                    // 全部验证成功，通过
+                    if (isCanSibmit) {
+                        let obj = {}
+                        this[`${action}Data`].forEach(v => {
+                            obj[v.name] = v['value']
                         })
-                    } else { // 注册
-                        let data = {
-                            name: obj.name,
-                            nickname: obj.nickname,
-                            password: obj.password,
-                            phone: obj.phone,
-                            password_confirmation: obj.password_confirmation
-                        }
-                        console.log(obj)
-                        store(this, 'domregister', data)
-                            .then(res => {
-                                if (res) {
-                                    this.$vux.toast.show('注册成功')
+                        if (action === 'login') { // 登录
+                            let data = {
+                                name: obj.nameOrPhone,
+                                password: obj.password
+                            }
+                            ajax.call(this, 'post', '/api/domlogin', data).then(res => {
+                                if (res.data !== 500 && isObject(res.data)) {
+                                    console.log(res.data)
+                                    this.$vux.toast.show('登录成功')
+                                    this.$router.push('/index/potting')
+                                } else {
+                                    this.$vux.toast.text('登录失败，用户名或密码错误')
                                 }
                             })
+                        } else { // 注册
+                            let data = {
+                                name: obj.name,
+                                nickname: obj.nickname,
+                                password: obj.password,
+                                phone: obj.phone,
+                                password_confirmation: obj.password_confirmation
+                            }
+                            console.log(obj)
+                            store(this, 'domregister', data)
+                                .then(res => {
+                                    if (res) {
+                                        this.$vux.toast.show('注册成功')
+                                        this.signInData = this.signInDataFieldsFn()
+                                        this.index = 0
+                                    }
+                                })
+                        }
+                    } else { // 验证失败，不通过
+                        this.$vux.toast.text('填入的数据验证失败')
                     }
-                }
+                })
             },
             loginDataFieldsFn () {
                 return [
@@ -201,7 +217,11 @@
                         iconType: '',
                         // validator :为验证的方法
                         // params： 为方法的参数
-                        rule: {required: true, validator: checkValid, params: { vm: this, url: 'sysman', field: 'name' }},
+                        rule: {
+                            required: true,
+                            validator: checkValid,
+                            params: { vm: this, url: 'sysman', field: 'name' }
+                        },
                         validatorResult: {
                             valid: '',
                             msg: ''
@@ -234,7 +254,15 @@
                         name: 'password',
                         title: '密码',
                         iconType: '',
-                        rule: {required: true},
+                        rule: {
+                            required: true,
+                            validator: checkPassword,
+                            params: {
+                                vm: this,
+                                field: 'password',
+                                checkField: 'password_confirmation'
+                            }
+                        },
                         validatorResult: {
                             valid: '',
                             msg: ''
@@ -246,7 +274,15 @@
                         name: 'password_confirmation',
                         title: '确认密码',
                         iconType: '',
-                        rule: {required: true},
+                        rule: {
+                            required: true,
+                            validator: checkPassword,
+                            params: {
+                                vm: this,
+                                field: 'password_confirmation',
+                                checkField: 'password'
+                            }
+                        },
                         validatorResult: {
                             valid: '',
                             msg: ''
