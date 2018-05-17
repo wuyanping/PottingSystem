@@ -222,23 +222,23 @@ module.exports = {
             value: value
         }
         console.log(paramsfn)
-        return new Promise (resolve => {
-            axios.post(params.vm.$apiUrl(`${params.url}/check`), paramsfn)
-                .then(data => {
-                    let result = {}
-                    if (data.res) {
-                        result = {
-                            valid: data.res,
-                            msg: name + '可以使用'
-                        }
-                    } else {
-                        result = {
-                            valid: data.res,
-                            msg: name + (rule.message || '已存在')
-                        }
-                    }
-                    resolve(result)
-                })
-        })
+        // return new Promise (resolve => {
+        //     axios.post(params.vm.$apiUrl(`${params.url}/check`), paramsfn)
+        //         .then(data => {
+        //             let result = {}
+        //             if (data.res) {
+        //                 result = {
+        //                     valid: data.res,
+        //                     msg: name + '可以使用'
+        //                 }
+        //             } else {
+        //                 result = {
+        //                     valid: data.res,
+        //                     msg: name + (rule.message || '已存在')
+        //                 }
+        //             }
+        //             resolve(result)
+        //         })
+        // })
     }
 }

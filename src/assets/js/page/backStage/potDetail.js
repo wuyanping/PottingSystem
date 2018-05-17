@@ -444,31 +444,31 @@ const potDetail = {
             // ],
             // 表格列
             commonTableField: [
-                // {
-                //     label: '时间',
-                //     field: 'date'
-                // },
-                // {
-                //     label: '天气',
-                //     field: 'weather'
-                // },
-                // {
-                //     label: '盆栽状态',
-                //     field: 'status'
-                // },
-                // {
-                //     label: '外观',
-                //     field: 'imgs',
-                //     component: commonElPopver,
-                //     props: {
-                //         detailUrl: 'detailModel',
-                //         current: 'watering'
-                //     }
-                // },
-                // {
-                //     label: '记录',
-                //     field: 'record'
-                // },
+                {
+                    label: '时间',
+                    field: 'date'
+                },
+                {
+                    label: '天气',
+                    field: 'weather'
+                },
+                {
+                    label: '盆栽状态',
+                    field: 'status'
+                },
+                {
+                    label: '外观',
+                    field: 'imgs',
+                    component: commonElPopver,
+                    props: {
+                        detailUrl: 'detailModel',
+                        current: 'watering'
+                    }
+                },
+                {
+                    label: '记录',
+                    field: 'record'
+                },
                 {
                     label: '备注',
                     field: 'memo'
