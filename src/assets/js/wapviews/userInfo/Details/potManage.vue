@@ -140,6 +140,7 @@ export default {
         }
     },
     mounted () {
+        console.log(this.list1)
     },
     created () {
         this.changeHeaderSetting({...this.headerSetting, showBack: true, title: '盆栽管理'})
