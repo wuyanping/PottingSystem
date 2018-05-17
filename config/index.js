@@ -2,6 +2,10 @@
 
 const path = require('path')
 const env = require('../env.js')
+const proxyTableOptions = {
+    target: env.app_url,//设置你调用的接口域名和端口号 别忘了加http
+	changeOrigin:true
+}
 module.exports = {
 	dev: {
 		assetsSubDirectory: 'static',
@@ -18,11 +22,33 @@ module.exports = {
 			        //比如我要‘/api/user/login'即可 会映射到 'http://40.00.100.133:3002/user/login'
 			    }
 			},
-			'/storage':{
-    			// target:"http://47.93.166.112/BrainPcWeb",//设置你调用的接口域名和端口号 别忘了加http
-			    target: env.app_url,//设置你调用的接口域名和端口号 别忘了加http
-			    changeOrigin:true
-			}
+			// pc端
+			'/login': proxyTableOptions,
+			'/islogin': proxyTableOptions,
+			'/logout': proxyTableOptions,
+			'/user': proxyTableOptions,
+			'/user/**': proxyTableOptions,
+
+			'/pot': proxyTableOptions,
+			'/pot/**': proxyTableOptions,
+
+			'/sysman': proxyTableOptions,
+			'/sysman/**': proxyTableOptions,
+
+			'/log': proxyTableOptions,
+			'/log/**': proxyTableOptions,
+
+			// 移动端
+			'/domlogin': proxyTableOptions,
+			'/domregister': proxyTableOptions,
+			'/ismlogin': proxyTableOptions,
+			'/domlogout': proxyTableOptions,
+
+			// 邀请/申请
+			'/apply': proxyTableOptions,
+			'/apply/**': proxyTableOptions,
+
+			'/storage': proxyTableOptions
 			// /Home/Index就会映射到http://localhhost:9494/Home/Index,
 			// '/Home' : {
 		 //      target: 'http://localhost:9494',
