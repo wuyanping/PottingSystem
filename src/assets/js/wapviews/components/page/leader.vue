@@ -1,29 +1,42 @@
 <!-- 负责人页 -->
 <template>
 	<div class="leader">
+        
+        <!-- <group title="tip：主要负责人可以删除负责人，左滑可删除">
+            <cell>
+                <span align-items="flex-start" slot="title">主要负责人：{{mainPerson.name}}</span>
+            </cell>
+            <swipeout>
+                <swipeout-item v-for="(pItem,i) in listData" :key="i" :disabled="disabled">
+                    <div slot="right-menu">
+                        <swipeout-button @click.native="onButtonClick(pItem.id)" background-color="#D23934">删除</swipeout-button>
+                    </div>
+                    <div slot="content" class="vux-1px-t">
+                        <cell>
+                            <span align-items="flex-start" slot="title">负责人：{{pItem.name}}</span>
+                        </cell>
+                    </div>
+                </swipeout-item>
+            </swipeout>
+        </group> -->
 		<group name="">
-		    <!-- <cell
-		    	v-for="(item,i) in list"
-		    	:key="i"
-		    	:title="`${item.title}：`"
-		    	:value="listData[item.key]">
-		    </cell> -->
             <cell-box 
                 v-for="(item,i) in listData"
                 :key="i">
-                {{item}}
+                {{item.main === 1 ? '主要负责人：' : '负责人：'}}{{item.name}}
             </cell-box>
 	    </group>
 	</div>
 </template>
 <script>
-import { Cell, Group, CellBox } from 'vux'
+import { Cell, Group, CellBox, Swipeout, SwipeoutItem, SwipeoutButton } from 'vux'
 import { index } from 'UTILS/commonApi.js'
 import { isArray } from 'UTILS/utils.js'
+import { ajax } from 'UTILS/ajax'
 
 export default {
     components: {
-        Cell, Group, CellBox
+        Cell, Group, CellBox, Swipeout, SwipeoutItem, SwipeoutButton
     },
     data () {
         return {
@@ -39,28 +52,66 @@ export default {
 		    		value: ''
 		    	}
 		    ],
-            listData: []
+            listData: [{id: 1, name: 'aa'}],
+            mainPerson: {}
+        }
+    },
+    computed: {
+        disabled () {
+            if (this.$route.params.model === 'potting') {
+                return true
+            } else {
+                return false
+            }
         }
     },
     methods: {
         getMsg () {
             let id = this.$route.params.id
-            index(this, `pot/${id}`)
+            console.log(this.$route)
+            index(this, `pot/${id}/main`)
                 .then(res => {
-                    // res['main'] = this.arrStr(res['main'])
-                    this.listData = res.main ? res.main : []
+                    console.log(res)
+                    // let arr = []
+                    // res.forEach(item => {
+                    //     if (item.main !== 1) {
+                    //         arr.push(item)
+                    //     } else {
+                    //         this.mainPerson = item
+                    //     }
+                    // })
+                    // this.listData = arr
+                    this.listData = res
                 })
+        },
+        onButtonClick (id) {
+            console.log('onButtonClick')
+            // 更改盆栽通过状态
+            let params = {
+                status: false
+            }
+            ajax('put', this.$apiUrl(`apply/${id}`), params, data => {
+                console.log(data)
+                if (data !== 500) {
+                    this.swtich_option_tableData({data: data, id: data.id})
+                    this.$mg(this, '已删除', 'success', 1000)
+                }
+            })
+        },
+        // 通过后替换当前列表中的数据
+        swtich_option_tableData ({data, id}) {
+            // data = this.model.tableFieldFn ? this.model.tableFieldFn(data) : data
+            this.listData.forEach(v => {
+                if (v.id === id) {
+                    v.isagree = data.isagree
+                }
+            })
         }
-        // arrStr (arr) {
-        //     let arrString = ''
-        //     if (isArray(arr)) {
-        //         arrString = arr.join()
-        //     }
-        //     return arrString
-        // }
     },
     mounted () {
         this.$emit('setHeader', {key: 'showBack', value: true})
+    },
+    created () {
         this.getMsg()
     },
     destroyed () {
@@ -70,6 +121,8 @@ export default {
 </script>
 <style lang="sass">
 .leader{
+    height: 100%;
+    overflow: auto;
     .weui-cells{
         margin-top: 0;
         .weui-cell{

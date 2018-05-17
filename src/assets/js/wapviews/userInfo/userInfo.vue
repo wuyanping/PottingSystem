@@ -7,23 +7,23 @@
                     @handleUpload="handleUpload"/>
                 <div class="fl p-10"> 
                     <p>{{userData.name}}</p>
-                    <p>个人信息 > </p>
+                    <span @click="isShowPopup = true">个人信息 > </span>
                 </div>
             </div>
     	</blur>
         <group>
             <cell title="修改个人信息" is-link link="userInfo/editUserInfo"></cell>
             <cell title="修改密码" is-link link="userInfo/editPassword"></cell>
-            <cell title="盆栽管理" is-link link="/potManage"></cell>
+            <cell title="盆栽管理" is-link link="/index/userInfo/potManage"></cell>
         </group>
 
-        <!-- 新建弹框 -->
-        <PopupForm 
-            :formData="formData"
+        <!-- 个人信息详情弹框 -->
+        <PopupShowForm
             :isShowPopup="isShowPopup"
-            :isShowSibmitBtn="true"
-            @closePopup="closePopup"
-        ></PopupForm>
+            :introduceListField="introduceListField"
+            :listData="userData"
+            @close="handleClose">
+        </PopupShowForm>
 
         <x-button
             class= "logoutBtn"
@@ -36,58 +36,73 @@
 </template>
 <script>
 import { Blur, Group, Cell, XButton } from 'vux'
-import PopupForm from 'WAPVIEWS/components/input/popupForm.vue'
+import PopupShowForm from 'WAPVIEWS/components/input/popupShowForm.vue'
 import uploadImg from './Details/uploadImg.vue'
 import { index, update, edit } from 'UTILS/commonApi'
+import { isObject } from 'UTILS/utils.js'
 
 export default {
     components: {
-        Blur, Group, Cell, PopupForm, uploadImg, XButton
+        Blur, Group, Cell, PopupShowForm, uploadImg, XButton
+    },
+    props: {
+        model: Object,
+        listData: {}
+    },
+    computed: {
+        introduceListField () {
+            if (this.model.introduceListField) {
+                return this.model.introduceListField
+            } else {
+                return []
+            }
+        }
     },
     data () {
         return {
             url: 'https://o3e85j0cv.qnssl.com/tulips-1083572__340.jpg',
-            isShowPopup: false,
-            formData: [],
-            userData: {}
+            userData: {},
+            isShowPopup: false // 详情弹框
         }
     },
     methods: {
-        // 新增表单
-        newForm () {
-            this.isShowPopup = true
-            this.formData = this.model.formField()
-            console.log(this.formData)
-        },
-        closePopup () {
-            this.isShowPopup = false
-        },
         getUserInfo () {
-            this.userData = window.bdUser
+            this.userData = this.tableFieldFn(window.bdUser ? window.bdUser : {})
         },
         // 上传头像
         handleUpload (obj) {
             let userId = window.bdUser['id']
             let params = {}
-            console.log(obj)
             Object.assign(params, {
                 _type: 'edit',
                 ...obj
             })
-            console.log(params)
             update(this, 'user', userId, params)
                 .then(res => {
-                    this.userData = res
+                    this.userData = this.tableFieldFn(res ? res : {})
                 })
         },
         handleLogout () {
             axios.get('/api/domlogout')
                 .then(res => {
-                    console.log(res)
                     if (res.data === 200) {
                         this.$router.push('/login')
                     }
                 })
+        },
+        handleClose () {
+            this.isShowPopup = false
+        },
+        // 表格列特殊值处理
+        tableFieldFn: function (data) {
+            // 处理性别
+            const g = function (gender) {
+                return gender === 1 ? '女' : '男'
+            }
+            if (isObject(data)) {
+                data.gender = g(data.gender)
+            }
+            return data
         }
     },
     mounted () {

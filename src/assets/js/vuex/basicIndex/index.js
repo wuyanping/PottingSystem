@@ -27,6 +27,8 @@ const actions = {
                 resolve(state[arr])
             } else {
                 ajax.call(vm, 'get', url, params, data => {
+                    console.log(111111111)
+                    console.log(data)
                     commit(arr, data)
                     resolve(data)
                 })

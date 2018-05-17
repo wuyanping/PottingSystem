@@ -44,6 +44,13 @@ const utils = {
      */
     findPropertyInObject: function (prop, obj) {
         return Object.keys(obj).includes(prop)
+    },
+    getStyle: function (element, attr) {
+        if (window.getComputedStyle) {
+            return getComputedStyle(element, null)[attr]
+        } else {
+            return element.currentStyle[attr]
+        }
     }
 }
 

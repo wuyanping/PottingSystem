@@ -1,6 +1,6 @@
 <!-- 一级详情页 -->
 <template>
-	<div class="commonDetails">
+	<div class="commonDetails h100">
 
 		<!-- 盆栽介绍 -->
 		<div class="cd_top">
@@ -34,7 +34,7 @@
                         </div>
                     </div>
 			    </group>
-			    <div class="cd_t_more">更多信息 ></div>
+			    <!-- <div class="cd_t_more">更多信息 ></div> -->
 			</div>
 			
 		</div>
@@ -48,7 +48,7 @@
 		      		:span="2/7"
 		      		v-for='(rItem,i) in records'
 		      		:key="i"
-		      		@click.native="go(rItem)">
+		      		@click.native="go(rItem.title, rItem.record, i)">
 		      		<div class="flex-demo" >
 		      			<i :class="`icon iconfont icon-${rItem.record}`"></i>
 		      			<p>{{rItem.title}}</p>
@@ -58,11 +58,9 @@
 		</div>
 
         <actionsheet v-model="show3" :menus="menus3" @on-click-menu-confirm="onConfirm" show-cancel></actionsheet>
-
-        <toast v-model="showSuccess">发送成功，等待盆栽管理员审核通过！</toast>
         
         <!-- 邀请弹框 -->
-        <PopupForm 
+        <PopupForm
             :formData="formData"
             :isShowPopup="isShowPopup"
             :isShowSibmitBtn="true"
@@ -72,10 +70,11 @@
 	</div>
 </template>
 <script>
-import { Flexbox, FlexboxItem, Blur, Panel, Group, Cell, CellFormPreview, Loading, Actionsheet, Toast } from 'vux'
+import { Flexbox, FlexboxItem, Blur, Panel, Group, Cell, CellFormPreview, Loading, Actionsheet, Toast, ToastPlugin } from 'vux'
 import PopupForm from '../input/popupForm.vue'
-import { isArray, isObject, isString } from 'UTILS/utils.js'
-import { index } from 'UTILS/commonApi.js'
+import { isArray, isObject, isString, serializeData } from 'UTILS/utils.js'
+import { index, store } from 'UTILS/commonApi.js'
+Vue.use(ToastPlugin)
 
 export default {
     components: {
@@ -106,10 +105,9 @@ export default {
             // 发出邀请的数据(盆栽列表部分的)
             show3: false,
             menus3: {
-                title: '确定发送？',
+                title: '确定发送申请?',
                 confirm: '<span style="color:red">确定</span>'
             },
-            showSuccess: false,
             // （我的盆栽部分）
             formData: [],
             isShowPopup: false // 邀请弹框
@@ -154,15 +152,21 @@ export default {
     },
     methods: {
         // 记录跳转
-    	go ({title, record}) {
+    	go (title, record, i) {
+            console.log(title)
+            console.log(record)
+            console.log(i)
             // invite不跳转
             if (record === 'invite') {
                 console.log(this.$route)
-                if (this.$route.params.model === 'potting') { // 盆栽列表的发出申请
-                    this.show3 = true
-                } else if (this.$route.params.model === 'myPotting') { // 我的盆栽的发出邀请
-                    this.isShowPopup = true
-                }
+                // if (this.$route.params.model === 'potting') { // 盆栽列表的发出申请
+                // this.show3 = true
+                // this.formData = this.setFormData('add', i)
+                // console.log(this.formData)
+                // } else if (this.$route.params.model === 'myPotting') { // 我的盆栽的发出邀请
+                this.isShowPopup = true
+                this.formData = this.setFormData('add', i)
+                // }
             } else {
                 this.$emit('setHeader', {key: 'title', value: title})
                 this.$router.push(`${this.$route.path}/${record}`)
@@ -170,7 +174,11 @@ export default {
     	},
         // （盆栽列表部分）发出申请，点击确定触发
         onConfirm () {
-            this.showSuccess = true
+            this.$vux.toast.show('发送成功，等待盆栽管理员审核通过！')
+            let params = {
+                id: window.bdUser.id
+            }
+            // store(this, 'apply', )
         },
         // 关闭弹窗
         handleClose () {
@@ -179,6 +187,28 @@ export default {
         // 表单提交
         handleSubmit () {
             console.log('handleSubmit')
+            console.log(this.formData)
+            let id = this.$route.params.id
+            let type = 0
+            let url = 'apply'
+            if (this.$route.params.model === 'myPotting') {
+                type = 1
+                url = 'apply/apply'
+            }
+            let params = {
+                type: type,
+                id: id,
+                ...serializeData(this.formData)
+            }
+            console.log('params ---- ')
+            console.log(params)
+            store(this, url, params)
+                .then(res => {
+                    if (res) {
+                        this.$vux.toast.show('发送成功，等待盆栽管理员审核通过！')
+                        this.handleClose()
+                    }
+                })
         },
     	getDetailMsg () {
     		let id = this.$route.params.id
@@ -187,8 +217,7 @@ export default {
                     this.showLoading = false
                     this.listData = this.tableFieldFn(res)
 	                let obj = {
-                        title: res.name,
-                        desc: res.use_for
+                        title: res.name
                     }
     				this.introduce.push(obj)
     		    })
@@ -232,16 +261,35 @@ export default {
                 data.info = strObj(data.info)
             }
             return data
+        },
+        // 设置表单对话框数据
+        setFormData (type, i, row = {}) {
+            let data = this.details.records[i].formField(type)
+            console.log(data)
+            data.forEach(item => {
+                // 在打开对话框同时赋值
+                if (Object.keys(row).includes(item['name'])) {
+                    if (item.customEditFn) {
+                        item['value'] = item.customEditFn(row[item['name']])
+                    } else {
+                        item['value'] = row[item['name']]
+                    }
+                }
+            })
+            return data
         }
     },
     mounted () {
     	this.getDetailMsg()
+        console.log(this.details)
     }
 }
 </script>
 <style lang="sass">
 $theme-color: #1eac94;
 .commonDetails{
+    height: 100%;
+    overflow: auto;
 	.cd_top{
 		>img {
 		  	width: 96%;

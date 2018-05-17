@@ -25,7 +25,7 @@
         },
         data () {
             return {
-                loading: true,
+                loading: false,
                 selectList: []
             }
         },

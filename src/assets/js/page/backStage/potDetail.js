@@ -444,31 +444,31 @@ const potDetail = {
             // ],
             // 表格列
             commonTableField: [
-                // {
-                //     label: '时间',
-                //     field: 'date'
-                // },
-                // {
-                //     label: '天气',
-                //     field: 'weather'
-                // },
-                // {
-                //     label: '盆栽状态',
-                //     field: 'status'
-                // },
-                // {
-                //     label: '外观',
-                //     field: 'imgs',
-                //     component: commonElPopver,
-                //     props: {
-                //         detailUrl: 'detailModel',
-                //         current: 'watering'
-                //     }
-                // },
-                // {
-                //     label: '记录',
-                //     field: 'record'
-                // },
+                {
+                    label: '时间',
+                    field: 'date'
+                },
+                {
+                    label: '天气',
+                    field: 'weather'
+                },
+                {
+                    label: '盆栽状态',
+                    field: 'status'
+                },
+                {
+                    label: '外观',
+                    field: 'imgs',
+                    component: commonElPopver,
+                    props: {
+                        detailUrl: 'detailModel',
+                        current: 'watering'
+                    }
+                },
+                {
+                    label: '记录',
+                    field: 'record'
+                },
                 {
                     label: '备注',
                     field: 'memo'
@@ -524,62 +524,62 @@ const potDetail = {
             // 默认表单域
             commonFormFieldsFn (type) {
                 return [
-                    {
-                        component: 'ElDate',
-                        field: 'date',
-                        label: '操作时间',
-                        value: null
-                    },
-                    {
-                        component: 'ElInput',
-                        field: 'weather',
-                        label: '天气',
-                        rulesType: [
-                            {
-                                max: 255,
-                                message: '最多有255字',
-                                trigger: 'blur'
-                            }
-                        ],
-                        value: null
-                    },
-                    {
-                        component: 'ElSelect',
-                        field: 'status',
-                        label: '盆栽状态',
-                        selectList: [
-                            {
-                                name: '良好',
-                                id: 0
-                            },
-                            {
-                                name: '一般',
-                                id: 1
-                            },
-                            {
-                                name: '较差',
-                                id: 2
-                            },
-                            {
-                                name: '非常差',
-                                id: 3
-                            }
-                        ],
-                        value: null
-                    },
-                    {
-                        component: Uploader,
-                        field: 'imgs',
-                        label: '外观',
-                        value: null,
-                        customSerializeFn: customSerializeFn
-                    },
-                    {
-                        component: 'ElInput',
-                        field: 'record',
-                        label: '记录',
-                        value: null
-                    },
+                    // {
+                    //     component: 'ElDate',
+                    //     field: 'date',
+                    //     label: '操作时间',
+                    //     value: null
+                    // },
+                    // {
+                    //     component: 'ElInput',
+                    //     field: 'weather',
+                    //     label: '天气',
+                    //     rulesType: [
+                    //         {
+                    //             max: 255,
+                    //             message: '最多有255字',
+                    //             trigger: 'blur'
+                    //         }
+                    //     ],
+                    //     value: null
+                    // },
+                    // {
+                    //     component: 'ElSelect',
+                    //     field: 'status',
+                    //     label: '盆栽状态',
+                    //     selectList: [
+                    //         {
+                    //             name: '良好',
+                    //             id: 0
+                    //         },
+                    //         {
+                    //             name: '一般',
+                    //             id: 1
+                    //         },
+                    //         {
+                    //             name: '较差',
+                    //             id: 2
+                    //         },
+                    //         {
+                    //             name: '非常差',
+                    //             id: 3
+                    //         }
+                    //     ],
+                    //     value: null
+                    // },
+                    // {
+                    //     component: Uploader,
+                    //     field: 'imgs',
+                    //     label: '外观',
+                    //     value: null,
+                    //     customSerializeFn: customSerializeFn
+                    // },
+                    // {
+                    //     component: 'ElInput',
+                    //     field: 'record',
+                    //     label: '记录',
+                    //     value: null
+                    // },
                     {
                         component: 'ElInput',
                         inputType: 'textarea',

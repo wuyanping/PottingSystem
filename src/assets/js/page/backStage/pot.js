@@ -81,7 +81,7 @@ const pot = {
     hasTabs: false,
     hasConditionStatusSelect: true,
     hasConditionSearch: true,
-    hasConditionAdd: true,
+    hasConditionAdd: false,
     hasConditionRefresh: true,
     hasTableSelection: true,
     hasTableIndex: true,
@@ -236,7 +236,7 @@ const pot = {
                 // 处理json字符串变成字符串
                 const strObj = function (str) {
                     let arrString = ''
-                    if (isString(str)) {
+                    if (str) {
                         let json = JSON.parse(str)
                         if (isObject(json)) {
                             for (let key in json) {
@@ -343,34 +343,37 @@ const pot = {
                     //     getDataFn: getVarietyFn
                     // },
                     {
-                        component: selfVarietySelect,
+                        // component: selfVarietySelect,
+                        component: 'ElInput',
                         field: 'variety',
                         label: '品种',
                         // // 是否可搜索
-                        filterable: true,
+                        // filterable: true,
                         // // 是否允许用户创建新条目，需配合 filterable 使用
-                        allowCreate: true,
+                        // allowCreate: true,
                         value: null
                     },
                     {
-                        cascade: true, // 存在受表单其他值影响
-                        cascadeField: 'variety',
-                        component: selfVarietyValue,
+                        // cascade: true, // 存在受表单其他值影响
+                        // cascadeField: 'variety',
+                        // component: selfVarietyValue,
+                        component: 'ElInput',
                         inputType: 'textarea',
                         field: 'habit',
                         label: '生长习性',
-                        filterable: true,
-                        allowCreate: true,
+                        // filterable: true,
+                        // allowCreate: true,
                         value: null
                     },
                     {
-                        cascade: true, // 存在受表单其他值影响
-                        cascadeField: 'variety',
-                        component: selfVarietyValue,
+                        // cascade: true, // 存在受表单其他值影响
+                        // cascadeField: 'variety',
+                        // component: selfVarietyValue,
+                        component: 'ElInput',
                         field: 'origin',
                         label: '产地',
-                        filterable: true,
-                        allowCreate: true,
+                        // filterable: true,
+                        // allowCreate: true,
                         rulesType: [
                             {
                                 max: 255,
@@ -381,13 +384,14 @@ const pot = {
                         value: null
                     },
                     {
-                        cascade: true, // 存在受表单其他值影响
-                        cascadeField: 'variety',
-                        component: selfVarietyValue,
+                        // cascade: true, // 存在受表单其他值影响
+                        // cascadeField: 'variety',
+                        // component: selfVarietyValue,
+                        component: 'ElInput',
                         field: 'use_for',
                         label: '用途',
-                        filterable: true,
-                        allowCreate: true,
+                        // filterable: true,
+                        // allowCreate: true,
                         rulesType: [
                             {
                                 max: 255,

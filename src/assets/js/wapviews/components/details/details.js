@@ -1,4 +1,14 @@
 import userInfoDetail from '../../userInfo/Details/userInfoDetail.vue'
+import formAjaxCheckList from '../input/formAjaxCheckList.vue'
+import { ajax } from 'UTILS/ajax.js'
+function getAllUserList (vm, id) {
+    return new Promise(resolve => {
+        ajax.call(vm, 'get', `/api/pot/${id}/notmain`, data => {
+            resolve(data)
+        })
+    })
+}
+
 let details = {
     potting: {
         title: '盆栽详情',
@@ -11,10 +21,6 @@ let details = {
     	hasRecords: true,
     	// 介绍列表
     	introduceListField: [
-	    	{
-                label: '盆栽名称',
-                field: 'name'
-            },
             {
                 label: '品种',
                 field: 'variety'
@@ -71,7 +77,24 @@ let details = {
 	    	},
 	    	{
 	    		title: '发出申请',
-	    		record: 'invite'
+	    		record: 'invite',
+                // 新建表单
+                formField: function () {
+                    return [
+                        {
+                            component: 'x-textarea',
+                            name: 'memo',
+                            title: '备注',
+                            iconType: '',
+                            rule: {required: false},
+                            validatorResult: {
+                                valid: '',
+                                msg: ''
+                            },
+                            value: ''
+                        }
+                    ]
+                }
 	    	}
 	    ]
     },
@@ -86,10 +109,6 @@ let details = {
     	hasRecords: true,
     	// 介绍列表
     	introduceListField: [
-	    	{
-                label: '盆栽名称',
-                field: 'name'
-            },
             {
                 label: '品种',
                 field: 'variety'
@@ -146,7 +165,27 @@ let details = {
 	    	},
 	    	{
 	    		title: '发出邀请',
-	    		record: 'invite'
+	    		record: 'invite',
+                // 新建表单
+                formField: function () {
+                    return [
+                        {
+                            component: formAjaxCheckList,
+                            name: 'name',
+                            title: '用户列表',
+                            iconType: '',
+                            rule: {required: false},
+                            validatorResult: {
+                                valid: '',
+                                msg: ''
+                            },
+                            getDataFn: getAllUserList,
+                            value: []
+                            // ,
+                            // checklist: [{key: '1', value: '001 value'}, {key: '2', value: '002 value'}, {key: '3', value: '003 value'}]
+                        }
+                    ]
+                }
 	    	}
 	    ]
     },

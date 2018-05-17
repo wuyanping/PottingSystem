@@ -1,8 +1,8 @@
 <template>
-    <div class="basic">
-    	<div class="basic_top" v-if="hasConditonSelect">
+    <div class="basic h100" ref="basic">
+    	<div class="basic_top" >
     		<flexbox>
-                <flexbox-item :span="5">
+                <flexbox-item :span="5" v-if="hasConditonSelect">
                     <div class="basic_top_l">
                         <span class="active">全部盆栽</span>
                         <span @click="newForm">新增盆栽</span>
@@ -21,14 +21,17 @@
     	</div>
 
         <!-- 盆栽列表 -->
-        <div class="basic_list" v-if="hasList" ref="wrapper" :style="{height: height}">
-            <load-more tip="正在刷新" v-if="showPullDown"></load-more>
-            <list 
-                :data="list" 
-                :isNoMsg="isNoMsg"
-                @onButtonClick="onButtonClick"
-                @toDetail="toDetail" />
-            <loading :show="showLoading" text="加载中" />
+        <!-- <div class="basic_list" v-if="hasList"  :style="{height: height}"> -->
+        <div class="basic_list" v-if="hasList">
+            <div class="basic_list_centent" ref="wrapper">
+                <load-more tip="正在刷新" v-if="showPullDown"></load-more>
+                <list 
+                    :data="list" 
+                    :isNoMsg="isNoMsg"
+                    @onButtonClick="onButtonClick"
+                    @toDetail="toDetail" />
+                <loading :show="showLoading" text="加载中" />
+            </div>
         </div>
          
         <!-- 新建弹框 -->
@@ -44,7 +47,7 @@
 <script>
 import { XInput, Group, Icon, Flexbox, FlexboxItem, Panel, Popup, Cell, LoadMore, Loading, ToastPlugin, Search } from 'vux'
 import PopupForm from '../input/popupForm.vue'
-import { isFunction, serializeData } from 'UTILS/utils.js'
+import { isFunction, serializeData, getStyle } from 'UTILS/utils.js'
 import BScroll from 'better-scroll'
 import { index, destroy, store, update, edit } from 'UTILS/commonApi.js'
 import list from '../list.vue'
@@ -103,7 +106,7 @@ export default {
         }
     },
     data () {
-        let he = window.screen.height - 140
+        let he = window.screen.height
         return {
             list: [],
             isShowPopup: false, // 新建弹框
@@ -119,7 +122,11 @@ export default {
                 click: true,
                 probeType: 3,
                 startY: 0,
-                scrollbar: false
+                scrollbar: false,
+                /**
+                   * 是否派发滚动到底部的事件，用于上拉加载
+                   */
+                pullup: false
             },
             showPullDown: false, // 下拉刷新
             height: `${he}px`,
@@ -168,7 +175,7 @@ export default {
             this.isShowPopup = false
         },
         // 获取数据
-        getInfo (query = {page: 1, cstatus: 1}) {
+        getInfo (query = {page: 1, cstatus: 1}, fn) {
             this.showLoading = true
             let model = this.$route.params.model
             let url
@@ -178,6 +185,9 @@ export default {
                 this.list.push(...res.data)
                 this.list.current_page = res.current_page
                 this.list.total_page = Math.ceil(res.total / res.per_page)
+                if (fn) {
+                    fn()
+                }
             })
         },
         // 初始下拉上拉
@@ -190,7 +200,7 @@ export default {
                 let vm = this
                 // 上拉刷新
                 this.scroll.on('pullingUp', () => {
-                    console.log('pullingUp')
+                    console.log('上拉刷新')
                     if (this.list.current_page < this.list.total_page) {
                         this.getInfo({page: this.list.current_page + 1, cstatus: 1})
                     } else if (this.list.current_page === this.list.total_page) {
@@ -201,6 +211,7 @@ export default {
                 })
                 // 下拉加载
                 this.scroll.on('pullingDown', () => {
+                    console.log('下拉加载')
                     this.showPullDown = true
                     setTimeout(() => {
                         this.list = []
@@ -291,10 +302,13 @@ export default {
         }
     },
     mounted () {
-        this.getInfo()
-        setTimeout(() => {
-            this._initScroll()
-        }, 20)
+        // this.getInfo()
+        // this.height = getStyle(this.$refs.basic, 'height')
+        // setTimeout(() => {
+        //     this._initScroll()
+        // }, 20)
+        // console.log('this.$refs.basic')
+        // console.log(getStyle(this.$refs.basic, 'height'))
     },
     watch: {
         '$route': {
@@ -305,15 +319,27 @@ export default {
         }
     },
     created () {
+        this.getInfo(undefined, () => {
+            this._initScroll()
+        })
     }
 }
 </script>
 
 <style lang="sass">
 .basic {
+    position: relative;
     .basic_top{
+        width: 100%;
         padding: 5px;
+        box-sizing: border-box;
         color: #727071;
+        position: absolute;
+        left: 0;
+        top: 0;
+        background-color: white;
+        z-index: 5;
+        box-shadow: 0px -1px 5px 1px #999999;
         .basic_top_l {
             >span{
                 display:inline-block;
@@ -334,6 +360,13 @@ export default {
         }
     }
     .basic_list{
+        height: 100%;
+        padding-top: 40px;
+        box-sizing: border-box;
+        .basic_list_centent{
+            height: 100%;
+            overflow: auto;
+        }
         .weui-cells{
             margin-top:5px;
         }

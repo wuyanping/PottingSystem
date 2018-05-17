@@ -1,5 +1,5 @@
 <template>
-    <div class="userInfoDetail">
+    <div class="userInfoDetail h100">
         <div class="infoList">
             <group>
                 <cell
@@ -109,7 +109,7 @@ export default {
                 if (flag && flag === Object.keys(theUserInfoDetail)[0]) {
                     update(this, 'user', this.formData['id'], params)
                         .then(res => {
-                            if (res) {
+                            if (res !== 500) {
                                 this.$vux.toast.show('修改成功', 'middle')
                                 this.$router.go(-1)
                             }
@@ -118,7 +118,12 @@ export default {
                     console.log(this.formData)
                     update(this, 'user', this.formData['id'], params)
                         .then(res => {
-                            console.log(res)
+                            if (res !== 500) {
+                                this.$vux.toast.show('修改成功', 'middle')
+                                this.$router.go(-1)
+                            } else {
+                                this.$vux.toast.text('修改失败，原始密码错误')
+                            }
                         })
                     console.log(window.bdUser)
                 }
@@ -190,7 +195,7 @@ export default {
         //     this.isShowFinish = bol
         },
         getUserInfo () {
-            let user = window.bdUser
+            let user = window.bdUser ? window.bdUser : {}
             this.formData.forEach(v => {
                 Object.keys(user).forEach(i => {
                     if (v.name === i) {
@@ -206,6 +211,8 @@ export default {
 <style lang="sass">
 $theme-color: #1eac94;
 .userInfoDetail{
+    height: 100%;
+    overflow: auto;
     .infoList{
         .weui-cells{
             margin-top: 0;
@@ -222,7 +229,7 @@ $theme-color: #1eac94;
         height: 56px;
         border-radius:20px;
         width: 80%;
-        margin: 50px auto 0px;
+        margin: 50px auto;
         border-color: $theme-color;
         color: $theme-color;
     }

@@ -16,7 +16,7 @@
         
         <!-- 文本框 -->
         <x-textarea
-            v-if="formItem.component === 'x-textarea'"
+            v-else-if="formItem.component === 'x-textarea'"
             :title="isShowTiTle ? formItem.title : ''"
             :max="20"
             :placeholder="`请输入${formItem.title}`"
@@ -28,7 +28,7 @@
 
         <!-- 单选框 -->
         <radio
-            v-if="formItem.component === 'radio'"
+            v-else-if="formItem.component === 'radio'"
             :options="formItem.options"
             v-model="formItem.value"
             @on-change="(val) => validatorResultFn(formItem.title, formItem.rule, val, formItem.component)">
@@ -36,7 +36,7 @@
 
         <!-- 下拉框 -->
         <popup-picker
-            v-if="formItem.component === 'select'"
+            v-else-if="formItem.component === 'select'"
             :title="formItem.title"
             :data="formItem.options"
             v-model="formItem.value"
@@ -45,7 +45,7 @@
 
         <!-- 日期 -->
         <datetime
-            v-if="formItem.component === 'datetime'"
+            v-else-if="formItem.component === 'datetime'"
             v-model="formItem.value"
             @on-change="change"
             :title="isShowTiTle ? formItem.title : ''"
@@ -56,7 +56,7 @@
 
         <!-- 图片选择框 -->
         <Camera 
-            v-if="formItem.component === 'file'" 
+            v-else-if="formItem.component === 'file'" 
             @return-shuju="returnShuju"
             :name="formItem.name"
             :editValue="formItem.value"
@@ -64,7 +64,7 @@
         
         <!-- 键值对的形式输入（如：新建盆栽的其他信息） -->
         <InputDynamic 
-            v-if="formItem.component === 'inputDynamic'" 
+            v-else-if="formItem.component === 'inputDynamic'" 
             :name="formItem.name"
             :title="formItem.title"
             :formItemData="formItem"
@@ -72,13 +72,27 @@
         
         <!-- 多选框 -->
         <checklist 
-            v-if="formItem.component === 'checklist'" 
+            v-else-if="formItem.component === 'checklist'" 
+            :title="formItem.title"
             :label-position="labelPosition"
             required
-            :options="commonList"
-            v-model="checklist001"
+            :options="formItem.checklist"
+            v-model="formItem.value"
             @on-change="change">
         </checklist>
+        
+        <!-- item.cascade级联。表单中有相互影响时使用，传入的值包含了整个表单的作用域 -->
+        <component
+            v-else-if="formItem.cascade === true"
+            :is="formItem.component"
+            :formItemData="formItem"
+        />
+    
+        <component
+            v-else
+            :is="formItem.component"
+            :formItemData="formItem"
+        />
 
         <!-- 错误提示 -->
         <span v-if="isShowMsg" style="color: red">
@@ -117,9 +131,7 @@ export default {
     },
     data () {
         return {
-            labelPosition: '',
-            commonList: [ 'China', 'Japan', 'America' ],
-            checklist001: []
+            labelPosition: ''
         }
     },
     mounted () {
