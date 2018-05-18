@@ -4,7 +4,7 @@
 
 		<!-- 盆栽介绍 -->
 		<div class="cd_top">
-			<img v-if="hasIntroduceImg" :src="listData.imgs ? `/api/${listData.imgs}` : url" />
+			<img v-if="hasIntroduceImg" :src="listData.imgs ? listData.imgs : url" />
 			<div v-if="hasIntroduce" class="cd_t_conent">
                 <loading :show="showLoading" text="加载中"></loading>
 				<panel :list="introduce" type="2"></panel>
@@ -205,7 +205,11 @@ export default {
             store(this, url, params)
                 .then(res => {
                     if (res) {
-                        this.$vux.toast.show('发送成功，等待盆栽管理员审核通过！')
+                        let tip = '发送成功，等待盆栽管理员审核通过！'
+                        if (this.$route.params.model === 'myPotting') {
+                            tip = '发送成功，等待邀请人通过！'
+                        }
+                        this.$vux.toast.show(tip)
                         this.handleClose()
                     }
                 })

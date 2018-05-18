@@ -1,6 +1,6 @@
 <template>
 	<div class="userInfo">
-		<blur :blur-amount=40 :url="url" :height="100">
+		<blur :blur-amount=0 url="" :height="100" style="background: #cfe5e3">
             <div class="center clearfix">
                 <uploadImg class="uploadImg fl"
                     :avatar="userData.avatar"
@@ -60,7 +60,7 @@ export default {
     },
     data () {
         return {
-            url: 'https://o3e85j0cv.qnssl.com/tulips-1083572__340.jpg',
+            url: './static/image/company_default_logo.png',
             userData: {},
             isShowPopup: false // 详情弹框
         }
@@ -83,7 +83,7 @@ export default {
                 })
         },
         handleLogout () {
-            axios.get('/api/domlogout')
+            axios.get('/domlogout')
                 .then(res => {
                     if (res.data === 200) {
                         this.$router.push('/login')

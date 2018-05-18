@@ -1,7 +1,7 @@
 <template>
     <div>
         <div @click="select">
-            <img :src="avatar ? `/api/${avatar}` : url">
+            <img :src="avatar ? avatar : url">
         </div>
         <input type="file" hidden="hidden" @change="pick($event)" ref="input"/>
         <toast v-model="toast" type="warn">{{msg}}</toast>
@@ -17,7 +17,7 @@ export default {
     },
     data () {
         return {
-            url: 'https://o3e85j0cv.qnssl.com/tulips-1083572__340.jpg',
+            url: './static/image/company_default_logo.png',
             toast: false,
             msg: ''
         }

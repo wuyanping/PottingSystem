@@ -3,7 +3,7 @@ import formAjaxCheckList from '../input/formAjaxCheckList.vue'
 import { ajax } from 'UTILS/ajax.js'
 function getAllUserList (vm, id) {
     return new Promise(resolve => {
-        ajax.call(vm, 'get', `/api/pot/${id}/notmain`, data => {
+        ajax.call(vm, 'get', vm.$apiUrl(`pot/${id}/notmain`), data => {
             resolve(data)
         })
     })

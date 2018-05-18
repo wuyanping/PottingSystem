@@ -280,6 +280,7 @@ export default {
                     .then(res => {
                         if (res) {
                             this.$vux.toast.text('新增成功')
+                            this.$vux.toast.show('新增成功，等待管理员审核通过！')
                             this.handleClose()
                         }
                     })
@@ -289,7 +290,7 @@ export default {
                 update(this, 'pot', this.formData['id'], params)
                     .then(res => {
                         if (res) {
-                            this.$vux.toast.text('编辑成功')
+                            this.$vux.toast.show('编辑成功')
                             this.handleClose()
                             this.list = []
                             this.getInfo()

@@ -13,7 +13,7 @@ export default {
          * @return   {String}       请求地址
          */
         Vue.prototype.$apiUrl = (url) => {
-            return `/api/${url}`
+            return `/${url}`
         }
 
         /**

@@ -150,7 +150,7 @@
                                 name: obj.nameOrPhone,
                                 password: obj.password
                             }
-                            ajax.call(this, 'post', '/api/domlogin', data).then(res => {
+                            ajax.call(this, 'post', '/domlogin', data).then(res => {
                                 if (res.data !== 500 && isObject(res.data)) {
                                     console.log(res.data)
                                     this.$vux.toast.show('登录成功')
