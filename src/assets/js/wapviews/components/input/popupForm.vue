@@ -100,20 +100,13 @@ export default {
         handleClose () {
             this.$emit('closePopup')
         },
+
         changeIsShowFinish () {},
+
         // 提交表单
         sibmitForm () {
             let promiseArr = [] // 存储每个验证的promise
         	let isCanSibmit = true // 是否可以提交
-            // this.formData.forEach((input, i) => {
-            //     // 遍历验证每个input
-            //     let {name, rule, value} = input
-            //     var result = validatorFn(name, rule, value)
-            //     input.validatorResult = result
-            //     input.iconType = !result.valid ? 'error' : ''
-            //     isCanSibmit = isCanSibmit && result.valid
-            //     this.$set(this.formData, i, input)
-            // })
 
             this.formData.forEach((input, i) => {
                 let p = new Promise((resolve) => {
@@ -122,6 +115,7 @@ export default {
                 })
                 promiseArr.push(p)
             })
+
             // 同时执行所有的存储验证promise，并在它们都完成后执行then: 获得一个Array
             Promise.all(promiseArr).then(results => {
                 // 返回一个数组后，把结果循环给data，并判断isCanSibmit 是否可以通过
