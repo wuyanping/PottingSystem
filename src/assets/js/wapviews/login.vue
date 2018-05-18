@@ -79,7 +79,6 @@
                 index: 0,
                 iconType: 'error',
                 usercheck: function (value) {
-                    console.log(value)
                     return {
                         valid: value == 2333,
                         msg: 'bitian'
@@ -102,7 +101,6 @@
             },
             // 验证表单
             validatorResultFn (action, name, rule, value, i, formAllData) {
-                console.log('validatorResult --------------------------------------')
                 let input = this[`${action}Data`][i]
                 new Promise((resolve) => {
                     validatorFn(name, rule, value, formAllData, (undefined, data) => resolve(data))
@@ -116,14 +114,9 @@
             },
             // 登录/注册
             handleAction (action) {
-                console.log('=========')
-                console.log(this[`${action}Data`])
-                console.log('=========')
-                console.log('handleAction' + `  ${action}Data --------------- `)
                 let isCanSibmit = true // 是否可以提交
                 let promiseArr = [] // 存储每个验证的promise
                 this[`${action}Data`].forEach((input, i) => {
-                    console.log(i)
                     let p = new Promise((resolve) => {
                         let {name, rule, value} = input
                         validatorFn(name, rule, value, this[`${action}Data`], (undefined, data) => resolve(data))
@@ -152,7 +145,6 @@
                             }
                             ajax.call(this, 'post', '/domlogin', data).then(res => {
                                 if (res.data !== 500 && isObject(res.data)) {
-                                    console.log(res.data)
                                     this.$vux.toast.show('登录成功')
                                     this.$router.push('/index/potting')
                                 } else {
@@ -167,7 +159,6 @@
                                 phone: obj.phone,
                                 password_confirmation: obj.password_confirmation
                             }
-                            console.log(obj)
                             store(this, 'domregister', data)
                                 .then(res => {
                                     if (res) {

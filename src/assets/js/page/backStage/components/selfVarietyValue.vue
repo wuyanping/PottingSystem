@@ -49,9 +49,6 @@ export default {
                 cval: value
             }).then(data => {
                 // 使用延迟函数解决 第二次打开时，this.loading = false 设置过快失效
-                console.log('selectChange data --- ')
-                console.log(data)
-                console.log(isObject(data))
                 if (isObject(data)) {
                     this.formItemData.value = data[this.formItemData.field]
                 } else {
@@ -64,8 +61,6 @@ export default {
         'formItemData.value': {
             deep: true,
             handler (nv, v) {
-                console.log('formItemData.value ---')
-                console.log(nv)
                 if (nv.length === 0) return
                 if (nv[nv.length - 1].param !== '') {
                     // nv.push({
@@ -78,8 +73,6 @@ export default {
         cascadeData: {
             deep: true,
             handler (nv, v) {
-                console.log('cascadeData.value ---')
-                console.log(nv)
                 if (nv.value) {
                     this.selectChange(nv.value)
                 }

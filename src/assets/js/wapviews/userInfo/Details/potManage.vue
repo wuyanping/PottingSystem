@@ -101,7 +101,6 @@ export default {
                 type: this.i
             }
             index(this, 'apply', query).then(res => {
-                console.log(res)
                 this.list = []
                 this.list = res
             })
@@ -113,7 +112,6 @@ export default {
                 status: true
             }
             ajax('put', this.$apiUrl(`apply/${id}`), params, data => {
-                console.log(data)
                 if (data !== 500) {
                     this.swtich_option_tableData({data: data, id: data.id})
                     this.$mg(this, '已通过', 'success', 1000)
@@ -133,14 +131,12 @@ export default {
         seeDetails (i) {
             this.isShowPopup = true
             this.listData = this.list[i]
-            console.log(this.listData)
         },
         handleClose () {
             this.isShowPopup = false
         }
     },
     mounted () {
-        console.log(this.list1)
     },
     created () {
         this.changeHeaderSetting({...this.headerSetting, showBack: true, title: '盆栽管理'})

@@ -66,7 +66,6 @@ export default {
     },
     // 在渲染该组件的对应路由被 confirm 前调用
     beforeRouteEnter (to, from, next) {
-        console.log('beforeRouteEnter')
         next(vm => {
             if (theModel[to.params.model] && theModel[to.params.model]._hasCustomComponent) {
                 vm.hasCustomComponent = true
@@ -83,7 +82,6 @@ export default {
         ]),
         // 图片发生错误时触发
         onImgError (item, $event) {
-            console.log(item, $event)
         }
     },
     watch: {
@@ -91,7 +89,6 @@ export default {
         '$route': {
             deep: true,
             handler: function (nv) {
-                console.log('$route')
                 if (theModel[nv.params.model] && theModel[nv.params.model]._hasCustomComponent) {
                     this.hasCustomComponent = true
                 } else {

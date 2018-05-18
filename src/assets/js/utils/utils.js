@@ -22,9 +22,7 @@ const utils = {
         data.forEach(v => {
             // 自定义序列化处理表单数据
             if (v.customSerializeFn) {
-                console.log(v.customSerializeFn(v))
                 params = Object.assign(params, v.customSerializeFn(v))
-                console.log(params)
             } else if (v.name) {
                 params[v.name] = v.value
             } else {

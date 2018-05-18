@@ -83,16 +83,13 @@ export default{
         // 表单提交
         submitForm (formName) {
             this.$refs[formName].validate((valid) => {
-                console.log(valid)
                 if (valid) {
-                    console.log(this.userInfo)
                     var data = {
                         name: this.userInfo.userName,
                         password: this.userInfo.pwd,
                         remember: this.remember_flag
                     }
                     ajax.call(this, 'post', '/login', data, (data) => {
-                        console.log(data)
                         if (data !== 500 && isObject(data)) { // 成功是返回用户的信息
                             this.$message({
                                 showClose: false,
@@ -117,7 +114,6 @@ export default{
                         }
                     })
                 } else {
-                    console.log('error submit!!')
                     return false
                 }
             })

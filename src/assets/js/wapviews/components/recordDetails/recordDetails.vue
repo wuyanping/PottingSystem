@@ -44,7 +44,6 @@ export default {
     //     this.$emit('setHeader', {key: 'showBack', value: false})
     // },
     beforeRouteEnter (to, from, next) {
-        console.log('recordDetails beforeRouteEnter')
         next(vm => {
             if (theRecordDetails[to.params.model] && theRecordDetails[to.params.model][to.params.record] && theRecordDetails[to.params.model][to.params.record]._hasCustomComponent) {
                 vm.hasCustomComponent = true
@@ -60,11 +59,8 @@ export default {
             'changeHeaderSetting'
         ]),
         onImgError (item, $event) {
-            console.log(item, $event)
         },
         handlePanelItem (panelItem) {
-            console.log(panelItem)
-            console.log(this.$route)
             this.$router.push(`${this.$route.path}/${panelItem.id}`)
         }
     },
@@ -72,7 +68,6 @@ export default {
         '$route': {
             deep: true,
             handler: function (nv) {
-                console.log('$route')
                 if (theRecordDetails[nv.params.model] && theRecordDetails[nv.params.model][nv.params.record] && theRecordDetails[nv.params.model][nv.params.record]._hasCustomComponent) {
                     this.hasCustomComponent = true
                 } else {

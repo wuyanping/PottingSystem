@@ -44,11 +44,9 @@ export default {
     },
     mounted () {
         this.getAjaxData()
-        console.log(this.formItemData)
     },
     methods: {
         change (value, label) {
-            console.log('change', value, label)
             this.formItemData.value = value
         },
         getAjaxData () {
@@ -77,7 +75,6 @@ export default {
         },
         // 搜索
         handleSearch (val) {
-            console.log(val)
             if (this.checkList.length !== 0) {
                 if (val.length !== 0) {
                     let arr = this.checkListAtSearchbefore.filter(item => {

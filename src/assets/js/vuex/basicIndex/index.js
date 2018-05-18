@@ -27,8 +27,6 @@ const actions = {
                 resolve(state[arr])
             } else {
                 ajax.call(vm, 'get', url, params, data => {
-                    console.log(111111111)
-                    console.log(data)
                     commit(arr, data)
                     resolve(data)
                 })
@@ -51,10 +49,7 @@ const actions = {
      */
     getChildrenData ({ state, commit }, { vm, arr, url, cval, params = {} }) {
         return new Promise(resolve => {
-            console.log('state[arr] --- ')
-            console.log(state[arr])
             state[arr].data.forEach(v => {
-                console.log(v.id === cval)
                 if (v.id === cval) {
                     if (v['children']) {
                         resolve(v['children'])

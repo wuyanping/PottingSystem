@@ -138,9 +138,6 @@ export default {
         }
     },
     mounted () {
-        // console.log('obj')
-        // console.log(this.formItem)
-        // console.log(this.$props.formItem)
     },
     methods: {
         // 表单验证
@@ -152,21 +149,16 @@ export default {
             new Promise((resolve) => {
                 validatorFn(name, rule, value, this.formData, (undefined, data) => resolve(data))
             }).then(data => {
-                console.log(data)
                 let result = data
                 this.formItem.validatorResult = result
                 this.formItem.iconType = !result.valid ? 'error' : ''
             })
         },
         log (str1, str2 = '') {
-            console.log(str1, str2)
         },
         onConfirm (val) {
-            console.log('on-confirm arg', val)
-            console.log('current value', this.value1)
         },
         change (value, label) {
-            console.log('change', value, label)
         },
         onChangePick (options, value) {
             options.forEach(v => {
@@ -179,8 +171,6 @@ export default {
         返回图片信息
          */
         returnShuju (obj) {
-            console.log(obj)
-            console.log(this.formItem)
             if (obj === 'type') {
                 this.setToast('text', '请上传jpeg或png的图片', '15em')
             } else if (obj === 'size') {

@@ -42,8 +42,6 @@
                     arr: 'MONITOR_ALLADAPTER',
                     url: this.$apiUrl('variety')
                 }).then(data => {
-                    console.log('data --- 111111 ')
-                    console.log(data)
                     // 使用延迟函数解决 第二次打开时，this.loading = false 设置过快失效
                     setTimeout(() => {
                         this.loading = false
@@ -52,8 +50,6 @@
                 })
             },
             selectChange (value) {
-                console.log('value ---- ')
-                console.log(value)
                 this.$store.dispatch('getChildrenData', {
                     vm: this,
                     arr: 'MONITOR_ALLADAPTER',

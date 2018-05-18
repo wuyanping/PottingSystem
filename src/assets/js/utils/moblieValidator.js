@@ -137,14 +137,12 @@ module.exports = {
                         rule.validator(rule.params, value, formAllData, callback)
                     }
                 } else {
-                    console.log(11111111111111111111)
                     callback(null, {
                         valid: true,
                         msg: name + '必填了'
                     })
                 }
             } else {
-                console.log(2222222222222)
                 callback(null, {
                     valid: false,
                     msg: name + '是必填的'
@@ -216,7 +214,6 @@ module.exports = {
         if (window.bdUser) {
             paramsfn.id = window.bdUser.id
         }
-        console.log(paramsfn)
         check(params.vm, params.url, paramsfn)
             .then(data => {
                 let result = {

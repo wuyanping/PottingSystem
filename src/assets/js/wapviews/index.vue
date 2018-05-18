@@ -79,12 +79,9 @@ export default{
         ]),
         // tabBarItem点击的时候
         handleTabBarItem (i, item) {
-            console.log(item)
-            console.log(111111111)
             this.changeHeaderSetting({...this.headerSetting, title: this.tabbarData[i].title})
         }
         // setHeader ({key, value}) {
-        //     console.log(key, value)
         //     this.headerSetting[key] = value
         // }
     }

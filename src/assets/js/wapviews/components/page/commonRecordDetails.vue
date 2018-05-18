@@ -178,7 +178,6 @@ export default {
                 value: this.defaultDate,
                 clearText: 'clear',
                 onHide: () => {
-                    console.log(this.searchDate)
                     if (this.searchDate[0] === null && this.searchDate[1] === null) {
                         this.list = []
                         this.getMsg()
@@ -222,7 +221,6 @@ export default {
         //     index(this, `pot/${potId}`)
         //         .then(res => {
         //             this.msgUser = res['main'].join().includes(window.bdUser['name'])
-        //             console.log(res)
         //         })
         // },
         // 获取数据
@@ -232,7 +230,6 @@ export default {
             let potId = this.$route.params.id
             index(this, `pot/${potId}/${model}`, query)
                 .then(res => {
-                    console.log(res)
                     this.showLoading = false
                     this.resData = res.data
                     let title
@@ -351,7 +348,6 @@ export default {
             let model = this.$route.params.record
             let potId = this.$route.params.id
             if (val === 'delete') {
-                console.log(val)
                 destroy(this, `pot/${potId}/${model}`, id)
                     .then(res => {
                         if (res === 1) {
@@ -363,8 +359,6 @@ export default {
             } else {
                 this.flag = 'edit'
                 this.isShowAdd = true
-                console.log(model)
-                console.log(id)
                 this.formData = this.recordDetails.formField()
                 edit(this, `pot/${potId}/${model}`, id)
                     .then(res => {

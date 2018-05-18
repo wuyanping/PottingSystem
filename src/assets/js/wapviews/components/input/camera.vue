@@ -64,8 +64,6 @@ export default {
     },
     mounted () {
         // this.flag = false
-        console.log('this.mounted --- camera')
-        console.log(this.editValue)
     },
     methods: {
         // 删除图片
@@ -98,7 +96,6 @@ export default {
                 this.$emit('return-shuju', 'size')
                 return
             }
-            console.log(11111111)
             let reader = new FileReader()
             reader.readAsDataURL(file)
             reader.onload = e => {
@@ -110,10 +107,6 @@ export default {
     },
     watch: {
         editValue () {
-            console.log('this.editValue -- ')
-            console.log(this.editValue)
-            console.log('this.flag --- ')
-            console.log(this.flag)
             // if (this.editValue) {
             if (!this.flag) {
                 this.imageUrl = this.editValue

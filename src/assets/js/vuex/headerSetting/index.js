@@ -12,8 +12,6 @@ const getters = {
     },
 
     getRecord (state) {
-        console.log('state ---- ')
-        console.log(state)
         return state.record.record
     },
 

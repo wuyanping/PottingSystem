@@ -57,7 +57,6 @@
         methods: {
             dateChange (value) {
                 this.$emit('selectChange', { date: value })
-                console.log(value)
             }
         }
     }

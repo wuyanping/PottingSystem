@@ -81,8 +81,6 @@
             }
         },
         mounted () {
-            console.log('commonFormData -------- ')
-            console.log(this.commonFormData)
         },
         methods: {
             setRules (item) {

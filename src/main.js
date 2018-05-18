@@ -13,11 +13,8 @@ router.beforeEach((to, from, next) => {
     axios.post(`/${loginUrl}`).then(res => {
         // 用户已登录，如果不是进入到login页，则跳转到当前页
         // 否则就直接进入到首页
-        console.log('islogin ----- ')
-        console.log(res)
         if (isObject(res.data)) {
             if (to.name !== 'login') {
-                console.log('ssssssssssssss')
                 window.bdUser = res.data
                 next()
             } else {
@@ -35,19 +32,15 @@ router.beforeEach((to, from, next) => {
                 next('/login')
             }
         }
-    }).catch(err => {
-        console.log(err)
+    }).catch(e => {
         // 用户未登录，如果是进入到login页，就直接进入到当前页面
         // 否则会直接跳转到login页
-        // if (err.response.status === 401) { //  || err.response.status === 403
         if (to.name === 'login') {
             window.bdUser = null
             next()
         } else {
             next('/login')
         }
-        // alert('服务器错误，请稍后操作')
-        // }
     })
 })
 

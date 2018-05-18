@@ -153,16 +153,11 @@ export default {
     methods: {
         // 记录跳转
     	go (title, record, i) {
-            console.log(title)
-            console.log(record)
-            console.log(i)
             // invite不跳转
             if (record === 'invite') {
-                console.log(this.$route)
                 // if (this.$route.params.model === 'potting') { // 盆栽列表的发出申请
                 // this.show3 = true
                 // this.formData = this.setFormData('add', i)
-                // console.log(this.formData)
                 // } else if (this.$route.params.model === 'myPotting') { // 我的盆栽的发出邀请
                 this.isShowPopup = true
                 this.formData = this.setFormData('add', i)
@@ -186,8 +181,6 @@ export default {
         },
         // 表单提交
         handleSubmit () {
-            console.log('handleSubmit')
-            console.log(this.formData)
             let id = this.$route.params.id
             let type = 0
             let url = 'apply'
@@ -200,8 +193,6 @@ export default {
                 id: id,
                 ...serializeData(this.formData)
             }
-            console.log('params ---- ')
-            console.log(params)
             store(this, url, params)
                 .then(res => {
                     if (res) {
@@ -269,7 +260,6 @@ export default {
         // 设置表单对话框数据
         setFormData (type, i, row = {}) {
             let data = this.details.records[i].formField(type)
-            console.log(data)
             data.forEach(item => {
                 // 在打开对话框同时赋值
                 if (Object.keys(row).includes(item['name'])) {
@@ -285,7 +275,6 @@ export default {
     },
     mounted () {
     	this.getDetailMsg()
-        console.log(this.details)
     }
 }
 </script>

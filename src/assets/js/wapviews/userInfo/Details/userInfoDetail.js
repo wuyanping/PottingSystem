@@ -4,11 +4,9 @@ import { checkValid } from 'UTILS/moblieValidator.js'
 
 // 特殊处理value
 function specialHandlingValue (options, value) {
-    console.log(options)
     let oItem = options.find(oItem => {
         return oItem.key === value
     })
-    console.log(oItem)
     return oItem.value
 }
 

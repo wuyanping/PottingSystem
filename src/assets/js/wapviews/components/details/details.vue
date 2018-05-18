@@ -43,15 +43,12 @@ export default {
     //     this.changeHeaderSetting({...this.headerSetting, title: this.currentDetail.pTitle, showBack: false})
     // },
     beforeRouteEnter (to, from, next) {
-        console.log('details beforeRouteEnter')
         next(vm => {
             if (theDetail[to.params.model] && theDetail[to.params.model]._hasCustomComponent) {
                 vm.hasCustomComponent = true
             } else {
                 vm.hasCustomComponent = false
             }
-            console.log(theDetail)
-            console.log(theDetail[to.params.model])
             vm.currentDetail = theDetail[to.params.model]
             vm.changeHeaderSetting({...vm.headerSetting, title: vm.currentDetail.title, showBack: true})
         })
@@ -61,11 +58,8 @@ export default {
             'changeHeaderSetting'
         ]),
         onImgError (item, $event) {
-            console.log(item, $event)
         },
         handlePanelItem (panelItem) {
-            console.log(panelItem)
-            console.log(this.$route)
             this.$router.push(`${this.$route.path}/${panelItem.id}`)
         }
     },
@@ -73,7 +67,6 @@ export default {
         '$route': {
             deep: true,
             handler: function (nv) {
-                console.log('$route')
                 if (theDetail[nv.params.model] && theDetail[nv.params.model]._hasCustomComponent) {
                     this.hasCustomComponent = true
                 } else {

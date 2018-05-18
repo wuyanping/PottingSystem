@@ -77,12 +77,10 @@ export default {
         ])
     },
     created () {
-        console.log(this.$route)
         if (this.$route.params.id) {
             this.currentModel = theUserInfoDetail[this.$route.params.id]
             this.formData = this.setFormData()
         }
-        console.log(this.formData)
         this.changeHeaderSetting({...this.headerSetting, showBack: true, title: this.currentModel.title})
     },
     mounted () {
@@ -133,7 +131,6 @@ export default {
                                 }
                             })
                     } else {
-                        console.log(this.formData)
                         update(this, 'user', this.formData['id'], params)
                             .then(res => {
                                 if (res !== 500) {
@@ -143,10 +140,8 @@ export default {
                                     this.$vux.toast.text('修改失败，原始密码错误')
                                 }
                             })
-                        console.log(window.bdUser)
                     }
                 } else {
-                    console.log('验证失败')
                     this.$vux.alert.show({
                         title: '内容验证提示',
                         content: '验证失败',
@@ -157,10 +152,8 @@ export default {
         },
         // 弹窗编辑弹框
         handleShowPopup (i) {
-            console.log(i)
             this.isShowPopup = true
             this.i = i
-            console.log(this.formData[i].title)
             this.oldFormItem = Object.assign({}, this.formData[i])
         },
         // 取消编辑弹框， 不改变原来的数据
@@ -177,10 +170,8 @@ export default {
                     content: validatorResult.msg,
                     buttonText: '我知道了',
                     onShow () {
-                        console.log('Plugin: I\'m showing')
                     },
                     onHide () {
-                        console.log('Plugin: I\'m hiding now')
                     }
                 })
             } else {
@@ -205,7 +196,6 @@ export default {
         // 是否出现完成按钮
         changeIsShowFinish (value) {
         //     let bol = false
-        //     console.log(this.formData[this.i].value, this.oldFormItem.value)
         //     if (this.formData[this.i].value !== this.oldFormItem.value) {
         //         bol = true
         //     } else {

@@ -98,18 +98,12 @@ export default {
         }
     },
     mounted () {
-        console.log('this.formItemData ---- ')
-        console.log(this.formItemData)
-        console.log(this.formItemData.value.length)
     },
     methods: {
         remove (scope) {
-            console.log(scope)
-            console.log(this.formItemData.value)
             this.formItemData.value.splice(scope, 1)
         },
         add () {
-            console.log(this.formItemData.value)
             this.formItemData.value.push({
                 param: '',
                 value: ''
@@ -119,7 +113,6 @@ export default {
     watch: {
         formItemData: {
             handler (newV, oldV) {
-                console.log('watch formItemData - ')
                 if (newV.length === 0) return
             },
             deep: true

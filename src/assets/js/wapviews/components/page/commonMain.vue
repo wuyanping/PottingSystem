@@ -139,7 +139,6 @@ export default {
     methods: {
         // 图片方式发生错误时触发
         onImgError (item, $event) {
-            // console.log(item, $event)
         },
         // 点击盆栽列，跳到盆栽详情页
         handlePanelItem (panelItem) {
@@ -152,8 +151,6 @@ export default {
             this.flag = 'add'
             this.isShowPopup = true
             this.formData = this.setFormData(this.flag)
-            console.log('this.formData ---- ')
-            console.log(this.formData)
         },
         // 设置表单对话框数据
         setFormData (type, row = {}) {
@@ -200,7 +197,6 @@ export default {
                 let vm = this
                 // 上拉刷新
                 this.scroll.on('pullingUp', () => {
-                    console.log('上拉刷新')
                     if (this.list.current_page < this.list.total_page) {
                         this.getInfo({page: this.list.current_page + 1, cstatus: 1})
                     } else if (this.list.current_page === this.list.total_page) {
@@ -211,7 +207,6 @@ export default {
                 })
                 // 下拉加载
                 this.scroll.on('pullingDown', () => {
-                    console.log('下拉加载')
                     this.showPullDown = true
                     setTimeout(() => {
                         this.list = []
@@ -231,16 +226,12 @@ export default {
         },
         // 右拉事件
         onButtonClick (val, id) {
-            console.log(id)
             if (val === 'delete') {
                 destroy(this, 'pot', id)
                     .then(res => {
                         this.$vux.toast.text('删除成功', 'middle')
                         this.list = []
                         this.getInfo()
-                        console.log('~~~~~~~~')
-                        console.log(this.list)
-                        console.log('~~~~~~~~')
                     })
             } else {
                 this.flag = 'edit'
@@ -248,10 +239,6 @@ export default {
                 this.formData = this.model.formField()
                 edit(this, 'pot', id)
                     .then(res => {
-                        console.log('res --- ')
-                        console.log(res)
-                        console.log('this.setFormData(this.flag, res) --- ')
-                        console.log(this.setFormData(this.flag, res))
                         this.formData = this.setFormData(this.flag, res)
                         // this.formData.forEach(v => {
                         //     Object.keys(res).forEach(i => {
@@ -261,21 +248,16 @@ export default {
                         //     })
                         // })
                         this.formData['id'] = id
-                        console.log('============')
-                        console.log(this.formData)
-                        console.log('============')
                     })
             }
         },
         // 表单提交
         handleSubmit () {
-            console.log(this.flag)
             let params = {
                 _type: this.flag,
                 ...serializeData(this.formData)
             }
             if (this.flag === 'add') {
-                console.log(this.formData)
                 store(this, 'pot', params)
                     .then(res => {
                         if (res) {
@@ -285,7 +267,6 @@ export default {
                         }
                     })
             } else {
-                console.log('编辑的')
                 params._method = 'PUT'
                 update(this, 'pot', this.formData['id'], params)
                     .then(res => {
@@ -308,8 +289,6 @@ export default {
         // setTimeout(() => {
         //     this._initScroll()
         // }, 20)
-        // console.log('this.$refs.basic')
-        // console.log(getStyle(this.$refs.basic, 'height'))
     },
     watch: {
         '$route': {

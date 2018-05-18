@@ -12,7 +12,7 @@
                         :key="i"
                         :title="`${item.label}：`"
                         :value="listData[item.field]">
-                        <img v-if="item.label === '外观' && listData[item.field]!==null" :src="`/api/${listData[item.field]}`" style="width: 50px;height:50px;">
+                        <img v-if="item.label === '外观' && listData[item.field]!==null" :src="listData[item.field]" style="width: 50px;height:50px;">
                     </cell>
                 </group>
             </div>

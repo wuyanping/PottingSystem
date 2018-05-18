@@ -7,13 +7,11 @@ const validtor = {
      * 参数：cfield(String)
      */
     checkValid: (rule, value, callback) => {
-        console.log(rule)
         let params = {
             id: rule['id'],
             field: rule['cfield'],
             value: value
         }
-        console.log(params)
         check(rule['vm'], rule['route'], params)
             .then(data => {
                 if (data.res === true) {
@@ -30,7 +28,6 @@ const validtor = {
      * 参数：lng(Number)
      */
     lngValid: (rule, value, callback) => {
-        console.log(rule)
         if (value && value.trim().length > rule['lng']) {
             callback(new Error(rule['label'] + `最多有${rule['lng']}字`))
         } else {
@@ -124,7 +121,6 @@ const validtor = {
      * 参数：无
      */
     phoneValid: (rule, value, callback) => {
-        console.log(value)
         if (value !== '' && value !== null) {
             let bol = (value.length === 11 && /^(((13[0-9]{1})|(15[0-9]{1})|(18[0-9]{1}))+\d{8})$/.test(value)) || (value.length === 12 && /^(([0+]\d{2,3}-)?(0\d{2,3})-)?(\d{7,8})(-(\d{3,}))?$/.test(value))
             if (!bol) {

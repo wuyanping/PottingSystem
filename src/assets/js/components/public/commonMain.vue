@@ -514,9 +514,7 @@
                 this.tabsActive = this.$route.query.current ? this.$route.query.current : this.$route.params.model
             }
             // 避免了在与自定义的commonMain组件切换时出现/api/common的请求
-            console.log('mounted ----- ')
             if (this.route && this.route !== '') {
-                console.log(222222)
                 this.ajaxIndex(this.route)
             }
         },
@@ -618,7 +616,6 @@
             },
             // 动态方法
             add (scope) {
-                console.log(scope)
                 this.formData = this.setFormData(scope.type)
                 this.formVisible = true
             },
@@ -642,7 +639,6 @@
                 this.formLoading = true
                 edit(this, this.route, scope.row.id)
                     .then(data => {
-                        console.log(this.route)
                         this.formLoading = false
                         this.formData = this.setFormData(scope.type, data)
                     })
@@ -677,14 +673,10 @@
             },
             // 新建保存
             addSave (formData) {
-                console.log(formData)
                 let params = {
                     _type: formData.type,
                     ...serializeData(formData.formField)
                 }
-                console.log('~~~~~~~~~')
-                console.log(params)
-                console.log('~~~~~~~~~')
                 store(this, this.route, params)
                     .then(data => {
                         this.$mg(this, '保存成功', 'success', 2000)
@@ -695,17 +687,12 @@
             },
             // 编辑保存
             editSave (formData) {
-                console.log(formData)
                 let params = {
                     _type: formData.type,
                     ...serializeData(formData.formField)
                 }
-                console.log('sssssss')
-                console.log(params)
-                console.log('sssssss')
                 update(this, this.route, formData.id, params)
                     .then(data => {
-                        console.log(data)
                         this.$mg(this, '保存成功', 'success', 2000)
                         this.$refs['commonFormDialog'].saveSetting.loading = false
                         this.emitCloseDialog('form')
@@ -717,7 +704,6 @@
                 for (let i in data) {
                     this.filter[i] = data[i]
                 }
-                console.log(this.filter)
                 this.ajaxIndex()
             },
             // // condition范围选择处理方法
@@ -733,8 +719,6 @@
 
             // 数据处理方法
             set_tableData (data) {
-                console.log('set_tableData')
-                console.log(data)
                 for (let i in data) {
                     if (i === 'data') {
                         this.tableData = this.model.tableFieldFn ? this.model.tableFieldFn(data.data, this) : data.data
@@ -756,8 +740,6 @@
 
             // 表格列特殊值处理
             edit_option_tableData (data) {
-                console.log('edit_option_tableData')
-                console.log(data)
                 data = this.model.tableFieldFn ? this.model.tableFieldFn(data) : data
                 this.tableData.forEach(v => {
                     if (v.id === data.id) {
@@ -787,13 +769,8 @@
             ajaxIndex (route) {
                 let path = route ? route : this.route
                 this.tableLoading = true
-                console.log('this.filter------')
-                console.log(this.filter)
                 index(this, path, this.filter)
                     .then(data => {
-                        console.log('==========')
-                        console.log(data)
-                        console.log('=========')
                         this.set_tableData(data)
                         this.tableLoading = false
                     })
@@ -801,8 +778,6 @@
         },
         watch: {
             route: function (nv, v) {
-                console.log('watch route -------------')
-                console.log(nv)
                 if (nv.indexOf('undefined') > -1) return
                 if (nv !== v) {
                     this.tableData = []

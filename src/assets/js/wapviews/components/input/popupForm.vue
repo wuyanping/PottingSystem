@@ -128,9 +128,7 @@ export default {
                 if (isCanSibmit) {
                     if (isCanSibmit) {
                         this.$emit('handleSubmit')
-                        console.log('可以提交了')
                     } else {
-                        console.log('验证失败')
                         this.$vux.alert.show({
                             title: '内容验证提示',
                             content: '验证失败',

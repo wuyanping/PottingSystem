@@ -68,10 +68,8 @@ export default {
     methods: {
         getMsg () {
             let id = this.$route.params.id
-            console.log(this.$route)
             index(this, `pot/${id}/main`)
                 .then(res => {
-                    console.log(res)
                     // let arr = []
                     // res.forEach(item => {
                     //     if (item.main !== 1) {
@@ -85,13 +83,11 @@ export default {
                 })
         },
         onButtonClick (id) {
-            console.log('onButtonClick')
             // 更改盆栽通过状态
             let params = {
                 status: false
             }
             ajax('put', this.$apiUrl(`apply/${id}`), params, data => {
-                console.log(data)
                 if (data !== 500) {
                     this.swtich_option_tableData({data: data, id: data.id})
                     this.$mg(this, '已删除', 'success', 1000)
