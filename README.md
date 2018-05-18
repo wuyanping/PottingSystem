@@ -6,6 +6,10 @@
 # 安装
 npm install --save-dev
 
+# 配置env.js
+在根目录下新建一个env.js文件
+根据env.example.js的内容，进行配置（可复制env.example.js到env）
+
 # 启动
 npm run dev
 
