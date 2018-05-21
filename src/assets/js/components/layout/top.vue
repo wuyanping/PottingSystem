@@ -35,7 +35,7 @@ export default {
         //     this.$router.push('/index/userInfo')
         // },
         logout () {
-            ajax.call(this, 'post', '/api/logout', data => {
+            ajax.call(this, 'post', '/logout', data => {
             	this.$router.push('/login')
                 this.switch_record('')
                 this.change_siderBar(true)
