@@ -6,10 +6,13 @@ const proxyTableOptions = {
     target: env.app_url,//设置你调用的接口域名和端口号 别忘了加http
 	changeOrigin:true
 }
+
 module.exports = {
 	dev: {
 		assetsSubDirectory: 'static',
 		assetsPublicPath: '/',
+		// 打包后的文件目录
+		assetsRoot: path.resolve(__dirname, '../dist'),
 		// 下面是代理表，作用是用来，建一个虚拟api服务器用来代理本机的请求，只能用于开发模式
     	proxyTable: {
     		'/api':{

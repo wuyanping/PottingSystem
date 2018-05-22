@@ -1,51 +1,18 @@
-import Vue from 'vue'
-import App from './App'
-import router from 'ROUTER'
-import store from './assets/js/vuex/index.js'
-import './assets/js/config/init.js'
-import { isObject } from 'UTILS/utils.js'
-Vue.config.productionTip = false
+/*
+    主入口： 根据process.env.NODE_MP，process.env.NODE_ENV来判断到底进入哪个次入口
+    process.env.NODE_MP：移动端还是pc端（mobile/pc）
+    process.env.NODE_ENV：开发环境还是生产环境（development/production）
+ */
+console.log('process.env.NODE_MP:' + process.env.NODE_MP)
+console.log('process.env.NODE_ENV:' + process.env.NODE_ENV)
 
-router.beforeEach((to, from, next) => {
-    let loginUrl = 'islogin'
-    loginUrl = window.isPC ? 'islogin' : 'ismlogin'
-    // 每次进入新页之前，都会对是否登录进行验证
-    axios.post(`/${loginUrl}`).then(res => {
-        // 用户已登录，如果不是进入到login页，则跳转到当前页
-        // 否则就直接进入到首页
-        if (isObject(res.data)) {
-            if (to.name !== 'login') {
-                window.bdUser = res.data
-                next()
-            } else {
-                if (window.isPC) {
-                    next('/index')
-                } else {
-                    next('/index/myPotting')
-                }
-            }
-        } else {
-            if (to.name === 'login') {
-                window.bdUser = null
-                next()
-            } else {
-                next('/login')
-            }
-        }
-    }).catch(e => {
-        // 用户未登录，如果是进入到login页，就直接进入到当前页面
-        // 否则会直接跳转到login页
-        if (to.name === 'login') {
-            window.bdUser = null
-            next()
-        } else {
-            next('/login')
-        }
-    })
-})
-
-const app = new Vue({
-    router,
-    store,
-    render: h => h(App)
-}).$mount('#app')
+if (process.env.NODE_ENV === 'production' && process.env.NODE_MP === 'mobile') {
+    console.log(11)
+    require('./mobile.js')
+} else if (process.env.NODE_ENV === 'production' && process.env.NODE_MP === 'pc') {
+    console.log(22)
+    require('./pc.js')
+} else {
+    console.log(33)
+    require('./dev_main.js')
+}

@@ -4,8 +4,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "cross-env NODE_ENV=development webpack-dev-server --config ./build/webpack.dev.conf.js",
-    "build:mobile": "cross-env NODE_MP=mobile && npm run build",
-    "build:pc": "cross-env NODE_PC=pc && npm run build",
+    "build:mobile": "cross-env NODE_MP=mobile npm run build",
+    "build:pc": "cross-env NODE_MP=pc npm run build",
     "build": "cross-env NODE_ENV=production webpack --config ./build/webpack.prod.conf.js"
   },
   "author": "wuyanping <1063218918@qq.com>",

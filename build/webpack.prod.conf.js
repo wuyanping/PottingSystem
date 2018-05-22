@@ -14,6 +14,9 @@ const config = require('../config')
 const baseWebpackConfig = require('./webpack.base.conf.js')
 const utils = require('./utils')
 
+// 默认打包pc端
+const MP = process.env.NODE_MP === 'mobile' ? 'mobile' : 'pc'
+
 const devWebpackConfig = merge(baseWebpackConfig, {
     devtool: config.build.devtool,
 
@@ -45,7 +48,7 @@ const devWebpackConfig = merge(baseWebpackConfig, {
 
         // 根据模板生成html文件
         new HtmlWebpackPlugin({
-            filename: 'index.html',
+            filename: MP + '.html',
             template: 'index.html'
         }),
 

@@ -8,10 +8,9 @@ const vueLoaderConfig = require('./vue-loader.conf.js')
 
 const isProd = process.env.NODE_ENV === 'production'
 
-const vuxLoader = require('vux-loader')
 
-console.log('env11: ' + process.env.NODE_ENV + '-------------------------------------' )
-console.log('MP: ' + process.env.MP + '-------------------------------------' )
+console.log('什么环境: ' + process.env.NODE_ENV + '-------------------------------------' )
+console.log('什么端: ' + process.env.NODE_MP + '-------------------------------------' )
 
 function resolve(...dir) {
     return path.join(__dirname, '..', ...dir)
@@ -175,18 +174,23 @@ let webpackConfig = {
     }
 }
 
-
-module.exports = vuxLoader.merge(webpackConfig, {
-  plugins: [
-    {
-      name: 'vux-ui'
-    },
-    {
-      name: 'duplicate-style'
-    },
-    {
-      name: 'less-theme',
-      path: resolve('src', 'assets', 'sass', 'theme', '_moblie-theme.less')
-    }
-  ]
-})
+if (process.env.NODE_MP === 'mobile' || !isProd ) {
+    const vuxLoader = require('vux-loader')
+    module.exports = vuxLoader.merge(webpackConfig, {
+      plugins: [
+        {
+          name: 'vux-ui'
+        },
+        {
+          name: 'duplicate-style'
+        },
+        {
+          name: 'less-theme',
+          path: resolve('src', 'assets', 'sass', 'theme', '_moblie-theme.less')
+        }
+      ]
+    })
+} else {
+    module.exports = webpackConfig
+}
+    

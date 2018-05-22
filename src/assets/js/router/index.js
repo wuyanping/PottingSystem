@@ -9,9 +9,10 @@ import Router from 'vue-router'
 import PcRoutes from './pc-routes'
 
 // 移动端的路由
-import MoblieRoutes from './moblie-routes'
+import MoblieRoutes from './mobile-routes'
 
 Vue.use(Router)
+
 let routes
 if (window.isPC) {
     routes = PcRoutes

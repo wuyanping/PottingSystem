@@ -1,23 +1,19 @@
 /*
-    打包pc端入口 npm run build:pc
+    本地运行入口 npm run dev
 */
 import Vue from 'vue'
 import App from './App'
-import Router from 'vue-router'
-import Routes from 'ROUTER/pc-routes.js'
+import router from 'ROUTER'
 import store from './assets/js/vuex/index.js'
-import './assets/js/config/init_pc.js'
+import './assets/js/config/init.js'
 import { isObject } from 'UTILS/utils.js'
-
 Vue.config.productionTip = false
 
-const router = new Router({
-    routes: routes
-})
-
 router.beforeEach((to, from, next) => {
+    let loginUrl = 'islogin'
+    loginUrl = window.isPC ? 'islogin' : 'ismlogin'
     // 每次进入新页之前，都会对是否登录进行验证
-    axios.post('/islogin').then(res => {
+    axios.post(`/${loginUrl}`).then(res => {
         // 用户已登录，如果不是进入到login页，则跳转到当前页
         // 否则就直接进入到首页
         if (isObject(res.data)) {
@@ -25,7 +21,11 @@ router.beforeEach((to, from, next) => {
                 window.bdUser = res.data
                 next()
             } else {
-                next('/index')
+                if (window.isPC) {
+                    next('/index')
+                } else {
+                    next('/index/myPotting')
+                }
             }
         } else {
             if (to.name === 'login') {
