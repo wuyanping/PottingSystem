@@ -4,7 +4,7 @@
 import Vue from 'vue'
 import App from './App'
 import Router from 'vue-router'
-import Routes from 'ROUTER/mobile-routes.js'
+import routes from 'ROUTER/mobile-routes.js'
 import store from './assets/js/vuex/index.js'
 import './assets/js/config/init_mobile.js'
 import { isObject } from 'UTILS/utils.js'
