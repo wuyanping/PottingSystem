@@ -10,7 +10,8 @@ const isProd = process.env.NODE_ENV === 'production'
 
 const vuxLoader = require('vux-loader')
 
-// console.log('env11: ' + process.env.NODE_ENV + '-------------------------------------' )
+console.log('env11: ' + process.env.NODE_ENV + '-------------------------------------' )
+console.log('MP: ' + process.env.MP + '-------------------------------------' )
 
 function resolve(...dir) {
     return path.join(__dirname, '..', ...dir)
