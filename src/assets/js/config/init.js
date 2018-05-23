@@ -1,9 +1,3 @@
-// 按需引入引入element-ui
-// import { Button, Select } from 'element-ui';
-// console.log(Button)
-// Vue.component(Button.name, Button);
-// Vue.component(Select.name, Select);
-
 import * as elementComponent from './element-ui.js'
 // 引入Sass样式
 import 'SASS/index'

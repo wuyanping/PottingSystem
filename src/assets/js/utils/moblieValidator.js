@@ -109,7 +109,7 @@ module.exports = {
                     switch (rule.type) {
                     // 手机和固话验证
                     case 'phones':
-                        bol = (value.length === 11 && /^(((13[0-9]{1})|(15[0-9]{1})|(18[0-9]{1}))+\d{8})$/.test(value)) || (value.length === 12 && /^(([0+]\d{2,3}-)?(0\d{2,3})-)?(\d{7,8})(-(\d{3,}))?$/.test(value))
+                        bol = (value.length === 11 && /^1\d{10}$/.test(value)) || (value.length === 12 && /^0\d{2,3}-?\d{7,8}$/.test(value))
                         break
                     // 整数
                     case 'reInteger':

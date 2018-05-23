@@ -181,6 +181,7 @@ export default {
         },
         // 表单提交
         handleSubmit () {
+            // console.log(this.formData)
             let id = this.$route.params.id
             let type = 0
             let url = 'apply'
