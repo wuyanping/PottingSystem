@@ -166,7 +166,7 @@ export default {
         // 表单提交
         handleSubmit () {
             let id = this.$route.params.id
-            let type = 0
+            let type = 0 // 0代表盆栽列表的申请 / 1代表盆栽列表的邀请
             let url = 'apply'
             if (this.$route.params.model === 'myPotting') {
                 type = 1
@@ -177,7 +177,7 @@ export default {
                 id: id,
                 ...serializeData(this.formData)
             }
-            if (!params.name.length) {
+            if (type === 1 && !params.name.length) {
                 this.$vux.toast.text('请选择用户')
                 return
             }

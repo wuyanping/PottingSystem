@@ -221,11 +221,6 @@ export default {
         },
         // 搜索
         handleSearch (val) {
-            console.log(val)
-            if (val === '') {
-                this.$vux.toast.text('请输入搜索内容')
-                return
-            }
             this.list = []
             this.getInfo({query_text: val})
         },
