@@ -92,7 +92,7 @@ export default {
 <style lang="sass">
 .formAjaxCheckList {
     .imgListDiv {
-        height: 50px;
+        // height: 50px;
         padding: 10px;
         border-bottom: 1px solid #D9D9D9;
         img{

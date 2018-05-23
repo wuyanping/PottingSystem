@@ -57,8 +57,6 @@
 		    </flexbox>
 		</div>
 
-        <actionsheet v-model="show3" :menus="menus3" @on-click-menu-confirm="onConfirm" show-cancel></actionsheet>
-        
         <!-- 邀请弹框 -->
         <PopupForm
             :formData="formData"
@@ -70,7 +68,7 @@
 	</div>
 </template>
 <script>
-import { Flexbox, FlexboxItem, Blur, Panel, Group, Cell, CellFormPreview, Loading, Actionsheet, Toast, ToastPlugin } from 'vux'
+import { Flexbox, FlexboxItem, Blur, Panel, Group, Cell, CellFormPreview, Loading, Toast, ToastPlugin } from 'vux'
 import PopupForm from '../input/popupForm.vue'
 import { isArray, isObject, isString, serializeData } from 'UTILS/utils.js'
 import { index, store } from 'UTILS/commonApi.js'
@@ -87,7 +85,6 @@ export default {
         Cell,
         Loading,
         CellFormPreview,
-        Actionsheet,
         Toast
     },
     props: {
@@ -155,33 +152,19 @@ export default {
     	go (title, record, i) {
             // invite不跳转
             if (record === 'invite') {
-                // if (this.$route.params.model === 'potting') { // 盆栽列表的发出申请
-                // this.show3 = true
-                // this.formData = this.setFormData('add', i)
-                // } else if (this.$route.params.model === 'myPotting') { // 我的盆栽的发出邀请
                 this.isShowPopup = true
                 this.formData = this.setFormData('add', i)
-                // }
             } else {
                 this.$emit('setHeader', {key: 'title', value: title})
                 this.$router.push(`${this.$route.path}/${record}`)
             }
     	},
-        // （盆栽列表部分）发出申请，点击确定触发
-        onConfirm () {
-            this.$vux.toast.show('发送成功，等待盆栽管理员审核通过！')
-            let params = {
-                id: window.bdUser.id
-            }
-            // store(this, 'apply', )
-        },
         // 关闭弹窗
         handleClose () {
             this.isShowPopup = false
         },
         // 表单提交
         handleSubmit () {
-            // console.log(this.formData)
             let id = this.$route.params.id
             let type = 0
             let url = 'apply'
@@ -193,6 +176,10 @@ export default {
                 type: type,
                 id: id,
                 ...serializeData(this.formData)
+            }
+            if (!params.name.length) {
+                this.$vux.toast.text('请选择用户')
+                return
             }
             store(this, url, params)
                 .then(res => {

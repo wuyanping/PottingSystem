@@ -1,36 +1,38 @@
 <!-- 表单弹框组件 -->
 <template>
-	<div class="popupForm">
-		<!-- 新建弹框 -->
-	    <div v-transfer-dom>
-	        <popup v-model="isShowPopup" height="100%" width='100%' position="right">
-	            <div class="popup1">
-	                <x-header :left-options="{showBack: false}"> 
-	                    <a slot="left" @click="handleClose">关闭</a>
-	                </x-header>
-	                <group>
-	                    <FormItem
-	                        v-for="(formItem,i) in formData"
+	<!-- 新建弹框 -->
+    <div v-transfer-dom class="popupForm">
+        <popup v-model="isShowPopup" height="100%" width='100%' position="right">
+            <div class="popup1">
+                <x-header class="popupForm_header" :left-options="{showBack: false}"> 
+                    <a slot="left" @click="handleClose">关闭</a>
+                </x-header>
+                
+                <div class="popupForm_main">
+                    <group class="popupForm_main_group">
+                        <FormItem
+                            v-for="(formItem,i) in formData"
                             :key="i"
                             :formData="formData"
-	                        :formItem="formItem"
-	                        :isShowMsg="true"
-	                        :isShowTiTle="true"
-	                        @changeIsShowFinish="changeIsShowFinish"
-	                    ></FormItem>
-	                    <x-button
-	                    	v-if="isShowSibmitBtn"
-	                        type="primary"
-	                        action-type="button"
-	                        style="margin-top:30px; height: 56px; border-radius:99px;"
-	                        @click.native="sibmitForm">
-	                        提交
-	                    </x-button>
-	                </group>
-	            </div>
-	        </popup>
-	    </div>
-	</div>
+                            :formItem="formItem"
+                            :isShowMsg="true"
+                            :isShowTiTle="true"
+                            @changeIsShowFinish="changeIsShowFinish"
+                        ></FormItem>
+                    </group>
+                </div>
+                <x-button
+                    class="popupForm_footer"
+                    v-if="isShowSibmitBtn"
+                    type="primary"
+                    action-type="button"
+                    style="margin-top:30px; height: 56px; border-radius:99px;"
+                    @click.native="sibmitForm">
+                    提交
+                </x-button>
+            </div>
+        </popup>
+    </div>
 </template>
 <script>
 import { Group, Popup, TransferDom, XHeader, XButton, AlertPlugin } from 'vux'
@@ -143,4 +145,32 @@ export default {
 </script>
 
 <style lang="sass">
+.popupForm{
+    .popup1{
+        height:100%;
+        position: relative;
+    }
+    .popupForm_header{
+        width: 100%;
+        position: absolute;
+        left: 0;
+        top: 0;
+    }
+    .popupForm_main{
+        height: 100%;
+        padding-top: 46px;
+        padding-bottom: 86px;
+        box-sizing: border-box;
+        .popupForm_main_group{
+            height: 100%;
+            overflow: auto;
+        }
+    }
+    .popupForm_footer{
+        width: 100%;
+        position: absolute;
+        left: 0;
+        bottom: 0;
+    }
+}
 </style>
