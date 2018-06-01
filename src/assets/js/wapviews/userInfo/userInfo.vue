@@ -4,7 +4,8 @@
             <div class="center clearfix">
                 <uploadImg class="uploadImg fl"
                     :avatar="userData.avatar"
-                    @handleUpload="handleUpload"/>
+                    @handleUpload="handleUpload"
+                    @showImg="showImg"/>
                 <div class="fl p-10"> 
                     <p>{{userData.name}}</p>
                     <span @click="isShowPopup = true">个人信息 > </span>
@@ -24,6 +25,9 @@
             :listData="userData"
             @close="handleClose">
         </PopupShowForm>
+        
+        <!-- 展示图片弹框 -->
+        <dialogShowImg :img="img" :showHideOnBlur="showHideOnBlur" @closeImg="closeImg"/>
 
         <x-button
             class= "logoutBtn"
@@ -38,12 +42,13 @@
 import { Blur, Group, Cell, XButton } from 'vux'
 import PopupShowForm from 'WAPVIEWS/components/input/popupShowForm.vue'
 import uploadImg from './Details/uploadImg.vue'
+import dialogShowImg from '../components/input/dialogShowImg.vue'
 import { index, update, edit } from 'UTILS/commonApi'
 import { isObject } from 'UTILS/utils.js'
 
 export default {
     components: {
-        Blur, Group, Cell, PopupShowForm, uploadImg, XButton
+        Blur, Group, Cell, PopupShowForm, uploadImg, XButton, dialogShowImg
     },
     props: {
         model: Object,
@@ -62,7 +67,10 @@ export default {
         return {
             url: './static/image/company_default_logo.png',
             userData: {},
-            isShowPopup: false // 详情弹框
+            isShowPopup: false, // 详情弹框
+            // 图片弹框
+            img: '',
+            showHideOnBlur: false
         }
     },
     methods: {
@@ -103,6 +111,15 @@ export default {
                 data.gender = g(data.gender)
             }
             return data
+        },
+        // 展示图片弹框
+        showImg (img) {
+            this.showHideOnBlur = true
+            this.img = img
+        },
+        // 关闭图片弹框
+        closeImg () {
+            this.showHideOnBlur = false
         }
     },
     mounted () {

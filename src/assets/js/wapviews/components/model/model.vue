@@ -84,18 +84,24 @@ export default {
         onImgError (item, $event) {
         }
     },
+    mounted () {
+        // console.log(this.$route)
+    },
     watch: {
         // 监听路由变化，深度监听
         '$route': {
             deep: true,
             handler: function (nv) {
+                // console.log('route ---- ')
                 if (theModel[nv.params.model] && theModel[nv.params.model]._hasCustomComponent) {
                     this.hasCustomComponent = true
                 } else {
                     this.hasCustomComponent = false
                 }
                 this.currentModel = theModel[nv.params.model]
-                this.changeHeaderSetting({...this.headerSetting, showBack: false, title: this.currentModel.title})
+                if (this.currentModel && nv.params.model) {
+                    this.changeHeaderSetting({...this.headerSetting, showBack: false, title: this.currentModel.title})
+                }
             }
         }
     }

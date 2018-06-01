@@ -1,6 +1,6 @@
 <!-- 一级详情页 -->
 <template>
-	<div class="commonDetails h100">
+	<div class="commonDetails">
 
 		<!-- 盆栽介绍 -->
 		<div class="cd_top">

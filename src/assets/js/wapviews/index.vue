@@ -9,7 +9,14 @@
         </div>
             
         <div class="moblie_main">
-            <router-view class="moblie_content"></router-view>
+
+            <keep-alive>
+                <router-view class="moblie_content" v-if="$route.meta.keepAlive"/>
+            </keep-alive>
+
+            <router-view class="moblie_content" v-if="!$route.meta.keepAlive"/>
+
+            <!-- <router-view class="moblie_content"></router-view> -->
         </div>
 
         <div class="moblie_tabBar">
@@ -84,6 +91,17 @@ export default{
         // setHeader ({key, value}) {
         //     this.headerSetting[key] = value
         // }
+    },
+    watch: {
+        // 修改直接输入地址后，导航样式不对应的bug
+        '$route': {
+            deep: true,
+            handler: function (to, from) {
+                this.index = this.tabbarData.findIndex(item => {
+                    return this.$route.path.includes(item.path)
+                })
+            }
+        }
     }
 }
 </script>

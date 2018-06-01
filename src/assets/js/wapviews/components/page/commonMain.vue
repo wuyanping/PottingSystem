@@ -1,5 +1,5 @@
 <template>
-    <div class="basic h100" ref="basic">
+    <div class="basic" ref="basic">
     	<div class="basic_top" >
     		<flexbox>
                 <flexbox-item :span="5" v-if="hasConditonSelect">
@@ -23,7 +23,7 @@
         <!-- 盆栽列表 -->
         <!-- <div class="basic_list" v-if="hasList"  :style="{height: height}"> -->
         <div class="basic_list" v-if="hasList">
-            <div class="basic_list_centent" ref="wrapper">
+            <div class="basic_list_centent" ref="wrapper" :style="{height: height}">
                 <load-more tip="正在刷新" v-if="showPullDown"></load-more>
                 <list 
                     :data="list" 
@@ -106,7 +106,8 @@ export default {
         }
     },
     data () {
-        let he = window.screen.height
+        // let he = window.screen.height
+        let he = document.documentElement.clientHeight - 46 - 41 - 53
         return {
             list: [],
             isShowPopup: false, // 新建弹框
@@ -284,6 +285,7 @@ export default {
         }
     },
     mounted () {
+        // console.log(this.$refs)
         // this.getInfo()
         // this.height = getStyle(this.$refs.basic, 'height')
         // setTimeout(() => {
@@ -292,13 +294,19 @@ export default {
     },
     watch: {
         '$route': {
-            handler: function (v) {
-                this.list = []
-                this.getInfo()
+            handler: function (to, from) {
+                // console.log('commonMain.vue---')
+                // console.log(to)
+                // console.log(from)
+                if (to.params.model !== from.params.model) {
+                    this.list = []
+                    this.getInfo()
+                }
             }
         }
     },
     created () {
+        // console.log(this.$refs)
         this.getInfo(undefined, () => {
             this._initScroll()
         })
@@ -314,9 +322,9 @@ export default {
         padding: 5px;
         box-sizing: border-box;
         color: #727071;
-        position: absolute;
+        position: fixed;
         left: 0;
-        top: 0;
+        top: 46px;
         background-color: white;
         z-index: 5;
         box-shadow: 0px -1px 5px 1px #999999;
@@ -340,11 +348,10 @@ export default {
         }
     }
     .basic_list{
-        height: 100%;
         padding-top: 40px;
         box-sizing: border-box;
         .basic_list_centent{
-            height: 100%;
+            // height: 100%;
             overflow: auto;
         }
         .weui-cells{

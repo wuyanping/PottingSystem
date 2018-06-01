@@ -36,7 +36,10 @@ let routes = [
             {
                 path: '/index/:model',
                 name: 'model',
-                component: model
+                component: model,
+                meta: {
+                    keepAlive: true
+                }
             },
             {
                 path: '/index/userInfo/potManage',

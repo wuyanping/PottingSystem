@@ -44,6 +44,7 @@ export default {
     // },
     beforeRouteEnter (to, from, next) {
         next(vm => {
+            // console.log('details.vue---')
             if (theDetail[to.params.model] && theDetail[to.params.model]._hasCustomComponent) {
                 vm.hasCustomComponent = true
             } else {
@@ -67,6 +68,7 @@ export default {
         '$route': {
             deep: true,
             handler: function (nv) {
+                // console.log('details.vue---')
                 if (theDetail[nv.params.model] && theDetail[nv.params.model]._hasCustomComponent) {
                     this.hasCustomComponent = true
                 } else {

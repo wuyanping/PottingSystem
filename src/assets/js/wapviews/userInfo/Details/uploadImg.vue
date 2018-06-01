@@ -1,15 +1,18 @@
 <template>
     <div>
-        <div @click="select">
-            <img :src="avatar ? avatar : url">
+        <div>
+            <img @click="showImg(avatar)" :src="avatar ? avatar : url">
         </div>
         <input type="file" hidden="hidden" @change="pick($event)" ref="input"/>
         <toast v-model="toast" type="warn">{{msg}}</toast>
+
+        <!-- 查看/从相册选择 -->
+        <actionsheet v-model="show" :menus="menus" @on-click-menu="click" show-cancel></actionsheet>
     </div>
 </template>
 
 <script>
-import { Toast, ToastPlugin } from 'vux'
+import { Toast, ToastPlugin, Actionsheet, XSwitch } from 'vux'
 Vue.use(ToastPlugin)
 export default {
     props: {
@@ -19,7 +22,12 @@ export default {
         return {
             url: './static/image/company_default_logo.png',
             toast: false,
-            msg: ''
+            msg: '',
+            show: false,
+            menus: {
+                look: '查看',
+                check: '从相册选择'
+            }
         }
     },
     methods: {
@@ -44,12 +52,26 @@ export default {
             }
             this.$emit('handleUpload', { avatar: file, _hasfile: true })
         },
+        // 展示Actionsheet弹框
+        showImg (img) {
+            this.show = true
+        },
         select () {
             this.$refs.input.click()
+        },
+        // 头像被点击
+        click (key) {
+            console.log(key)
+            if (key === 'look') { // 查看
+                let url = this.avatar ? this.avatar : this.url
+                this.$emit('showImg', url)
+            } else if (key === 'check') { // 从相册选择
+                this.select()
+            }
         }
     },
     components: {
-        Toast
+        Toast, Actionsheet, XSwitch
     }
 }
 </script>

@@ -12,22 +12,26 @@
                         :key="i"
                         :title="`${item.label}：`"
                         :value="listData[item.field]">
-                        <img v-if="item.label === '外观' && listData[item.field]!==null" :src="listData[item.field]" style="width: 50px;height:50px;">
+                        <img @click="showImg(listData[item.field])" v-if="item.label === '外观' && listData[item.field]!==null" :src="listData[item.field]" style="width: 50px;height:50px;">
                     </cell>
                 </group>
             </div>
         </popup>
+
+        <!-- 展示图片弹框 -->
+        <dialogShowImg :img="img" :showHideOnBlur="showHideOnBlur" @closeImg="closeImg"/>
     </div>
 </template>
 <script>
 import {TransferDom, XHeader, Cell, Popup, Group} from 'vux'
+import dialogShowImg from './dialogShowImg.vue'
 
 export default {
     directives: {
         TransferDom
     },
     components: {
-    	TransferDom, XHeader, Cell, Popup, Group
+    	TransferDom, XHeader, Cell, Popup, Group, dialogShowImg
     },
     props: {
     	isShowPopup: {
@@ -45,12 +49,29 @@ export default {
     		}
     	}
     },
+    data () {
+        return {
+            img: '',
+            showHideOnBlur: false
+        }
+    },
     mounted () {
     },
     methods: {
     	handleClose () {
     		this.$emit('close')
-    	}
+    	},
+        // 展示图片弹框
+        showImg (img) {
+            if (img) {
+                this.showHideOnBlur = true
+                this.img = img
+            }
+        },
+        // 关闭图片弹框
+        closeImg () {
+            this.showHideOnBlur = false
+        }
     }
 }
 </script>

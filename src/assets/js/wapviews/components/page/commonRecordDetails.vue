@@ -30,7 +30,7 @@
         <!-- 节点列表 -->
         <!-- <div class="dd_main" ref="wrapper" :style="{height: height}"> -->
         <div class="dd_main" >
-            <div class="dd_main_content" ref="wrapper">
+            <div class="dd_main_content" ref="wrapper" :style="{height: height}">
                 <load-more tip="正在刷新" v-if="showPullDown" />
                 <list 
                     :data="list" 
@@ -135,7 +135,7 @@ export default {
         }
     },
     data () {
-        let he = window.screen.height - 140
+        let he = document.documentElement.clientHeight - 46 - 42 - 53
         let date = new Date()
         let dDate = `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`
         return {
@@ -410,9 +410,9 @@ $theme-color: #1eac94;
         width: 100%;
         padding: 5px 0px;
         box-sizing: border-box;
-        position: absolute;
+        position: fixed;
         left: 0;
-        top: 0;
+        top: 46px;
         background-color: white;
         z-index: 5;
         box-shadow: 0px -1px 5px 1px #999999;

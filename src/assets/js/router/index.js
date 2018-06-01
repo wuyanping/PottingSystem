@@ -22,4 +22,15 @@ if (window.isPC) {
 
 export default new Router({
     routes: routes
+    // ,
+    // scrollBehavior (to, from, savedPosition) {
+    //     console.log('savedPosition --- ')
+    //     console.log(savedPosition)
+    //     // 滚回上一个路由位置
+    //     if (savedPosition) {
+    //         return savedPosition
+    //     } else {
+    //         return { x: 0, y: 0 }
+    //     }
+    // }
 })
