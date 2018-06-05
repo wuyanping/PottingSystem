@@ -28,8 +28,8 @@
         // 因为当守卫执行前，组件实例还没被创建
         beforeRouteEnter (to, from, next) {
             // console.log(theModel[to.params.module][to.params.model])
-            console.log(to)
-            console.log(theModel)
+            // console.log(to)
+            // console.log(theModel)
             next(vm => {
                 // 通过 `vm` 访问组件实例
                 if (theModel[to.params.module][to.params.model] && theModel[to.params.module][to.params.model]._hasCustomComponent) {
@@ -51,9 +51,9 @@
              * @param    {String}   mixType [当前tabs的类型的数据]
              */
             mixCurrentModel (module, model, mixType) {
-                console.log(module, model, mixType)
+                // console.log(module, model, mixType)
                 this.currentModel = Object.assign({}, theModel[module][model], theModel[module][model]['panelData'][mixType])
-                console.log(this.currentModel)
+                // console.log(this.currentModel)
             },
             /**
              * [set 设置routePath和currentModel]
@@ -70,7 +70,6 @@
                     if (!routeObj.query.current) {
                         console.error(`${routeObj.params.model}中的detailLink组件缺少了current参数`)
                     }
-                    console.log(33333)
                     this.routePath = `${routeObj.params.model}/${routeObj.params.id}/${routeObj.query.current}`
                     this.mixCurrentModel(routeObj.params.module, `${routeObj.params.model}Detail`, routeObj.query.current)
                 } else {
@@ -86,13 +85,12 @@
             }
         },
         mounted () {
-            console.log(this.$route)
+            // console.log(this.$route)
         },
         watch: {
             '$route': {
                 deep: true, // 深度观察
                 handler: function (nv) {
-                    console.log(11111)
                     if (theModel[nv.params.module][nv.params.model] && theModel[nv.params.module][nv.params.model]._hasCustomComponent) {
                         this.hasCustomComponent = true
                         this.currentModel = theModel[nv.params.module][nv.params.model]

@@ -8,7 +8,7 @@
         <div class="login-content">
             <el-card class="box-card">
                 <div slot="header" class="clearfix txt-c">
-                    <span class="fontSize22">盆栽溯源后台系统</span>
+                    <span class="fontSize22">植物溯源后台系统</span>
                 </div>
                 <el-form :model="userInfo" :rules="rules" ref="userInfo">
                     <el-form-item label="" prop="userName">
