@@ -182,56 +182,56 @@ const sysman = {
                         ],
                         value: null
                     },
-                    {
-                        component: 'ElInput',
-                        field: 'password',
-                        label: '密码',
-                        inputType: 'password',
-                        rulesType: [
-                            {
-                                max: 255,
-                                message: '最多有255字',
-                                trigger: 'blur'
-                            }
-                        ],
-                        // 默认 required: true,
-                        // 根据rules传入的方法数据动态设置验证方法
-                        rules: [
-                            // {
-                            //     method: 'checkValid',
-                            //     trigger: 'blur',
-                            //     params: {
-                            //         cfield: 'name'
-                            //     }
-                            // }
-                        ],
-                        value: null
-                    },
-                    {
-                        component: 'ElInput',
-                        field: 'password_confirmation',
-                        label: '确认密码',
-                        inputType: 'password',
-                        rulesType: [
-                            {
-                                max: 255,
-                                message: '最多有255字',
-                                trigger: 'blur'
-                            }
-                        ],
-                        // 默认 required: true,
-                        // 根据rules传入的方法数据动态设置验证方法
-                        rules: [
-                            // {
-                            //     method: 'checkValid',
-                            //     trigger: 'blur',
-                            //     params: {
-                            //         cfield: 'name'
-                            //     }
-                            // }
-                        ],
-                        value: null
-                    },
+                    // {
+                    //     component: 'ElInput',
+                    //     field: 'password',
+                    //     label: '密码',
+                    //     inputType: 'password',
+                    //     rulesType: [
+                    //         {
+                    //             max: 255,
+                    //             message: '最多有255字',
+                    //             trigger: 'blur'
+                    //         }
+                    //     ],
+                    //     // 默认 required: true,
+                    //     // 根据rules传入的方法数据动态设置验证方法
+                    //     rules: [
+                    //         // {
+                    //         //     method: 'checkValid',
+                    //         //     trigger: 'blur',
+                    //         //     params: {
+                    //         //         cfield: 'name'
+                    //         //     }
+                    //         // }
+                    //     ],
+                    //     value: null
+                    // },
+                    // {
+                    //     component: 'ElInput',
+                    //     field: 'password_confirmation',
+                    //     label: '确认密码',
+                    //     inputType: 'password',
+                    //     rulesType: [
+                    //         {
+                    //             max: 255,
+                    //             message: '最多有255字',
+                    //             trigger: 'blur'
+                    //         }
+                    //     ],
+                    //     // 默认 required: true,
+                    //     // 根据rules传入的方法数据动态设置验证方法
+                    //     rules: [
+                    //         // {
+                    //         //     method: 'checkValid',
+                    //         //     trigger: 'blur',
+                    //         //     params: {
+                    //         //         cfield: 'name'
+                    //         //     }
+                    //         // }
+                    //     ],
+                    //     value: null
+                    // },
                     {
                         component: 'ElInput',
                         field: 'email',

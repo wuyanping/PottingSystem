@@ -93,7 +93,7 @@ const validtor = {
      * 参数：无
      */
     passwordValid: (rule, value, callback) => {
-        if (value && (value.trim().length < 12 || String.trim(value).length > 30)) {
+        if (value && (value.trim().length < 12 || value.trim().length > 30)) {
             callback(new Error(rule['label'] + '的长度为12至30个字符'))
         } else {
             callback()

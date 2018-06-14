@@ -127,7 +127,6 @@ const log = {
             // 表格列特殊值处理
             tableFieldFn: function (data) {
                 const typeFn = function (n) {
-                    console.log(n)
                     let arr = [{
                         label: '添加',
                         value: 1
